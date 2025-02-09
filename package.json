@@ -9,9 +9,31 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.2.0",
+    "@mui/material": "^6.3.1",
+    "@mui/styled-engine-sc": "^6.1.2",
+    "@mui/x-charts": "^7.23.2",
+    "@mui/x-data-grid": "^7.23.2",
+    "@mui/x-date-pickers": "^7.23.3",
+    "@toolpad/core": "^0.10.0",
+    "axios": "^1.7.9",
+    "dayjs": "^1.11.13",
+    "i18next": "^23.16.0",
+    "i18next-resources-to-backend": "^1.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "next": "14.2.14",
+    "next-i18n-router": "^5.5.1",
+    "next-i18next": "^15.3.1",
+    "next-intl": "^3.21.1",
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.2.14"
+    "react-i18next": "^15.0.3",
+    "styled-components": "^6.1.13",
+    "stylis": "^4.3.4",
+    "stylis-plugin-rtl": "^2.1.1",
+    "swiper": "^11.1.14"
   },
   "devDependencies": {
     "eslint": "^8",
