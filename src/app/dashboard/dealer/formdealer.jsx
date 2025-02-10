@@ -99,13 +99,13 @@ export default function FormDealer() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" align="center">
-          اضافة تاجر جديد
+          اضافة / تعديل التجار
         </DialogTitle>
         <DialogContent>
           <Box>
             <form onSubmit={handleSubmit}>
               {/* استخدام Grid بشكل صحيح هنا */}
-              <Grid container spacing={2} sx={{ width: '30rem' }}>
+              <Grid container spacing={2}>
                 <Grid size={6}>
                   <TextField
                     required
@@ -149,7 +149,7 @@ export default function FormDealer() {
                 </Grid>
                 <Grid size={12}>
                   <Button onClick={handletypeService} variant="outlined" color='success' sx={{ width:'100%' }}>
-                    اعمال خارجية
+                    اعمال خارجية / قطع استيراد
                   </Button>
                 </Grid>
                 {typeService.map((typeService, index) => (

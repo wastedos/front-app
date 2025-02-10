@@ -94,7 +94,7 @@ export default function Transfer() {
           <Box>
             <form onSubmit={handleSubmit}>
               {/* Grid layout */}
-              <Grid container spacing={2} sx={{ width: '30rem' }}>
+              <Grid container spacing={2}>
                 <Grid size={6}>
                   <FormControl fullWidth margin="dense">
                     <InputLabel id="payment-from">من</InputLabel>

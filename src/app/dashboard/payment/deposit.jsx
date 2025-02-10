@@ -78,7 +78,7 @@ export default function Deposit() {
           <Box>
             <form onSubmit={handleSubmit}>
               {/* استخدام Grid بشكل صحيح هنا */}
-              <Grid container spacing={2} sx={{ width: '30rem' }}>
+              <Grid container spacing={2}>
                 <Grid size={6}>
                   <FormControl fullWidth margin="dense">
                     <InputLabel id="safe">الي</InputLabel>

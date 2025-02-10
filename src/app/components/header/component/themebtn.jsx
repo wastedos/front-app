@@ -1,9 +1,8 @@
 "use client"
 import * as React from 'react';
-import { IconButton, Typography } from "@mui/material";
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7'
-//themes
+import { IconButton, } from "@mui/material";
+import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import DarkModeIcon from '@mui/icons-material/DarkMode';//themes
 import { useTheme } from '@emotion/react';
 import { ThemeModeContext } from '@/src/app/theme/theme';
 
@@ -20,7 +19,7 @@ export default function Themebtn(){
           setMode(newMode);
         }}
       >
-        {theme.palette.mode === 'light' ? <Brightness4Icon/> : <Brightness7Icon/>}
+        {theme.palette.mode === 'light' ? <DarkModeIcon/> : <WbSunnyIcon/>}
       </IconButton>
     );
 }

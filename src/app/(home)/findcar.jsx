@@ -49,9 +49,10 @@ export default function Findcar() {
         { id: 2, images: "/image/carbrand/audi.png", title: "Audi" },
         { id: 3, images: "/image/carbrand/skoda.png", title: "Skoda" },
         { id: 4, images: "/image/carbrand/seat.png", title: "Seat" },
-        { id: 5, images: "/image/carbrand/porsche.png", title: "Porsche" },
-        { id: 6, images: "/image/carbrand/lamborghini.png", title: "Lamborghini" },
-        { id: 7, images: "/image/carbrand/bentley.png", title: "Bentley" },
+        { id: 5, images: "/image/carbrand/cupra.png", title: "Cupra" },
+        { id: 6, images: "/image/carbrand/porsche.png", title: "Porsche" },
+        { id: 7, images: "/image/carbrand/lamborghini.png", title: "Lamborghini" },
+        { id: 8, images: "/image/carbrand/bentley.png", title: "Bentley" },
     ];
 
     return (

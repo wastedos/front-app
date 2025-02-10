@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, TextField,
+import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, TextField, useTheme,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Dealerbtn from "./actions/dealerbtn";
@@ -9,6 +9,7 @@ import FormDealer from "./formdealer";
 
 
 export default function TableDealer() {
+  const theme = useTheme();
   const [orders, setOrders] = useState([]); // حالة لتخزين البيانات
   const [searchTerm, setSearchTerm] = useState(""); // حالة البحث
 
@@ -40,7 +41,7 @@ export default function TableDealer() {
 
   return (
     <Grid container spacing={2}>
-      <Box sx={{ width: "100%", p: 2 }}>
+      <Box sx={{ width: "100%", p: 2, mt:5, borderRadius:'15px', backgroundColor: theme.palette.colors.box }}>
         <Box
           sx={{
             display: "flex",
