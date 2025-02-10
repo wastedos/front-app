@@ -27,7 +27,7 @@ export default function ServiceFormDelete({ dealerId, serviceId }) {
 
     try {
       const response = await axios.delete(
-        `http://localhost:5000/dealer/delete-service/${dealerId}/${serviceId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/dealer/delete-service/${dealerId}/${serviceId}`,
         { withCredentials: true } // مهم جداً
       );
       console.log("Item deleted successfully:", response.data);

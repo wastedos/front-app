@@ -58,7 +58,7 @@ const UserSecurity = () => {
   
     try {
       const response = await axios.put(
-        "http://localhost:5000/users/update-user",
+        `${process.env.NEXT_PUBLIC_API_URL}/users/update-user`,
         formData,
         {
           headers: {

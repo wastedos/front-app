@@ -60,7 +60,7 @@ export default function Transfer() {
     setError(''); // Clear any previous error message
 
     try {
-      const response = await axios.post('http://localhost:5000/transactions/transfer', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/transactions/transfer`, {
         fromSafe: paymentFrom, // المحفظة التي سيتم التحويل منها
         toSafe: paymentTo, // المحفظة التي سيتم التحويل إليها
         amountTransfer: parseFloat(price), // المبلغ الذي سيتم تحويله

@@ -23,7 +23,7 @@ export default function JobOrderbtn({ itemId }) {
   // إرسال طلب الحذف واستدعاء مسار الفواتير
   const handleArchiveAndDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/joborders/bills-byid/${itemId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joborders/bills-byid/${itemId}`, {
         method: 'DELETE',
       });
 

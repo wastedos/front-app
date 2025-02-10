@@ -10,7 +10,7 @@ export default function Print({ itemId }) {
     try {
       // Fetch data for the item
       const response = await axios.get(
-        `http://localhost:5000/bills/read-bill/${itemId}`
+        `${process.env.NEXT_PUBLIC_API_URL}/bills/read-bill/${itemId}`
       );
       const itemData = response.data;
 

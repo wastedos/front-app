@@ -48,7 +48,7 @@ export default function FormUpdate({ itemId }) {
     try {
       // إرسال البيانات إلى السيرفر لتحديث العنصر
       const response = await axios.put(
-        `http://localhost:5000/warehouse/update-byid/${itemId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/warehouse/update-byid/${itemId}`,
         {
           quantity: formData.quantity,
           price: formData.price,

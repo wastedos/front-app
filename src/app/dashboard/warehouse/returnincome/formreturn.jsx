@@ -34,7 +34,7 @@ export default function FormReturn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/warehouse/add-returnIncome", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse/add-returnIncome`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -25,7 +25,7 @@ export default function FormDelete({ itemId }) {
 
     try {
       const response = await axios.delete(
-        `http://localhost:5000/booking/delete-booking/${itemId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/booking/delete-booking/${itemId}`,
         { withCredentials: true } // مهم جداً
       );
       console.log("Item deleted successfully:", response.data);

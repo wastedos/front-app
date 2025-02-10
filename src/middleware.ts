@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
         }
 
         try {
-            const response = await axios.get('http://localhost:5000/protected/role', {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/protected/role`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -38,7 +38,7 @@ export async function middleware(request: NextRequest) {
         }
 
         try {
-            const response = await axios.get('http://localhost:5000/protected/role', {
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/protected/role`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 

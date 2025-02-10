@@ -27,7 +27,7 @@ export default function AvatarMenu() {
       }
 
       try {
-        const response = await axios.get('http://localhost:5000/protected/role', {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/protected/role`, {
           withCredentials: true,
           headers: { Authorization: `Bearer ${token}` },
         });

@@ -12,7 +12,7 @@ export default function TableJobOrder() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch('http://localhost:5000/joborders/temporary');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joborders/temporary`);
         if (response.ok) {
           const data = await response.json();
           setOrders(data);

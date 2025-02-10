@@ -21,7 +21,6 @@ export default function Dashboard() {
         <BanelTwo/>
         <BanelThree/>
         <BanelFour/>
-        <BanelFive/>
         
       </Grid>
     </Box>

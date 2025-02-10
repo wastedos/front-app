@@ -48,7 +48,7 @@ export default function Withdraw() {
     const { typeSafe, amountWithdraw, typeWithdraw, reasonWithdraw } = formData;
 
     try {
-      const response = await axios.post('http://localhost:5000/transactions/withdraw', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/transactions/withdraw`, {
         typeSafe, // نوع المحفظة
         amountWithdraw: parseFloat(amountWithdraw), // المبلغ الذي تم سحبه
         typeWithdraw, // نوع السحب

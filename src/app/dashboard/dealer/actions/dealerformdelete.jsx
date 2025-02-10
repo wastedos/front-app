@@ -27,7 +27,7 @@ export default function DealerFormDelete({ dealerId }) {
 
     try {
       const response = await axios.delete(
-        `http://localhost:5000/dealer/delete-dealer/${dealerId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/dealer/delete-dealer/${dealerId}`,
         { withCredentials: true } // مهم جداً
       );
       console.log("Item deleted successfully:", response.data);

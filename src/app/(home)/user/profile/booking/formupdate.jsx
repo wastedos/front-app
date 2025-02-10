@@ -49,7 +49,7 @@ export default function FormUpdate({ itemId }) {
     try {
       // إرسال البيانات إلى السيرفر لتحديث العنصر
       const response = await axios.put(
-        `http://localhost:5000/booking/update-booking/${itemId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/booking/update-booking/${itemId}`,
         { state: "idle" },
         {withCredentials: true,},
       );

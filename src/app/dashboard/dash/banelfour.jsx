@@ -10,7 +10,7 @@ const BanelFour = () => {
     const theme = useTheme();
 
     return (
-        <Grid size={{xs:12, lg:6, xl:4}}>
+        <Grid size={{xs:12}}>
            <Box sx={{ height:'30rem', width:'100%', borderRadius:'15px', overflow:'hidden', backgroundColor: theme.palette.colors.box}}>
                 <Box sx={{  }}>
                     

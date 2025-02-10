@@ -24,7 +24,7 @@ export default function Safe() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/transactions/safe'); // استدعاء API الخاص بعرض المحافظ
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/transactions/safe`); // استدعاء API الخاص بعرض المحافظ
                 
                 // تحويل البيانات إلى الشكل المطلوب
                 const formattedData = response.data.reduce((acc, safe) => {

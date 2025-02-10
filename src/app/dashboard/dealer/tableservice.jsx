@@ -33,7 +33,7 @@ export default function TableService({ itemId }) {
 
     // جلب البيانات الخاصة بـ typeService بناءً على itemId
     try {
-      const response = await fetch(`http://localhost:5000/dealer/read-dealer/${itemId}`);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/dealer/read-dealer/${itemId}`);
       if (response.ok) {
         const data = await response.json();
         // نعرض الـ typeService الخاص بالتاجر

@@ -38,9 +38,9 @@ export default function DealerFormEdit({ dealerId }) {
     try {
         // إرسال الطلب إلى API التحديث باستخدام الـ itemId وبيانات الـ formData
         const response = await axios.put(
-            `http://localhost:5000/dealer/edit-dealer/${dealerId}`,
-            formData, // البيانات التي ستُحدث (typeSafe و payed)
-            { withCredentials: true }
+          `${process.env.NEXT_PUBLIC_API_URL}/dealer/edit-dealer/${dealerId}`,
+          formData, // البيانات التي ستُحدث (typeSafe و payed)
+          { withCredentials: true }
         );
 
         console.log("Item updated successfully:", response.data);

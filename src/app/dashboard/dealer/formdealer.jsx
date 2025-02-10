@@ -66,7 +66,7 @@ export default function FormDealer() {
     const { dealerName, dealerPhone, service } = formData;
   
     try {
-      const response = await axios.post('http://localhost:5000/dealer/add-dealer', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/dealer/add-dealer`, {
         dealerName: dealerName,
         dealerPhone: dealerPhone, 
         service: service,

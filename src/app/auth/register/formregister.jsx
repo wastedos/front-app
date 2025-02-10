@@ -44,7 +44,7 @@ export default function FormRegister(){
 
     try {
       // ارسال البيتات لي api
-      const response = await axios.post('http://localhost:5000/auth/register', registerData);
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/register`, registerData);
       router.push('/auth/login'); //إعادة التوجيه إلى صفحة تسجيل الدخول بعد التسجيل بنجاح
     } catch (err) {
       setError('Error: ' + err.response.data.message);

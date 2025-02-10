@@ -136,7 +136,7 @@ export default function FormUpdate({ itemId }) {
     };
 
     try {
-      const response = await fetch(`http://localhost:5000/joborders/update-byid/${itemId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joborders/update-byid/${itemId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newOrder),
@@ -169,7 +169,7 @@ export default function FormUpdate({ itemId }) {
 
   useEffect(() => {
     if (itemId) {
-      fetch(`http://localhost:5000/joborders/job-byid/${itemId}`)
+      fetch(`${process.env.NEXT_PUBLIC_API_URL}/joborders/job-byid/${itemId}`)
         .then(response => {
           if (!response.ok) {
             throw new Error('Network response was not ok');

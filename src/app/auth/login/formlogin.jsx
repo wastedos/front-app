@@ -10,7 +10,6 @@ import Link from 'next/link';
 import axios from 'axios';
 
 
-
 export default function FormLogin(){
     //Handel language/Theme
     const theme = useTheme();
@@ -36,9 +35,9 @@ export default function FormLogin(){
         setError(''); // Reset error before submission
     
         try {
-          const response = await axios.post('http://localhost:5000/auth/login', {
-            phone,
-            password,
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+                phone,
+                password,
           });
             // Save token in localStorage or cookies
             localStorage.setItem('token', response.data.token);

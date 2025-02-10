@@ -23,7 +23,7 @@ export default function DealerInfo() {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const { data } = await axios.get('http://localhost:5000/dealer/total-report');
+          const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/dealer/total-report`);
           setData(data);
         } catch (err) {
           setError(err.response?.data?.error || 'فشل في جلب البيانات');

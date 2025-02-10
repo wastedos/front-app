@@ -19,7 +19,7 @@ export default function BanelThree() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/dashboard/warehousechart'); // رابط الـ API
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/dashboard/warehousechart`); // رابط الـ API
         const result = await response.json();
 
         if (response.ok) {

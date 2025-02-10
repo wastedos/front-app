@@ -36,7 +36,7 @@ export default function DealerFormPayed({ dealerId }) {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/dealer/payed-dealer/${dealerId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/dealer/payed-dealer/${dealerId}`,
         formData, // إرسال البيانات هنا ✅
         { withCredentials: true }
       );

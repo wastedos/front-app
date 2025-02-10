@@ -23,7 +23,7 @@ export default function TableTransfer() {
   React.useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await fetch("http://localhost:5000/transactions/read-transfer");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/read-transfer`);
         const data = await response.json();
         const updatedRows = data.map((item) => ({
           ...item,

@@ -20,7 +20,7 @@ const UserBookings = () => {
       try {
         // استدعاء API لجلب الحجوزات الخاصة بالمستخدم
         const token = localStorage.getItem("token"); // الحصول على التوكن
-        const response = await axios.get("http://localhost:5000/booking/user-bookings", {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/booking/user-bookings`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setBookings(response.data);

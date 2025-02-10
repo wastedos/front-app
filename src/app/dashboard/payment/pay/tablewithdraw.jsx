@@ -24,7 +24,7 @@ export default function TableWithdraw() {
   React.useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await fetch("http://localhost:5000/transactions/read-withdraw");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/transactions/read-withdraw`);
         const data = await response.json();
         const updatedRows = data.map((item) => ({
           ...item,

@@ -30,7 +30,7 @@ export default function TableReturnOutgo() {
   React.useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await fetch("http://localhost:5000/warehouse/read-returnoutgo");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse/read-returnoutgo`);
         const data = await response.json();
         const updatedRows = data.map((item) => ({
           ...item,

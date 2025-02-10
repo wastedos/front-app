@@ -38,7 +38,7 @@ export default function ServiceFormEdit({ dealerId, serviceId }) {
     try {
         // إرسال الطلب إلى API التحديث باستخدام الـ itemId وبيانات الـ formData
         const response = await axios.put(
-            `http://localhost:5000/dealer/edit-service/${dealerId}/${serviceId}`,
+            `${process.env.NEXT_PUBLIC_API_URL}/dealer/edit-service/${dealerId}/${serviceId}`,
             formData, // البيانات التي ستُحدث (typeSafe و payed)
             { withCredentials: true }
         );

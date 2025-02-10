@@ -16,7 +16,7 @@ export default function UserVisited() {
       }
 
       try {
-        const response = await fetch("http://localhost:5000/bills/user-bills", {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bills/user-bills`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

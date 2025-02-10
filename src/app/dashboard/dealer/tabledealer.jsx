@@ -24,7 +24,7 @@ export default function TableDealer() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:5000/dealer/read-dealer");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/dealer/read-dealer`);
         if (response.ok) {
           const data = await response.json();
           setOrders(data);

@@ -26,7 +26,7 @@ export default function TableBooking() {
   React.useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await fetch("http://localhost:5000/booking/read-booking");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/booking/read-booking`);
         const data = await response.json();
         setRows(data);
       } catch (error) {

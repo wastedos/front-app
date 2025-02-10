@@ -35,7 +35,7 @@ export default function BanelOne(){
     const [stats, setStats] = useState({ admin: 0, employee: 0, users: 0 });
 
     useEffect(() => {
-      axios.get('http://localhost:5000/users/stats')
+      axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/stats`)
         .then((response) => {
           setStats(response.data.data);
         })
@@ -48,7 +48,7 @@ export default function BanelOne(){
 
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/protected/user-info', {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/protected/user-info`, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`, // إرسال التوكن
           },
@@ -74,7 +74,7 @@ export default function BanelOne(){
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.get('http://localhost:5000/transactions/safe');
+            const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/transactions/safe`);
             const data = response.data;
       
             const walletData = {

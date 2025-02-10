@@ -33,7 +33,7 @@ export default function FormDelete() {
     }
 
     try {
-      const response = await axios.delete("http://localhost:5000/users/delete-user", {
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/users/delete-user`, {
         headers: {
           Authorization: `Bearer ${token}`, // إرسال التوكن
         },

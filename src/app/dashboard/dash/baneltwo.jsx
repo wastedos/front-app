@@ -17,7 +17,7 @@ export default function BanelTwo() {
   // جلب البيانات الخاصة بالسحوبات
   const fetchWithdrawData = async (month) => {
     try {
-      const response = await axios.get(`http://localhost:5000/transactions/withdraw-chart-data?month=${month}`);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/transactions/withdraw`);
       setWithdrawData(response.data.withdraws);
     } catch (error) {
       console.error("Error fetching withdraw data:", error);

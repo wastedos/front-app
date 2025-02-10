@@ -25,7 +25,7 @@ export default function FormDelete({ itemId }) {
 
     try {
       const response = await axios.delete(
-        `http://localhost:5000/warehouse/delete-income/${itemId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/warehouse/delete-income/${itemId}`,
         { withCredentials: true } // مهم جداً
       );
       console.log("Item deleted successfully:", response.data);

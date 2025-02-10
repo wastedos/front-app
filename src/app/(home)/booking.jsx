@@ -43,7 +43,7 @@ export default function Booking() {
       }
 
       const response = await axios.post(
-        'http://localhost:5000/booking/add-booking',
+        `${process.env.NEXT_PUBLIC_API_URL}/booking/add-booking`,
         registerData, // إرسال البيانات إلى الخادم
         {
           headers: {

@@ -23,7 +23,7 @@ export default function FormUpdate({ itemId }) {
     if (open) {
       const fetchData = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/users/get-user/${itemId}`);
+          const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/get-user/${itemId}`);
           setFormData({
             name: response.data.name || '',  // التأكد من ملء الحقول بالقيم الأصلية
             phone: response.data.phone || '',

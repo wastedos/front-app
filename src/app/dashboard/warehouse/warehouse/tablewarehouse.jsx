@@ -28,7 +28,7 @@ export default function TableWarehouse() {
   React.useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await fetch("http://localhost:5000/warehouse/read-product");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse/read-product`);
         const data = await response.json();
         setRows(data);
       } catch (error) {

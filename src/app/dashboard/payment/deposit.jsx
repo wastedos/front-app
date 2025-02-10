@@ -45,7 +45,7 @@ export default function Deposit() {
     const { typeSafe, amountDeposit, reasonDeposit } = formData;
   
     try {
-      const response = await axios.post('http://localhost:5000/transactions/deposit', {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/transactions/deposit`, {
         typeSafe: typeSafe,
         amountDeposit: amountDeposit, // المبلغ الذي تم إيداعه
         reasonDeposit: reasonDeposit, // السبب (اختياري)

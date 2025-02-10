@@ -28,7 +28,7 @@ export default function TableUser() {
   React.useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await fetch("http://localhost:5000/users/read-users");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/read-users`);
         const data = await response.json();
         setRows(data);
       } catch (error) {

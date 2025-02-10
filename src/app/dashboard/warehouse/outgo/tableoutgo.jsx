@@ -29,7 +29,7 @@ export default function TableOutgo() {
   React.useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await fetch("http://localhost:5000/warehouse/read-outgo");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse/read-outgo`);
         const data = await response.json();
         const updatedRows = data.map((item) => ({
           ...item,

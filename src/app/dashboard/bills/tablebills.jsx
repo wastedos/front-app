@@ -31,7 +31,7 @@ export default function TableBills() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch("http://localhost:5000/bills/read-bills");
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bills/read-bills`);
         if (response.ok) {
           const data = await response.json();
           setOrders(data);

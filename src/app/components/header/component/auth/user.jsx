@@ -54,7 +54,7 @@ export default function userMenu(){
     const [userInfo, setUserInfo] = useState(null);
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/protected/user-info', {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/protected/user-info`, {
           headers: {
             withCredentials: true,
             Authorization: `Bearer ${localStorage.getItem('token')}`, // إرسال التوكن

@@ -31,11 +31,12 @@ export default function FormReturn() {
       return updatedData;
     });
   };
+
   //Send Data to Database
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/warehouse/add-returnoutgo", {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse/add-returnoutgo`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,6 +44,7 @@ export default function FormReturn() {
         body: JSON.stringify(formData),
       });
       if (!response.ok) {
+        console.log("Form Data Before Sending:", formData);
         throw new Error("Failed to save item");
       }
       setFormData({    
