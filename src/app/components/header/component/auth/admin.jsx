@@ -21,6 +21,7 @@ import { Typography } from '@mui/material';
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import SignMenu from './sign';
 
 export default function AdminMenu(){
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -69,7 +70,7 @@ export default function AdminMenu(){
     }, []);
   
     if (!userInfo) {
-      return <Avatar sx={{ width: 30, height: 30, mr:1 }}/>
+      return <SignMenu/>
     }
     return(
         <React.Fragment>

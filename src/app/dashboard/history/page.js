@@ -10,7 +10,7 @@ export const metadata = {
 export default function History(){
     return(
         <Box component="main" sx={{minHeight:'100vh', width:'100%', p:{xs:1, md:5}, }}>
-        1
+            
         </Box>
     )
 }

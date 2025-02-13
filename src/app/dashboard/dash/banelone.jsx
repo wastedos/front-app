@@ -104,6 +104,26 @@ export default function BanelOne(){
         fetchData();
     }, []);
 
+
+    const [transactions, setTransactions] = useState({ deposits: [], withdraws: [] });
+
+    const transaction = async () => {
+        try {
+          const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/transactions/today-transactions`);
+          console.log("Response Data:", response.data); // ✅ تأكد إن البيانات واصلة
+          setTransactions(response.data); 
+        } catch (error) {
+          console.error('Error fetching transactions:', error);
+        }
+      };
+      
+      useEffect(() => {
+        transaction();
+      }, []);
+      
+    const totalIncome = transactions?.deposits?.reduce((sum, deposit) => sum + deposit.amountDeposit, 0) || 0;
+    const totalExpenses = transactions?.withdraws?.reduce((sum, withdraw) => sum + withdraw.amountWithdraw, 0) || 0;
+
     return (
         <Grid size={12} sx={{ display:'flex', justifyContent:'space-between', flexWrap:'wrap',}}>
             <Grid sx={{height:'12rem', width:{xs:'100%', xl:'50%'}, borderRadius:'15px', my:2, backgroundColor: theme.palette.colors.box}}>
@@ -119,7 +139,7 @@ export default function BanelOne(){
                                     الدخل اليوم
                                 </Typography>
                                 <Typography variant='h5' sx={{fontWeight:'600'}} color="success">
-                                    $20,500 <TrendingUpIcon/>
+                                    ${totalIncome.toLocaleString()} <TrendingUpIcon/>
                                 </Typography>
                             </Box>
                             <Divider orientation="vertical" flexItem sx={{mx:2}}/>
@@ -128,12 +148,12 @@ export default function BanelOne(){
                                     المصاريف اليومية
                                 </Typography>
                                 <Typography variant='h5' sx={{fontWeight:'600'}} color="error">
-                                    $1500 <TrendingDownIcon/>
+                                    ${totalExpenses.toLocaleString()} <TrendingDownIcon/>
                                 </Typography>
                             </Box>
                         </Box>
                     </Box>
-                    <Box sx={{width:'15rem'}}>
+                    <Box sx={{width:'15rem', display:{xs:'none', md:'flex'}}}>
                         <Box
                         component="img"
                         src="/image/dashboard/dashboard/welcome-bg.webp"
@@ -143,7 +163,7 @@ export default function BanelOne(){
                             height: '100%',
                             borderRadius:'20px'
                         }}
-                        alt="About us image"
+                        alt="Welcom image"
                         /> 
                     </Box>
                 </Box>

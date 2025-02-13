@@ -75,7 +75,7 @@ export default function DealerFormEdit({ dealerId }) {
         <DialogContent>
           <Box>
             <form onSubmit={updateItem}>
-              <Grid container spacing={2} sx={{ width: '30rem' }}>
+              <Grid container spacing={2}>
                 <Grid size={6}>
                   <TextField
                     name="dealerName"

@@ -4,7 +4,6 @@ import BanelOne from "./dash/banelone";
 import BanelTwo from "./dash/baneltwo";
 import BanelThree from "./dash/banelthree";
 import BanelFour from "./dash/banelfour";
-import BanelFive from "./dash/banelfive";
 
 
 //MetaData for Home page
@@ -14,7 +13,7 @@ export const metadata = {
 };
 export default function Dashboard() {
   return (
-    <Box component="main" sx={{minHeight:'100vh', width:'100%', p:5}}>
+    <Box component="main" sx={{minHeight:'100vh', width:'100%', p:{xs:1, md:3, lg:5}, }}>
       <Grid container spacing={3}>
       
         <BanelOne/>

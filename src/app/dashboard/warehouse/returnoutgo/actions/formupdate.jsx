@@ -69,7 +69,7 @@ export default function FormUpdate({ itemId }) {
   return (
     <React.Fragment>
       <Button variant="contained" onClick={handleClickOpen} startIcon={<EditIcon />} sx={{ textTransform: 'none', width:'100%'}}>
-        Edit
+      تعديل
       </Button>
       <Dialog
         open={open}
@@ -78,7 +78,7 @@ export default function FormUpdate({ itemId }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" align="center">
-          Update Form
+          تعديل مرتجع
         </DialogTitle>
         <DialogContent>
           <Box>
@@ -87,7 +87,7 @@ export default function FormUpdate({ itemId }) {
                 <Grid size={6}>
                   <TextField
                     name="quantity"
-                    label="Quantity"
+                    label="عدد"
                     type="number"
                     margin="dense"
                     fullWidth
@@ -99,7 +99,7 @@ export default function FormUpdate({ itemId }) {
                 <Grid size={6}>
                   <TextField
                     name="price"
-                    label="Price"
+                    label="سعر"
                     type="number"
                     margin="dense"
                     fullWidth
@@ -111,7 +111,7 @@ export default function FormUpdate({ itemId }) {
                 <Grid size={12}>
                   <TextField
                     name="total"
-                    label="Total"
+                    label="الاجمالي"
                     type="number"
                     margin="dense"
                     fullWidth
@@ -123,7 +123,7 @@ export default function FormUpdate({ itemId }) {
               </Grid>
               <DialogActions>
                 <Button onClick={handleClose} sx={{ textTransform: 'none' }} color="error">
-                  Cancel
+                  اغلاق
                 </Button>
                 <Button
                   type="submit"
@@ -131,7 +131,7 @@ export default function FormUpdate({ itemId }) {
                   variant="contained"
                   sx={{ textTransform: 'none' }}
                 >
-                  Update
+                  تعديل
                 </Button>
               </DialogActions>
             </form>

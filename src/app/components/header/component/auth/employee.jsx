@@ -20,6 +20,7 @@ import axios from 'axios'
 //themes && language
 import { useTheme } from '@emotion/react';
 import { Typography } from '@mui/material';
+import SignMenu from './sign';
 
 
 export default function EmployeeMenu(){
@@ -69,7 +70,7 @@ export default function EmployeeMenu(){
     }, []);
   
     if (!userInfo) {
-      return <Avatar>?</Avatar>
+      return <SignMenu/>
     }
 
     return(

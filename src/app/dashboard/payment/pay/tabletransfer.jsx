@@ -9,7 +9,7 @@ export default function TableTransfer() {
   const theme = useTheme();
   
   const columns = [
-    { id: 'createdAt', name: 'تاريخ التسجيل' },
+    { id: 'formatDate', name: 'تاريخ التسجيل' },
     { id: 'fromSafe', name: 'من' },
     { id: 'toSafe', name: 'الي' },
     { id: 'amountTransfer', name: 'المبلغ' },

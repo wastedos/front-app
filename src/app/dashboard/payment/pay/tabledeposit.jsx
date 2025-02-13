@@ -9,7 +9,7 @@ export default function TableDeposit() {
   const theme = useTheme();
   
   const columns = [
-    { id: 'createdAt', name: 'تاريخ التسجيل' },
+    { id: 'formatDate', name: 'تاريخ التسجيل' },
     { id: 'typeSafe', name: 'نوع الخزنة' },
     { id: 'amountDeposit', name: 'المبلغ' },
     { id: 'reasonDeposit', name: 'سبب' },

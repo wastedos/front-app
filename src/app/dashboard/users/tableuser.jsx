@@ -14,8 +14,8 @@ export default function TableUser() {
     { id: '_id', name: 'تعريف المستخدم' },
     { id: 'name', name: 'الاسم' },
     { id: 'phone', name: 'رقم الهاتف' },
-    { id: 'password', name: 'كلمة المرور' },
-    { id: 'birth', name: 'التاريخ' },
+    { id: 'pwd', name: 'كلمة المرور' },
+    { id: 'birth', name: 'ميلاد المستخدم' },
     { id: 'gender', name: 'الجنس' },
     { id: 'role', name: 'الوظيفة' },
     { id: 'date_create', name: 'تاريخ الانشاء' },
@@ -35,9 +35,8 @@ export default function TableUser() {
         console.error("Error fetching items:", error);
       }
     };
-
     fetchItems();
-  },);
+  },[]);
 
   // Filtered rows based on search
   const filteredRows = rows.filter((row) => 

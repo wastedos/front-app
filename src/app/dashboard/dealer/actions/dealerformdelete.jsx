@@ -63,7 +63,7 @@ export default function DealerFormDelete({ dealerId }) {
         <DialogContent>
           <Box>
             <form onSubmit={deleteItem}>
-              <Grid container spacing={2} sx={{ width: '30rem' }}>
+              <Grid container spacing={2}>
                 <Grid size={12}>
                   <TextField
                     name="delete"

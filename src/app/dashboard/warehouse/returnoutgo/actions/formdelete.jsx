@@ -45,7 +45,7 @@ export default function FormDelete({ itemId }) {
   return (
     <React.Fragment>
       <Button variant="contained" onClick={handleClickOpen} startIcon={<DeleteIcon />} color="error" sx={{ textTransform: 'none' }}>
-        Delete
+        حذف
       </Button>
       <Dialog
         open={open}
@@ -54,16 +54,16 @@ export default function FormDelete({ itemId }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" align="center">
-          Delete Item
+          حذف مرتجع
         </DialogTitle>
         <DialogContent>
           <Box>
             <form onSubmit={deleteItem}>
-              <Grid container spacing={2} sx={{ width: '30rem' }}>
+              <Grid container spacing={2} sx={{ width:{xs:'auto', md:'30rem'}, }}>
                 <Grid size={12}>
                   <TextField
                     name="delete"
-                    label="Reason of Delete"
+                    label="سبب الحذف"
                     type="text"
                     margin="dense"
                     fullWidth
@@ -74,7 +74,7 @@ export default function FormDelete({ itemId }) {
               </Grid>
               <DialogActions>
                 <Button onClick={handleClose} sx={{ textTransform: 'none' }}>
-                  Cancel
+                  اغلاق
                 </Button>
                 <Button
                     onClick={handleClose}
@@ -84,7 +84,7 @@ export default function FormDelete({ itemId }) {
                     sx={{ textTransform: 'none' }}
                     color="error"
                 >
-                  Delete
+                  حذف
                 </Button>
               </DialogActions>
             </form>

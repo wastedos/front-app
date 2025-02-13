@@ -9,25 +9,29 @@ import { useTheme } from '@mui/material/styles';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
 export default function BanelTwo() {
-
   const theme = useTheme();
   const [withdrawData, setWithdrawData] = useState([]);
+  const [depositData, setDepositData] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState("");
 
-  // جلب البيانات الخاصة بالسحوبات
-  const fetchWithdrawData = async (month) => {
+  const fetchTransactionData = async (month) => {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/transactions/withdraw`);
+      let url = `${process.env.NEXT_PUBLIC_API_URL}/transactions/monthly-transactions`;
+      if (month) {
+        const currentYear = new Date().getFullYear();
+        url += `?month=${month}&year=${currentYear}`;
+      }
+
+      const response = await axios.get(url);
       setWithdrawData(response.data.withdraws);
+      setDepositData(response.data.deposits);
     } catch (error) {
-      console.error("Error fetching withdraw data:", error);
+      console.error("Error fetching transaction data:", error);
     }
   };
 
   useEffect(() => {
-    if (selectedMonth) {
-      fetchWithdrawData(selectedMonth);
-    }
+    fetchTransactionData(selectedMonth);
   }, [selectedMonth]);
 
   return (
@@ -36,24 +40,24 @@ export default function BanelTwo() {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', p: 3 }}>
           <Box>
             <FormControl sx={{ minWidth: 120 }} size="small">
-              <InputLabel id="demo-select-small-label">شهر</InputLabel>
+              <InputLabel id="month-select-label">شهر</InputLabel>
               <Select
-                labelId="demo-select-small-label"
-                id="demo-select-small"
+                labelId="month-select-label"
+                id="month-select"
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(e.target.value)}
                 label="شهر"
               >
-                {/* قائمة الشهور */}
-                <MenuItem value="1">يناير</MenuItem>
-                <MenuItem value="2">فبراير</MenuItem>
-                <MenuItem value="3">مارس</MenuItem>
-                <MenuItem value="4">ابريل</MenuItem>
-                <MenuItem value="5">مايو</MenuItem>
-                <MenuItem value="6">يونيو</MenuItem>
-                <MenuItem value="7">يوليو</MenuItem>
-                <MenuItem value="8">اغسطس</MenuItem>
-                <MenuItem value="9">سبتمبر</MenuItem>
+                <MenuItem value=""><em>كل الأشهر</em></MenuItem>
+                <MenuItem value="01">يناير</MenuItem>
+                <MenuItem value="02">فبراير</MenuItem>
+                <MenuItem value="03">مارس</MenuItem>
+                <MenuItem value="04">ابريل</MenuItem>
+                <MenuItem value="05">مايو</MenuItem>
+                <MenuItem value="06">يونيو</MenuItem>
+                <MenuItem value="07">يوليو</MenuItem>
+                <MenuItem value="08">اغسطس</MenuItem>
+                <MenuItem value="09">سبتمبر</MenuItem>
                 <MenuItem value="10">اكتوبر</MenuItem>
                 <MenuItem value="11">نوفمبر</MenuItem>
                 <MenuItem value="12">ديسمبر</MenuItem>
@@ -68,17 +72,21 @@ export default function BanelTwo() {
         </Box>
         <Divider sx={{ mb: 10 }} />
 
-        {/* BarChart لعرض السحوبات فقط */}
         <BarChart
           sx={{ direction: 'rtl' }}
-          series={withdrawData.map(item => ({
-            data: [item.totalWithdraw],
-            label: item._id // نوع الخزنة
-          }))}
+          series={[
+            {
+              data: depositData.map(item => item.totalDeposit),
+              color: "green"
+            },
+            {
+              data: withdrawData.map(item => item.totalWithdraw),
+              color: "red"
+            }
+          ]}
           height={290}
-          xAxis={[{ data: ['السحب'], scaleType: 'band' }]}
+          xAxis={[{ data: withdrawData.map(item => item._id), scaleType: 'band' }]}
           margin={{ top: 10, bottom: 30, left: 50, right: 10 }}
-          slotProps={{ legend: { hidden: true } }}
         />
       </Box>
     </Grid>

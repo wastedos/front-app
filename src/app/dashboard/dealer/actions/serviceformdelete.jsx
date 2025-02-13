@@ -63,7 +63,7 @@ export default function ServiceFormDelete({ dealerId, serviceId }) {
         <DialogContent>
           <Box>
             <form onSubmit={deleteItem}>
-              <Grid container spacing={2} sx={{ width: '30rem' }}>
+              <Grid container spacing={2}  sx={{ width:{xs:'auto', md:'30rem'}, }}>
                 <Grid size={12}>
                   <TextField
                     name="delete"

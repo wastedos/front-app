@@ -62,7 +62,7 @@ export default function Sidebar({ mobileOpen, onDrawerToggle, onTransitionEnd })
   //Array
   const Array1 = [
     {"title":"صفحة الورشة", "icon":<DashboardIcon/>, "path":"/dashboard"},
-    //{"title":"السجل", "icon":<HistoryIcon/>, "path":"/dashboard/history"},
+    {"title":"السجل", "icon":<HistoryIcon/>, "path":"/dashboard/history"},
   ];
 
   const Array2 = [

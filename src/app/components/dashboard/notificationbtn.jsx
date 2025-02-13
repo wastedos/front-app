@@ -61,8 +61,8 @@ export default function Notificationbtn(){
                 filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
                 mt: 1.5,
                 mr: 8.5,
-                width:'22rem',
-                maxHeight:'40rem',
+                width:'20rem',
+                maxHeight:'30rem',
                 '& .MuiAvatar-root': {
                     width: 32,
                     height: 32,
@@ -96,8 +96,8 @@ export default function Notificationbtn(){
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         > 
-            <Box sx={{display:'flex', justifyContent:'space-between'}}>
-                <Button color='error'  onClick={handleClearNotifications} sx={{  textTransform:'none'}}>
+            <Box sx={{display:'flex', justifyContent:'space-between', px:2}}>
+                <Button color='error' onClick={handleClearNotifications} sx={{  textTransform:'none'}}>
                     حزف
                 </Button>
                 <IconButton onClick={handleClose}>

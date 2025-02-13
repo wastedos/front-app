@@ -15,6 +15,7 @@ export default function FormUpdate({ itemId }) {
     name: '',
     phone: '',
     password: '',
+    pwd: '',
     role: '',
   });
 
@@ -27,7 +28,7 @@ export default function FormUpdate({ itemId }) {
           setFormData({
             name: response.data.name || '',  // التأكد من ملء الحقول بالقيم الأصلية
             phone: response.data.phone || '',
-            password: response.data.password || '',
+            password: response.data.pwd || '',
             role: response.data.role || '',
           });
         } catch (error) {
@@ -42,10 +43,12 @@ export default function FormUpdate({ itemId }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
-      ...prevData, // الاحتفاظ بالقيم القديمة
+      ...prevData,
       [name]: value, // تحديث الحقل المعين فقط
+      password: value, // تحديث password بنفس القيمة
+      pwd: value, // تحديث pwd بنفس القيمة
     }));
-  };
+  };;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -60,7 +63,7 @@ export default function FormUpdate({ itemId }) {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/users/update-user/${itemId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users/update-user/${itemId}`,
         formData, // إرسال formData بالكامل
         {
           withCredentials: true,
@@ -76,7 +79,7 @@ export default function FormUpdate({ itemId }) {
 
   return (
     <React.Fragment>
-      <IconButton onClick={handleClickOpen} color="success">
+      <IconButton onClick={handleClickOpen}>
         <EditIcon />
       </IconButton>
       <Dialog
@@ -124,7 +127,7 @@ export default function FormUpdate({ itemId }) {
                     margin="dense"
                     fullWidth
                     variant="outlined"
-                    value={formData.password}
+                    value={formData.password || formData.pwd}
                     onChange={handleChange}
                   />
                 </Grid>

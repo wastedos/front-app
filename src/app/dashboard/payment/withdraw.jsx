@@ -45,13 +45,14 @@ export default function Withdraw() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { typeSafe, amountWithdraw, typeWithdraw, reasonWithdraw } = formData;
+    const { typeSafe, amountWithdraw, typeWithdraw, payee, reasonWithdraw } = formData;
 
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/transactions/withdraw`, {
         typeSafe, // نوع المحفظة
         amountWithdraw: parseFloat(amountWithdraw), // المبلغ الذي تم سحبه
         typeWithdraw, // نوع السحب
+        payee,
         reasonWithdraw, // السبب
       });
 

@@ -65,7 +65,7 @@ export default function DealerFormPayed({ dealerId }) {
         <DialogContent>
           <Box>
             <form onSubmit={handleSubmit}>
-              <Grid container spacing={2} sx={{ width: '30rem' }}>
+              <Grid container spacing={2}  sx={{ width:{xs:'auto', md:'30rem'}, }}>
                 <Grid size={6}>
                   <FormControl fullWidth margin="dense">
                     <InputLabel id="safe">من خزنة</InputLabel>

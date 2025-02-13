@@ -9,7 +9,7 @@ export default function TableWithdraw() {
   const theme = useTheme();
   
   const columns = [
-    { id: 'createdAt', name: 'تاريخ التسجيل' },
+    { id: 'formatDate', name: 'تاريخ التسجيل' },
     { id: 'typeSafe', name: 'نوع الخزنة' },
     { id: 'amountWithdraw', name: 'المبلغ' },
     { id: 'typeWithdraw', name: 'نوع السحب' },

@@ -23,6 +23,7 @@ const UserSecurity = () => {
     name: "",
     phone: "",
     password: "",
+    pwd: "",
     gender: "",
     birth: "",
   });
@@ -30,11 +31,14 @@ const UserSecurity = () => {
   const [message, setMessage] = React.useState(null); // لحفظ رسالة الخطأ أو النجاح
 
   const handleChange = (e) => {
-    if (e?.target) {
-      const { name, value } = e.target;
-      setFormData((prevData) => ({ ...prevData, [name]: value }));
-    }
-  };
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value, // تحديث الحقل المعين فقط
+      password: value, // تحديث password بنفس القيمة
+      pwd: value, // تحديث pwd بنفس القيمة
+    }));
+  };;
 
   const handleDateChange = (newDate) => {
     if (newDate) {
@@ -136,7 +140,7 @@ const UserSecurity = () => {
                 margin="dense"
                 fullWidth
                 variant="outlined"
-                value={formData.password}
+                value={formData.password || formData.pwd}
                 onChange={handleChange}
               />
             </Grid>
@@ -156,7 +160,7 @@ const UserSecurity = () => {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid size={{xs:12, md:5, lg:3}} sx={{my:1, width:'100%'}}>
+            <Grid size={{xs:6, md:5, lg:3}} sx={{my:1, width:'100%'}}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   value={formData.birth ? dayjs(formData.birth) : null}
