@@ -49,6 +49,7 @@ export default function UserVisited() {
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>لون السيارة</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>كيلو مترات</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>اعمال الورشة</TableCell>
+                <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>اعمال خارجية</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>قطع الغيار</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>نثريات</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>طريقة الدفع</TableCell>
@@ -68,12 +69,30 @@ export default function UserVisited() {
                   <TableCell align="center">{order.carKm}</TableCell>
                   <TableCell>
                     <TableBody>
-                      {[...(order.jobs || []), ...(order.outjob || [])].map((jobs, partIndex) => (
+                      {order.jobs.map((jobs, partIndex) => (
                         <TableRow key={partIndex}>
                           <TableCell align="center">{jobs.jobName}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
+                  </TableCell>
+                  <TableCell>
+                    <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center">نوع</TableCell>
+                        <TableCell align="center">السعر</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {order.outjob.map((jobs, partIndex) => (
+                        <TableRow key={partIndex}>
+                          <TableCell align="center">{jobs.jobName}</TableCell>
+                          <TableCell align="center">{jobs.jobPriceSell}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                    </Table>
                   </TableCell>
                   <TableCell align="center">
                     <Table>
@@ -115,12 +134,7 @@ export default function UserVisited() {
                     </Table>
                   </TableCell>
                   <TableCell align="center">{order.payment}</TableCell>
-                  <TableCell align="center">
-                    {Number(order.invoice) +
-                      (Array.isArray(order.outjob)
-                        ? order.outjob.reduce((total, job) => total + Number(job.jobPriceSell || 0), 0)
-                        : 0)}
-                  </TableCell>
+                  <TableCell align="center">{order.invoice}</TableCell>
                   <TableCell align="center">{order.discount}</TableCell>
                   <TableCell align="center">{order.total}</TableCell>
                 </TableRow>

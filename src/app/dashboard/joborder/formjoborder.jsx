@@ -431,7 +431,6 @@ export default function FormJobOrder() {
                     </Grid>
                     <Grid size={6}>
                       <TextField
-                        required
                         name="pricebuy"
                         label="سعر الشراء"
                         type="number"

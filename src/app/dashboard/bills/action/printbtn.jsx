@@ -114,17 +114,23 @@ export default function Print({ itemId }) {
                 `
                   )
                   .join("")}
+
+                <!-- أعمال الورشة -->
+                <tr class="section-title">
+                  <td colspan="5">أعمال خارجية</td>
+                </tr>
                 ${itemData.outjob
                   .map(
                     (outjob) => `
                   <tr>
                     <td colspan="2">${outjob.jobName}</td>
                     <td>-</td>
-                    <td>-</td>
+                    <td colspan="2">${outjob.jobPriceSell}</td>
                   </tr>
                 `
                   )
                   .join("")}
+
                 <!-- نثريات -->
                 <tr class="section-title">
                   <td colspan="5">نثريات</td>

@@ -69,9 +69,6 @@ export default function TableWithdraw() {
                       {column.name}
                     </TableCell>
                   ))}
-                    <TableCell  align="center"  sx={{backgroundColor: 'black', color: 'white', fontWeight:'700'}}>
-                        تعديلات 
-                    </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -82,9 +79,6 @@ export default function TableWithdraw() {
                         {row[column.id]}
                       </TableCell>
                     ))}
-                    <TableCell align="center">
-
-                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

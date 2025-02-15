@@ -12,11 +12,13 @@ import {
   Paper,
   Typography,
   TextField,
+  useTheme,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Billbtn from "./action/billbtn";
 
 export default function TableBills() {
+  const theme = useTheme();
   const [orders, setOrders] = useState([]); // حالة لتخزين البيانات
   const [searchTerm, setSearchTerm] = useState(""); // حالة البحث
 
@@ -48,12 +50,13 @@ export default function TableBills() {
 
   return (
     <Grid container spacing={2}>
-      <Box sx={{ width: "100%", p: 2 }}>
+      <Box sx={{ width: "100%", backgroundColor: theme.palette.colors.box, borderRadius:'15px', overflow:'hidden', p:1 }}>
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            mt:1
           }}
         >
           <TextField
@@ -157,8 +160,8 @@ export default function TableBills() {
                         <TableRow>
                           <TableCell align="center">نوع</TableCell>
                           <TableCell align="center">المكان</TableCell>
-                          <TableCell align="center">سعر البيع</TableCell>
                           <TableCell align="center">سعر الشراء</TableCell>
+                          <TableCell align="center">سعر البيع</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>

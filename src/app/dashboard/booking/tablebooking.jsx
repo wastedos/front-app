@@ -46,7 +46,7 @@ export default function TableBooking() {
 
   return (
     <Grid size={12}>
-      <Box sx={{ overflow: 'hidden', backgroundColor: theme.palette.colors.box }}>
+      <Box sx={{ overflow: 'hidden', backgroundColor: theme.palette.colors.box, borderRadius:'15px' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2 }}>
           <TextField
             label="بحث"

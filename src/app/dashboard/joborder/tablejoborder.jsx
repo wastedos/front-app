@@ -1,11 +1,12 @@
 "use client"
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from "@mui/material";
+import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, useTheme } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import FormJobOrder from './formjoborder';
 import JobOrderbtn from './action/joborderbtn';
 
 export default function TableJobOrder() {
+  const theme = useTheme();
   const [orders, setOrders] = useState([]); // حالة لتخزين البيانات
 
   // تحميل البيانات عند تحميل الصفحة
@@ -29,9 +30,9 @@ export default function TableJobOrder() {
 
   return (
     <Grid container spacing={2}>
-      <Box sx={{ width: "100%", p: 2 }}>
-        <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between'}}>
-          <Typography variant="h5" sx={{ mb: 2 }}>قائمة الأوامر</Typography>
+      <Box sx={{ width: "100%", backgroundColor: theme.palette.colors.box, borderRadius:'15px', overflow:'hidden', p:1 }}>
+        <Box sx={{display:'flex', alignItems:'center', justifyContent:'space-between', mt:1}}>
+          <Typography variant="h5">قائمة الأوامر</Typography>
           <FormJobOrder/>
         </Box>
  

@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 
 
@@ -10,7 +10,7 @@ export const metadata = {
 export default function History(){
     return(
         <Box component="main" sx={{minHeight:'100vh', width:'100%', p:{xs:1, md:5}, }}>
-            
+            <Typography align="center" variant="h4">السجل</Typography>
         </Box>
     )
 }

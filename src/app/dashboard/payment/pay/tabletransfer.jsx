@@ -68,9 +68,6 @@ export default function TableTransfer() {
                       {column.name}
                     </TableCell>
                   ))}
-                    <TableCell  align="center"  sx={{backgroundColor: 'black', color: 'white', fontWeight:'700'}}>
-                        تعديلات 
-                    </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -81,9 +78,6 @@ export default function TableTransfer() {
                         {row[column.id]}
                       </TableCell>
                     ))}
-                    <TableCell align="center">
-
-                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
