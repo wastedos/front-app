@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Billbtn from "./action/billbtn";
+import Showimage from "./action/showimage";
 
 export default function TableBills() {
   const theme = useTheme();
@@ -100,6 +101,7 @@ export default function TableBills() {
                   <TableCell align="center">{order.carColor}</TableCell>
                   <TableCell align="center">{order.carKm}</TableCell>
                   <TableCell>
+                    <Table>
                     <TableBody>
                       {order.jobs?.map((job, partIndex) => (
                         <TableRow key={partIndex}>
@@ -107,6 +109,7 @@ export default function TableBills() {
                         </TableRow>
                       ))}
                     </TableBody>
+                    </Table>
                   </TableCell>
                   <TableCell align="center">
                     <Table>
@@ -139,6 +142,7 @@ export default function TableBills() {
                           <TableCell align="center">العدد</TableCell>
                           <TableCell align="center">سعر الشراء</TableCell>
                           <TableCell align="center">سعر البيع</TableCell>
+                          <TableCell align="center">الصور</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -149,6 +153,7 @@ export default function TableBills() {
                             <TableCell align="center">{newPart.quantity}</TableCell>
                             <TableCell align="center">{newPart.pricebuy}</TableCell>
                             <TableCell align="center">{newPart.pricesell}</TableCell>
+                            <TableCell align="center"> <Showimage image={`http://localhost:5000/${newPart.imageName}`} /> </TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -162,6 +167,7 @@ export default function TableBills() {
                           <TableCell align="center">المكان</TableCell>
                           <TableCell align="center">سعر الشراء</TableCell>
                           <TableCell align="center">سعر البيع</TableCell>
+                          <TableCell align="center">الصور</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -170,7 +176,8 @@ export default function TableBills() {
                             <TableCell align="center">{outjob.jobName}</TableCell>
                             <TableCell align="center">{outjob.dealerName}</TableCell>
                             <TableCell align="center">{outjob.jobPriceBuy}</TableCell>
-                            <TableCell align="center">{outjob.jobPriceSell}</TableCell>                          
+                            <TableCell align="center">{outjob.jobPriceSell}</TableCell>
+                            <TableCell align="center"> <Showimage image={`http://localhost:5000/${outjob.imageName}`} /> </TableCell>                         
                           </TableRow>
                         ))}
                       </TableBody>

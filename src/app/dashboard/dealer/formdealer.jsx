@@ -196,7 +196,7 @@ export default function FormDealer() {
                         onChange={(e) => handleChangetypeService(index, e)}
                       />
                     </Grid>
-                    <Grid size={6} sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Grid size={4}>
                       <TextField
                         name="servicePriceSell"
                         label="سعر البيع"
@@ -208,16 +208,18 @@ export default function FormDealer() {
                         value={typeService.servicePriceSell}
                         onChange={(e) => handleChangetypeService(index, e)}
                       />
+                    </Grid>
+                    <Grid size={2}>
                       <Button
+                        fullWidth
                         onClick={() => handleRemovetypeService(index)}
                         color="error"
                         variant='outlined'
-                        sx={{ ml: 2 }}
+                        sx={{mt:1.3}}
                       >
                         حذف
                       </Button>
                     </Grid>
-
                     </Grid>
                   </React.Fragment>
                 ))}

@@ -10,6 +10,7 @@ import Slide from '@mui/material/Slide';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Box, FormControl, InputLabel, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import Servicebtn from './actions/servicebtn';
+import Showimage from './actions/showimage';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -130,6 +131,9 @@ export default function TableService({ itemId }) {
                     رقم الفاتورة
                   </TableCell>
                   <TableCell align="center" sx={{ fontWeight: "600", fontSize: "1rem" }}>
+                    الصور
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontWeight: "600", fontSize: "1rem" }}>
                     التعديلات
                   </TableCell>
                 </TableRow>
@@ -143,6 +147,7 @@ export default function TableService({ itemId }) {
                     <TableCell align="center">{service.servicePriceBuy}</TableCell>
                     <TableCell align="center">{service.servicePriceSell}</TableCell>
                     <TableCell align="center">{service.billNumber}</TableCell>
+                    <TableCell align="center"> <Showimage image={`http://localhost:5000/${service.imageName}`} /> </TableCell>
                     <TableCell align="center"><Servicebtn dealerId={itemId} serviceId={service._id}/></TableCell>
                   </TableRow>
                 ))}

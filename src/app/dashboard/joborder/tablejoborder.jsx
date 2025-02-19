@@ -4,6 +4,7 @@ import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, Ta
 import Grid from '@mui/material/Grid2';
 import FormJobOrder from './formjoborder';
 import JobOrderbtn from './action/joborderbtn';
+import Showimage from './action/showimage';
 
 export default function TableJobOrder() {
   const theme = useTheme();
@@ -68,8 +69,8 @@ export default function TableJobOrder() {
                     <TableCell align="center">{order.carModel}</TableCell>
                     <TableCell align="center">{order.carColor}</TableCell>
                     <TableCell align="center">{order.carKm}</TableCell>
-
                     <TableCell>
+                      <Table>
                       <TableBody>
                         {order.jobs.map((jobs, partIndex) => (
                           <TableRow key={partIndex}>
@@ -77,8 +78,8 @@ export default function TableJobOrder() {
                           </TableRow>
                         ))}
                       </TableBody>
+                      </Table>
                     </TableCell>
-
                     <TableCell>
                       <Table>
                         <TableHead>
@@ -110,6 +111,7 @@ export default function TableJobOrder() {
                             <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>العدد</TableCell>
                             <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>سعر الشراء</TableCell>
                             <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>سعر البيع</TableCell>
+                            <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الصور</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
@@ -120,6 +122,7 @@ export default function TableJobOrder() {
                               <TableCell align="center">{newPart.quantity}</TableCell>
                               <TableCell align="center">{newPart.pricebuy}</TableCell>
                               <TableCell align="center">{newPart.pricesell}</TableCell>
+                              <TableCell align="center"> <Showimage image={`http://localhost:5000/${newPart.imageName}`} /> </TableCell>
                             </TableRow>
                           ))}
                         </TableBody>
@@ -133,6 +136,7 @@ export default function TableJobOrder() {
                             <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>النوع</TableCell>
                             <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>السعر الشراء</TableCell>
                             <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>السعر البيع</TableCell>
+                            <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الصور</TableCell>
                           </TableRow>
                         </TableHead>
                         <TableBody>
@@ -142,6 +146,7 @@ export default function TableJobOrder() {
                               <TableCell align="center">{outjob.jobName}</TableCell>
                               <TableCell align="center">{outjob.jobPriceBuy}</TableCell>
                               <TableCell align="center">{outjob.jobPriceSell}</TableCell>
+                              <TableCell align="center"> <Showimage image={`http://localhost:5000/${outjob.imageName}`} /> </TableCell>
                             </TableRow>
                           ))}
                         </TableBody>

@@ -6,20 +6,26 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import EditIcon from '@mui/icons-material/Edit';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Box, FormControl, IconButton, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
+import { styled } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
 import { useEffect } from 'react';
+import axios from 'axios';
 
 export default function FormUpdate({ itemId }) {
   const theme = useTheme();
 
   const [open, setOpen] = React.useState(false);
+  const [dealers, setDealers] = React.useState([]); // قائمة التجار
   const [formData, setFormData] = React.useState({
     clientName: "",
     clientPhone: "",
     carModel: "",
     carColor: "",
+    carKm: "",
+    chassis: "",
     invoice:"",
     discount:"",
     payment:"",
@@ -37,6 +43,23 @@ export default function FormUpdate({ itemId }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  // ********************* Handle jobs *********************
+  const handlejobsChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedJobs = [...jobs];
+    updatedJobs[index][name] = value;
+    setJobs(updatedJobs);
+  };
+
+  const handleRemovejobs = (index) => {
+    const updatedJobs = jobs.filter((_, i) => i !== index);
+    setJobs(updatedJobs);
+  };
+
+  const handleAddjob = () => {
+    setJobs([...jobs, { jobName:"",}]);
   };
 
   // ********************* Handle part *********************
@@ -70,24 +93,18 @@ export default function FormUpdate({ itemId }) {
   };
 
   const handleAddNewPart = () => {
-    setNewParts([...newparts, { category: "", dealerName: "", quantity: "", pricesell: "", pricebuy: "" }]);
+    setNewParts([...newparts, { category: "", dealerName: "", quantity: "", pricesell: "", pricebuy: "", newpartsImage: undefined }]);
   };
 
-  // ********************* Handle jobs *********************
-  const handlejobsChange = (index, e) => {
-    const { name, value } = e.target;
-    const updatedJobs = [...jobs];
-    updatedJobs[index][name] = value;
-    setJobs(updatedJobs);
-  };
-
-  const handleRemovejobs = (index) => {
-    const updatedJobs = jobs.filter((_, i) => i !== index);
-    setJobs(updatedJobs);
-  };
-
-  const handleAddjob = () => {
-    setJobs([...jobs, { jobName:"",}]);
+  const handleUploadnewparts = (index, event) => {
+    const { files } = event.target;
+    const updatedNewParts = [...newparts];
+  
+    if (files.length > 0) {
+      const file = files[0];
+      updatedNewParts[index].newpartsImage = file;
+      setNewParts(updatedNewParts);
+    }
   };
 
   // ********************* Handle Outjob *********************
@@ -104,7 +121,18 @@ export default function FormUpdate({ itemId }) {
   };
 
   const handleAddOutjob = () => {
-    setOutJobs([...outjob, { jobName:"", dealerName:"", jobPriceBuy:"", jobPriceSell:"" }]);
+    setOutJobs([...outjob, { jobName: "", dealerName: "", jobPriceBuy: "", jobPriceSell: "", outjobImage: undefined }]);
+  };
+
+  const handleUploadoutjob = (index, event) => {
+    const { files } = event.target;
+    const updatedOutjob = [...outjob];
+  
+    if (files.length > 0) {
+      const file = files[0];
+      updatedOutjob[index].outjobImage = file;
+      setOutJobs(updatedOutjob);
+    }
   };
 
   // ********************* Handle Other *********************
@@ -124,40 +152,68 @@ export default function FormUpdate({ itemId }) {
     setOther([...other, { otherName: "", otherPrice: "" }]);
   };
 
+
+  //to get dealer name from DB
+  React.useEffect(() => {
+    const fetchDealers = async () => {
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/dealer/read-dealer`);
+        setDealers(response.data);
+      } catch (error) {
+        console.error("Error fetching dealers:", error.message);
+      }
+    };
+    fetchDealers();
+  }, []);
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    const formDataToSend = new FormData();
+  
+    // Add client data
+    formDataToSend.append("clientName", formData.clientName);
+    formDataToSend.append("clientPhone", formData.clientPhone);
+    formDataToSend.append("carModel", formData.carModel);
+    formDataToSend.append("carColor", formData.carColor);
+    formDataToSend.append("carKm", formData.carKm);
+    formDataToSend.append("chassis", formData.chassis);
+    formDataToSend.append("invoice", formData.invoice || "");
+    formDataToSend.append("discount", formData.discount || "");
+    formDataToSend.append("payment", formData.payment || "");
+  
+    // Add data as JSON
+    formDataToSend.append("jobs", JSON.stringify(jobs));
+    formDataToSend.append("parts", JSON.stringify(parts));
+    formDataToSend.append("outjob", JSON.stringify(outjob));
+    formDataToSend.append("other", JSON.stringify(other));
+    formDataToSend.append("newparts", JSON.stringify(newparts));
+  
+    // Add newparts images
+    newparts.forEach((part) => {
+      if (part.newpartsImage) {
+        formDataToSend.append("newpartsImage", part.newpartsImage);
+      }
+    });
 
-    const newOrder = {
-      ...formData,
-      parts,
-      newparts,
-      outjob,
-      other,
-    };
+    // Add outjob images
+    outjob.forEach((out) => {
+      if (out.outjobImage) {
+        formDataToSend.append("outjobImage", out.outjobImage);
+      }
+    });
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joborders/update-byid/${itemId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newOrder),
+        body: formDataToSend,
       });
 
       if (response.ok) {
         console.log('Job order updated successfully');
-        setFormData({
-          clientName: "",
-          clientPhone: "",
-          carModel: "",
-          carColor: "",
-          invoice: "",
-          discount: "",
-          payment:"",
-        });
-        setParts([]);
-        setNewParts([]);
-        setJobs([]);
-        setOutJobs([]);
-        setOther([]);
+
         handleClose();
       } else {
         console.error('Failed to update job order');
@@ -183,6 +239,8 @@ export default function FormUpdate({ itemId }) {
             clientPhone: data.clientPhone || "",
             carModel: data.carModel || "",
             carColor: data.carColor || "",
+            carKm: data.carKm || "",
+            chassis: data.chassis || "",
             invoice: data.invoice || "",
             discount: data.discount || "",
             payment: data.payment || "",
@@ -198,6 +256,19 @@ export default function FormUpdate({ itemId }) {
   }, [itemId]); // تأكد من إضافة itemId في الـ dependency array
   
 
+  // for upload image
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
+  
   return (
     <React.Fragment>
       <IconButton variant="contained" onClick={handleClickOpen} sx={{ mx: 1 }}>
@@ -262,6 +333,31 @@ export default function FormUpdate({ itemId }) {
                     onChange={handleChange}
                   />
                 </Grid>
+                <Grid size={6}>
+                  <TextField
+                    required
+                    name="carKm"
+                    label="عدد الكيلومترات"
+                    type="text"
+                    margin="dense"
+                    fullWidth
+                    variant="outlined"
+                    value={formData.carKm || ""}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid size={6}>
+                  <TextField
+                    name="chassis"
+                    label="رقم الشاسية"
+                    type="text"
+                    margin="dense"
+                    fullWidth
+                    variant="outlined"
+                    value={formData.chassis || ""}
+                    onChange={handleChange}
+                  />
+                </Grid>
                 <Grid size={3}>
                   <Button onClick={handleAddPart} variant="outlined" color='success' sx={{ width:'100%' }}>
                      قطعة جديدة
@@ -284,34 +380,37 @@ export default function FormUpdate({ itemId }) {
                   </Button>
                 </Grid>
                 <Grid size={12}>
-                  <Button onClick={handleAddjob} variant="outlined"  sx={{ width:'100%' }}>
+                  <Button onClick={handleAddjob} variant="outlined" color='success' sx={{ width:'100%' }}>
                     اعمال الورشة 
                   </Button>
                 </Grid>
                 {jobs.map((jobs, index) => (
                   <React.Fragment key={index}>
-                    <Grid container size={12} sx={{ p:1, backgroundColor: theme.palette.colors.box}}>
-                    <Grid size={12} sx={{ display: 'flex', alignItems: 'center' }}>
-                      <TextField
-                        name="jobName"
-                        label="الخدمة"
-                        type="text"
-                        margin="dense"
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        value={jobs.jobName}
-                        onChange={(e) => handlejobsChange(index, e)}
-                      />
-                      <Button
-                        onClick={() => handleRemovejobs(index)}
-                        color="error"
-                        variant='outlined'
-                        sx={{ml:2 }}
-                      >
-                        حذف
-                      </Button>
-                    </Grid>
+                    <Grid container size={12} spacing={2} sx={{ p:1, backgroundColor: theme.palette.colors.box}}>
+                      <Grid size={10}>
+                        <TextField
+                          name="jobName"
+                          label="الخدمة"
+                          type="text"
+                          margin="dense"
+                          fullWidth
+                          variant="outlined"
+                          size="small"
+                          value={jobs.jobName || ""}
+                          onChange={(e) => handlejobsChange(index, e)}
+                        />
+                      </Grid>
+                      <Grid size={2}>
+                        <Button
+                          fullWidth
+                          onClick={() => handleRemovejobs(index)}
+                          color="error"
+                          variant='outlined'
+                          sx={{mt:1.3}}
+                        >
+                          حذف
+                        </Button>
+                      </Grid>
                     </Grid>
                   </React.Fragment>
                 ))}
@@ -362,7 +461,6 @@ export default function FormUpdate({ itemId }) {
                     </Grid>
                     <Grid size={12} sx={{ display: 'flex', alignItems: 'center' }}>
                       <TextField
-                        required
                         name="category"
                         label="نوع القطعة"
                         type="text"
@@ -389,157 +487,204 @@ export default function FormUpdate({ itemId }) {
 
                 {newparts.map((newparts, index) => (
                   <React.Fragment key={index}>
-                    <Grid container spacing={2} sx={{ p:1, backgroundColor: theme.palette.colors.box}}>
-                    <Grid size={4}>
-                      <TextField
-                        required
-                        name="category"
-                        label="نوع القطعة"
-                        type="text"
-                        margin="dense"
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        value={newparts.category || ""}
-                        onChange={(e) => handleNewPartChange(index, e)}
-                      />
-                    </Grid>
-                    <Grid size={4}>
-                      <TextField
-                        required
+                  <Grid container spacing={2} sx={{ p:1, backgroundColor: theme.palette.colors.box}}>
+                  <Grid size={4}>
+                    <TextField
+                      required
+                      name="category"
+                      label="نوع القطعة"
+                      type="text"
+                      margin="dense"
+                      fullWidth
+                      variant="outlined"
+                      size="small"
+                      value={newparts.category || ""}
+                      onChange={(e) => handleNewPartChange(index, e)}
+                    />
+                  </Grid>
+                  <Grid size={4}>
+                    <TextField
+                      required
+                      name="quantity"
+                      label="العدد"
+                      type="text"
+                      margin="dense"
+                      fullWidth
+                      variant="outlined"
+                      size="small"
+                      value={newparts.quantity || ""}
+                      onChange={(e) => handleNewPartChange(index, e)}
+                    />
+                  </Grid>
+                  <Grid size={4}>
+                    <FormControl fullWidth margin="dense" size="small">
+                      <InputLabel id="dealer-label">اسم التاجر</InputLabel>
+                      <Select
+                        labelId="dealer-label"
                         name="dealerName"
-                        label="البائع"
-                        type="text"
-                        margin="dense"
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        value={newparts.dealerName || ""}
+                        label="اسم التاجر"
+                        value={newparts.dealerName}
                         onChange={(e) => handleNewPartChange(index, e)}
-                      />
-                    </Grid>
-                    <Grid size={4}>
-                      <TextField
-                        required
-                        name="quantity"
-                        label="العدد"
-                        type="text"
-                        margin="dense"
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        value={newparts.quantity || ""}
-                        onChange={(e) => handleNewPartChange(index, e)}
-                      />
-                    </Grid>
-                    <Grid size={6}>
-                      <TextField
-                        required
-                        name="pricebuy"
-                        label="سعر الشراء"
-                        type="number"
-                        margin="dense"
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        value={newparts.pricebuy || ""}
-                        onChange={(e) => handleNewPartChange(index, e)}
-                      />
-                    </Grid>
-                    <Grid size={6} sx={{ display: 'flex', alignItems: 'center' }}>
-                      <TextField
-                        name="pricesell"
-                        label="سعر البيع"
-                        type="number"
-                        margin="dense"
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        value={newparts.pricesell || ""}
-                        onChange={(e) => handleNewPartChange(index, e)}
-                      />
-                      <Button
-                        onClick={() => handleRemoveNewPart(index)}
-                        color="error"
-                        variant='outlined'
-                        sx={{ ml: 2 }}
                       >
-                        حذف
+                        {dealers.map((d) => (
+                          <MenuItem key={d._id} value={d.dealerName}>
+                            {d.dealerName}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid size={6}>
+                    <TextField
+                      name="pricebuy"
+                      label="سعر الشراء"
+                      type="number"
+                      margin="dense"
+                      fullWidth
+                      variant="outlined"
+                      size="small"
+                      value={newparts.pricebuy || ""}
+                      onChange={(e) => handleNewPartChange(index, e)}
+                    />
+                  </Grid>
+                  <Grid size={6} sx={{ display: 'flex', alignItems: 'center' }}>
+                    <TextField
+                      name="pricesell"
+                      label="سعر البيع"
+                      type="text"
+                      margin="dense"
+                      fullWidth
+                      variant="outlined"
+                      size="small"
+                      value={newparts.pricesell || ""}
+                      onChange={(e) => handleNewPartChange(index, e)}
+                    />
+                  </Grid>
+                  <Grid size={10}>
+                    <Button
+                        fullWidth
+                        component="label"
+                        role={undefined}
+                        variant="outlined"
+                        tabIndex={-1}
+                        startIcon={<CloudUploadIcon />}
+                        sx={{ textTransform:'none', }}
+                      >
+                        {newparts.newpartsImage ? newparts.newpartsImage.name : "تحميل صورة"}
+                        <VisuallyHiddenInput
+                          type="file"
+                          name="newpartsImage"
+                          onChange={(event) => handleUploadnewparts(index, event)}
+                          multiple={false}
+                        />
                       </Button>
-                    </Grid>
-
-                    </Grid>
-                  </React.Fragment>
+                  </Grid>
+                  <Grid size={2}>
+                    <Button
+                      fullWidth
+                      onClick={() => handleRemoveNewPart(index)}
+                      color="error"
+                      variant='outlined'
+                    >
+                      حذف
+                    </Button>
+                  </Grid>
+                  </Grid>
+                </React.Fragment>
                 ))}
                 {outjob.map((outjob, index) => (
                   <React.Fragment key={index}>
-                    <Grid container spacing={2} sx={{ p:1, backgroundColor: theme.palette.colors.box}}>
-                    <Grid size={6}>
-                      <TextField
-                        required
-                        name="jobName"
-                        label="اعمال خارجية"
-                        type="text"
-                        margin="dense"
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        value={outjob.jobName || ""}
-                        onChange={(e) => handleOutjobChange(index, e)}
-                      />
-                    </Grid>
-                    <Grid size={6}>
-                      <TextField
-                        required
+                  <Grid container spacing={2} sx={{ p:1, backgroundColor: theme.palette.colors.box}}>
+                  <Grid size={6}>
+                    <TextField
+                      required
+                      name="jobName"
+                      label="نوع الشغلانة"
+                      type="text"
+                      margin="dense"
+                      fullWidth
+                      variant="outlined"
+                      size="small"
+                      value={outjob.jobName || ""}
+                      onChange={(e) => handleOutjobChange(index, e)}
+                    />
+                  </Grid>
+                  <Grid size={6}>
+                    <FormControl fullWidth margin="dense" size="small">
+                      <InputLabel id="dealer-label">اسم التاجر</InputLabel>
+                      <Select
+                        labelId="dealer-label"
                         name="dealerName"
-                        label="اسم المكان"
-                        type="text"
-                        margin="dense"
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        value={outjob.dealerName || ""}
+                        label="اسم التاجر"
+                        value={outjob.dealerName}
                         onChange={(e) => handleOutjobChange(index, e)}
-                      />
-                    </Grid>
-                    <Grid size={6}>
-                      <TextField
-                        required
-                        name="jobPriceBuy"
-                        label="سعرالبيع"
-                        type="number"
-                        margin="dense"
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        value={outjob.jobPriceBuy || ""}
-                        onChange={(e) => handleOutjobChange(index, e)}
-                      />
-                    </Grid>
-                    <Grid size={6} sx={{ display: 'flex', alignItems: 'center' }}>
-                      <TextField
-                        name="jobPriceSell"
-                        label="سعرالشراء"
-                        type="number"
-                        margin="dense"
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        value={outjob.jobPriceSell || ""}
-                        onChange={(e) => handleOutjobChange(index, e)}
-                      />
-                      <Button
-                        onClick={() => handleRemoveOutjob(index)}
-                        color="error"
-                        variant='outlined'
-                        sx={{ ml: 2 }}
                       >
-                        حذف
+                        {dealers.map((dealer) => (
+                          <MenuItem key={dealer.dealerName} value={dealer.dealerName}>
+                            {dealer.dealerName}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid size={6}>
+                    <TextField
+                      name="jobPriceBuy"
+                      label="سعر الشراء"
+                      type="number"
+                      margin="dense"
+                      fullWidth
+                      variant="outlined"
+                      size="small"
+                      value={outjob.jobPriceBuy || ""}
+                      onChange={(e) => handleOutjobChange(index, e)}
+                    />
+                  </Grid>
+                  <Grid size={6} sx={{ display: 'flex', alignItems: 'center' }}>
+                    <TextField
+                      name="jobPriceSell"
+                      label="سعر البيع"
+                      type="number"
+                      margin="dense"
+                      fullWidth
+                      variant="outlined"
+                      size="small"
+                      value={outjob.jobPriceSell || ""}
+                      onChange={(e) => handleOutjobChange(index, e)}
+                    />
+                  </Grid>
+                  <Grid size={10}>
+                    <Button
+                        fullWidth
+                        component="label"
+                        role={undefined}
+                        variant="outlined"
+                        tabIndex={-1}
+                        startIcon={<CloudUploadIcon />}
+                        sx={{ textTransform:'none', }}
+                      >
+                        {outjob.outjobImage ? outjob.outjobImage.name : "تحميل صورة"}
+                        <VisuallyHiddenInput
+                          type="file"
+                          name="outjobImage"
+                          onChange={(event) => handleUploadoutjob(index, event)}
+                          multiple={false}
+                        />
                       </Button>
-                    </Grid>
+                  </Grid>
+                  <Grid size={2}>
+                    <Button
+                      fullWidth
+                      onClick={() => handleRemoveOutjob(index)}
+                      color="error"
+                      variant='outlined'
+                    >
+                      حذف
+                    </Button>
+                  </Grid>
 
-                    </Grid>
-                  </React.Fragment>
+                  </Grid>
+                </React.Fragment>
                 ))}
                 {other.map((other, index) => (
                   <React.Fragment key={index}>

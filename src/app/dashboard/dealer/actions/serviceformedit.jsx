@@ -5,6 +5,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import EditIcon from '@mui/icons-material/Edit';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { styled } from '@mui/material/styles';
 import { Box, Snackbar, Alert, TextField, IconButton, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import axios from 'axios';
@@ -12,7 +14,7 @@ import axios from 'axios';
 export default function ServiceFormEdit({ dealerId, serviceId }) {
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = React.useState({ open: false, text: '', severity: 'success' });
-  const [formData, setFormData] = React.useState({ type: '', count: '', servicePriceBuy: '', servicePriceSell:'' });
+  const [formData, setFormData] = React.useState({ type: '', count: '', servicePriceBuy: '', servicePriceSell:'', serviceImage: undefined });
   
   //Handle form input changes
   const handleInputChange = (e) => {
@@ -22,6 +24,20 @@ export default function ServiceFormEdit({ dealerId, serviceId }) {
         [name]: value,
       }));
   };
+
+  const handleUploadService = (event) => {
+    const { files } = event.target;
+  
+    if (files.length > 0) {
+      const file = files[0];
+      setFormData((prevData) => ({
+        ...prevData,
+        serviceImage: file, // ✅ تحديث الصورة بشكل صحيح
+      }));
+    }
+  };
+  
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -34,29 +50,55 @@ export default function ServiceFormEdit({ dealerId, serviceId }) {
   // function for update item by id
   const updateItem = async (e) => {
     e.preventDefault();
-
+  
     try {
-        // إرسال الطلب إلى API التحديث باستخدام الـ itemId وبيانات الـ formData
-        const response = await axios.put(
-            `${process.env.NEXT_PUBLIC_API_URL}/dealer/edit-service/${dealerId}/${serviceId}`,
-            formData, // البيانات التي ستُحدث (typeSafe و payed)
-            { withCredentials: true }
-        );
-
-        console.log("Item updated successfully:", response.data);
-        setMessage({ open: true, text: "تم تحديث التاجر!", severity: "success" });
-        setOpen(false);
-
-      // اغلاق ال snackbar
+      const formDataToSend = new FormData();
+      formDataToSend.append("type", formData.type);
+      formDataToSend.append("count", formData.count);
+      formDataToSend.append("servicePriceBuy", formData.servicePriceBuy);
+      formDataToSend.append("servicePriceSell", formData.servicePriceSell);
+      
+      if (formData.serviceImage) {
+        formDataToSend.append("serviceImage", formData.serviceImage); // إرسال الصورة فقط إذا تم اختيارها
+      }
+  
+      const response = await axios.put(
+        `${process.env.NEXT_PUBLIC_API_URL}/dealer/edit-service/${dealerId}/${serviceId}`,
+        formDataToSend,
+        {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data", // ضروري لرفع الصور
+          },
+        }
+      );
+  
+      console.log("Item updated successfully:", response.data);
+      setMessage({ open: true, text: "تم تحديث التاجر!", severity: "success" });
+      setOpen(false);
+  
+      // اغلاق الـ snackbar
       setTimeout(() => {
         setMessage({ open: false });
       }, 6000);
     } catch (error) {
-      console.error("حدث خطأ أثناء تحديث الدفع:", error.message);
+      console.error("حدث خطأ أثناء تحديث الخدمة:", error.message);
       setMessage({ open: true, text: "حدث خطأ أثناء التحديث", severity: "error" });
     }
-};
-
+  };
+  
+  // for upload image
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
 
   return (
     <React.Fragment>
@@ -124,6 +166,25 @@ export default function ServiceFormEdit({ dealerId, serviceId }) {
                     onChange={handleInputChange}
                   />
                 </Grid>
+                {/*<Grid size={12}>
+                    <Button
+                        fullWidth
+                        component="label"
+                        role={undefined}
+                        variant="outlined"
+                        tabIndex={-1}
+                        startIcon={<CloudUploadIcon />}
+                        sx={{ textTransform:'none', }}
+                      >
+                        {formData.serviceImage ? formData.serviceImage.name : "تحميل صورة"}
+                        <VisuallyHiddenInput
+                          type="file"
+                          name="serviceImage"
+                          onChange={handleUploadService}
+                          multiple={false}
+                        />
+                      </Button>
+                  </Grid>*/}
               </Grid>
               <DialogActions>
                 <Button onClick={handleClose} sx={{ textTransform: 'none' }}>

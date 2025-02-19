@@ -139,8 +139,7 @@ export default function Print({ itemId }) {
                   .map(
                     (other) => `
                   <tr>
-                    <td>نثريات</td>
-                    <td>${other.otherName}</td>
+                    <td colspan="2">${other.otherName}</td>
                     <td>-</td>
                     <td>${other.otherPrice}</td>
                   </tr>
@@ -159,10 +158,7 @@ export default function Print({ itemId }) {
                 <tr>
                   <td>مصنعية الورشة</td>
                   <td colspan="4">
-                    ${Number(itemData.invoice) +
-                      (Array.isArray(itemData.outjob)
-                        ? itemData.outjob.reduce((total, job) => total + Number(job.jobPriceSell || 0), 0)
-                        : 0)}
+                    ${itemData.invoice}
                   </td>
                 </tr>
                 <tr>

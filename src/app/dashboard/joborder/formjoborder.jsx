@@ -6,76 +6,87 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { Box, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
+import { styled } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
-
+import axios from 'axios';
 
 export default function FormJobOrder() {
   const theme = useTheme();
 
   const [open, setOpen] = React.useState(false);
+  const [dealers, setDealers] = React.useState([]); // قائمة التجار
   const [formData, setFormData] = React.useState({
     clientName: "",
     clientPhone: "",
     carModel: "",
     carColor: "",
+    chassis: "",
     carKm: "",
-    invoice:"",
-    discount:"",
-    payment:"",
+    invoice: "",
+    discount: "",
+    payment: "",
   });
-
   const [parts, setParts] = React.useState([]);
   const [newparts, setNewParts] = React.useState([]);
   const [outjob, setOutJobs] = React.useState([]);
   const [jobs, setJobs] = React.useState([]);
   const [other, setOther] = React.useState([]);
 
-
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // ********************* Hande part *********************
+  // ********************* Handle parts *********************
   const handlePartChange = (index, e) => {
     const { name, value } = e.target;
     const updatedParts = [...parts];
     updatedParts[index][name] = value;
     setParts(updatedParts);
   };
-  // Function to remove a specific part
+
   const handleRemovePart = (index) => {
     const updatedParts = parts.filter((_, i) => i !== index);
     setParts(updatedParts);
   };
-  // Add a new part row
+
   const handleAddPart = () => {
-    setParts([...parts, { code:"", quantity: "", pricesell:"", category:"" }]);
+    setParts([...parts, { code: "", quantity: "", pricesell: "", category: "" }]);
   };
 
-  // ********************* Handle NewPart *********************
+  // ********************* Handle NewParts *********************
   const handleNewPartChange = (index, e) => {
     const { name, value } = e.target;
     const updatedNewParts = [...newparts];
     updatedNewParts[index][name] = value;
     setNewParts(updatedNewParts);
   };
-  // Function to remove a specific part
+
   const handleRemoveNewPart = (index) => {
     const updatedNewParts = newparts.filter((_, i) => i !== index);
     setNewParts(updatedNewParts);
   };
-  // Add a new part row
+
   const handleAddNewPart = () => {
-    setNewParts([...newparts, { category:"", dealerName:"", quantity: "", pricesell:"", pricebuy:"" }]);
+    setNewParts([...newparts, { category: "", dealerName: "", quantity: "", pricesell: "", pricebuy: "", newpartsImage: undefined }]);
   };
 
+  const handleUploadnewparts = (index, event) => {
+    const { files } = event.target;
+    const updatedNewParts = [...newparts];
+  
+    if (files.length > 0) {
+      const file = files[0];
+      updatedNewParts[index].newpartsImage = file;
+      setNewParts(updatedNewParts);
+    }
+  };
 
   // ********************* Handle outjobs *********************
   const handleoutjobsChange = (index, e) => {
@@ -84,14 +95,25 @@ export default function FormJobOrder() {
     updateOutJobs[index][name] = value;
     setOutJobs(updateOutJobs);
   };
-  // Function to remove a specific part
+
   const handleRemoveoutjobs = (index) => {
     const updateOutJobs = outjob.filter((_, i) => i !== index);
     setOutJobs(updateOutJobs);
   };
-  // Add a new part row
+
   const handleAddOutjob = () => {
-    setOutJobs([...outjob, { jobName:"", dealerName:"", jobPriceBuy:"", jobPriceSell:"" }]);
+    setOutJobs([...outjob, { jobName: "", dealerName: "", jobPriceBuy: "", jobPriceSell: "", outjobImage: undefined }]);
+  };
+
+  const handleUploadoutjob = (index, event) => {
+    const { files } = event.target;
+    const updatedOutjob = [...outjob];
+  
+    if (files.length > 0) {
+      const file = files[0];
+      updatedOutjob[index].outjobImage = file;
+      setOutJobs(updatedOutjob);
+    }
   };
 
   // ********************* Handle Jobs *********************
@@ -101,16 +123,16 @@ export default function FormJobOrder() {
     updateJobs[index][name] = value;
     setJobs(updateJobs);
   };
-  // Function to remove a specific part
+
   const handleRemovejobs = (index) => {
     const updateJobs = jobs.filter((_, i) => i !== index);
     setJobs(updateJobs);
   };
-  // Add a new part row
+
   const handleAddjob = () => {
-    setJobs([...jobs, { jobName:""}]);
+    setJobs([...jobs, { jobName: "" }]);
   };
-  
+
   // ********************* Handle Other *********************
   const handleOtherChange = (index, e) => {
     const { name, value } = e.target;
@@ -118,40 +140,75 @@ export default function FormJobOrder() {
     updateOther[index][name] = value; 
     setOther(updateOther);
   };
-  // Function to remove a specific part
+
   const handleRemoveOther = (index) => {
     const updateOther = other.filter((_, i) => i !== index);
     setOther(updateOther);
   };
-  // Add a new part row
+
   const handleAddOther = () => {
-    setOther([...other, { otherName:"", otherPrice:"", }]);
+    setOther([...other, { otherName: "", otherPrice: "" }]);
   };
 
+  // Fetch dealers from the database
+  React.useEffect(() => {
+    const fetchDealers = async () => {
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/dealer/read-dealer`);
+        setDealers(response.data);
+      } catch (error) {
+        console.error("Error fetching dealers:", error.message);
+      }
+    };
+    fetchDealers();
+  }, []);
 
-
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    const newOrder = {
-      ...formData,
-      parts: parts,
-      newparts: newparts,
-      outjob: outjob,
-      jobs: jobs,
-      other: other,
-    };
+    const formDataToSend = new FormData();
   
+    // Add client data
+    formDataToSend.append("clientName", formData.clientName);
+    formDataToSend.append("clientPhone", formData.clientPhone);
+    formDataToSend.append("carModel", formData.carModel);
+    formDataToSend.append("carColor", formData.carColor);
+    formDataToSend.append("carKm", formData.carKm);
+    formDataToSend.append("chassis", formData.chassis);
+    formDataToSend.append("invoice", formData.invoice || "");
+    formDataToSend.append("discount", formData.discount || "");
+    formDataToSend.append("payment", formData.payment || "");
+  
+    // Add data as JSON
+    formDataToSend.append("jobs", JSON.stringify(jobs));
+    formDataToSend.append("parts", JSON.stringify(parts));
+    formDataToSend.append("outjob", JSON.stringify(outjob));
+    formDataToSend.append("other", JSON.stringify(other));
+    formDataToSend.append("newparts", JSON.stringify(newparts));
+  
+    // Add newparts images
+    newparts.forEach((part) => {
+      if (part.newpartsImage) {
+        formDataToSend.append("newpartsImage", part.newpartsImage);
+      }
+    });
+
+    // Add outjob images
+    outjob.forEach((out) => {
+      if (out.outjobImage) {
+        formDataToSend.append("outjobImage", out.outjobImage);
+      }
+    });
   
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joborders/add`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newOrder),
+        method: "POST",
+        body: formDataToSend,
       });
   
       if (response.ok) {
-        console.log('Job order added successfully');
+        console.log("✅ Job order added successfully");
         // Reset form after submission
         setFormData({
           clientName: "",
@@ -159,9 +216,10 @@ export default function FormJobOrder() {
           carModel: "",
           carColor: "",
           carKm: "",
+          chassis: "",
           invoice: "",
           discount: "",
-          payment:"",
+          payment: "",
         });
         setParts([]);
         setNewParts([]);
@@ -169,17 +227,26 @@ export default function FormJobOrder() {
         setOutJobs([]);
         setOther([]);
         handleClose();
-        
-        handleClose();
       } else {
-        console.error('Failed to add job order');
+        console.error("❌ Failed to add job order");
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error("❌ Error:", error);
     }
   };
-  
-  
+
+  // Hidden input for file uploads
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
 
   return (
     <React.Fragment>
@@ -245,7 +312,19 @@ export default function FormJobOrder() {
                     onChange={handleChange}
                   />
                 </Grid>
-                <Grid size={12}>
+                <Grid size={6}>
+                  <TextField
+                    name="chassis"
+                    label="رقم الشاسية"
+                    type="text"
+                    margin="dense"
+                    fullWidth
+                    variant="outlined"
+                    value={formData.chassis}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid size={6}>
                   <TextField
                     name="carKm"
                     label="كيلو متر"
@@ -278,36 +357,38 @@ export default function FormJobOrder() {
                   </Button>
                 </Grid>
                 <Grid size={12}>
-                  <Button onClick={handleAddjob} variant="outlined"  sx={{ width:'100%' }}>
+                  <Button onClick={handleAddjob} variant="outlined" color='success' sx={{ width:'100%' }}>
                     اعمال الورشة 
                   </Button>
                 </Grid>
 
                 {jobs.map((jobs, index) => (
                   <React.Fragment key={index}>
-                    <Grid container size={12} sx={{ p:1, backgroundColor: theme.palette.colors.box}}>
-                    <Grid size={12} sx={{ display: 'flex', alignItems: 'center' }}>
-                      <TextField
-                        name="jobName"
-                        label="الخدمة"
-                        type="text"
-                        margin="dense"
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        value={jobs.jobName}
-                        onChange={(e) => handlejobsChange(index, e)}
-                      />
-                      <Button
-                        onClick={() => handleRemovejobs(index)}
-                        color="error"
-                        variant='outlined'
-                        sx={{ml:2 }}
-                      >
-                        حذف
-                      </Button>
-                    </Grid>
-
+                    <Grid container size={12} spacing={2} sx={{ p:1, backgroundColor: theme.palette.colors.box}}>
+                      <Grid size={10}>
+                        <TextField
+                          name="jobName"
+                          label="الخدمة"
+                          type="text"
+                          margin="dense"
+                          fullWidth
+                          variant="outlined"
+                          size="small"
+                          value={jobs.jobName}
+                          onChange={(e) => handlejobsChange(index, e)}
+                        />
+                      </Grid>
+                      <Grid size={2}>
+                        <Button
+                          fullWidth
+                          onClick={() => handleRemovejobs(index)}
+                          color="error"
+                          variant='outlined'
+                          sx={{mt:1.3}}
+                        >
+                          حذف
+                        </Button>
+                      </Grid>
                     </Grid>
                   </React.Fragment>
                 ))}
@@ -404,20 +485,6 @@ export default function FormJobOrder() {
                     <Grid size={4}>
                       <TextField
                         required
-                        name="dealerName"
-                        label="البائع"
-                        type="text"
-                        margin="dense"
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        value={newparts.dealerName}
-                        onChange={(e) => handleNewPartChange(index, e)}
-                      />
-                    </Grid>
-                    <Grid size={4}>
-                      <TextField
-                        required
                         name="quantity"
                         label="العدد"
                         type="text"
@@ -428,6 +495,24 @@ export default function FormJobOrder() {
                         value={newparts.quantity}
                         onChange={(e) => handleNewPartChange(index, e)}
                       />
+                    </Grid>
+                    <Grid size={4}>
+                      <FormControl fullWidth margin="dense" size="small">
+                        <InputLabel id="dealer-label">اسم التاجر</InputLabel>
+                        <Select
+                          labelId="dealer-label"
+                          name="dealerName"
+                          label="اسم التاجر"
+                          value={newparts.dealerName}
+                          onChange={(e) => handleNewPartChange(index, e)}
+                        >
+                          {dealers.map((dealer) => (
+                            <MenuItem key={dealer.dealerName} value={dealer.dealerName}>
+                              {dealer.dealerName}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
                     </Grid>
                     <Grid size={6}>
                       <TextField
@@ -454,16 +539,36 @@ export default function FormJobOrder() {
                         value={newparts.pricesell}
                         onChange={(e) => handleNewPartChange(index, e)}
                       />
+                    </Grid>
+                    <Grid size={10}>
                       <Button
+                        fullWidth
+                        component="label"
+                        role={undefined}
+                        variant="outlined"
+                        tabIndex={-1}
+                        startIcon={<CloudUploadIcon />}
+                        sx={{ textTransform:'none', }}
+                      >
+                        {newparts.newpartsImage ? newparts.newpartsImage.name : "تحميل صورة"}
+                        <VisuallyHiddenInput
+                          type="file"
+                          name="newpartsImage"
+                          onChange={(event) => handleUploadnewparts(index, event)}
+                          multiple={false}
+                        />
+                      </Button>
+                    </Grid>
+                    <Grid size={2}>
+                      <Button
+                        fullWidth
                         onClick={() => handleRemoveNewPart(index)}
                         color="error"
-                        variant='outlined'
-                        sx={{ ml: 2 }}
+                        variant="outlined"
                       >
                         حذف
                       </Button>
                     </Grid>
-
                     </Grid>
                   </React.Fragment>
                 ))}
@@ -485,18 +590,22 @@ export default function FormJobOrder() {
                       />
                     </Grid>
                     <Grid size={6}>
-                      <TextField
-                        required
-                        name="dealerName"
-                        label="اسم المكان"
-                        type="text"
-                        margin="dense"
-                        fullWidth
-                        variant="outlined"
-                        size="small"
-                        value={outjob.dealerName}
-                        onChange={(e) => handleoutjobsChange(index, e)}
-                      />
+                      <FormControl fullWidth margin="dense" size="small">
+                        <InputLabel id="dealer-label">اسم التاجر</InputLabel>
+                        <Select
+                          labelId="dealer-label"
+                          name="dealerName"
+                          label="اسم التاجر"
+                          value={outjob.dealerName}
+                          onChange={(e) => handleoutjobsChange(index, e)}
+                        >
+                          {dealers.map((dealer) => (
+                            <MenuItem key={dealer.dealerName} value={dealer.dealerName}>
+                              {dealer.dealerName}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
                     </Grid>
                     <Grid size={6}>
                       <TextField
@@ -523,11 +632,32 @@ export default function FormJobOrder() {
                         value={outjob.jobPriceSell}
                         onChange={(e) => handleoutjobsChange(index, e)}
                       />
+                    </Grid>
+                    <Grid size={10}>
+                    <Button
+                        fullWidth
+                        component="label"
+                        role={undefined}
+                        variant="outlined"
+                        tabIndex={-1}
+                        startIcon={<CloudUploadIcon />}
+                        sx={{ textTransform:'none', }}
+                      >
+                        {outjob.outjobImage ? outjob.outjobImage.name : "تحميل صورة"}
+                        <VisuallyHiddenInput
+                          type="file"
+                          name="outjobImage"
+                          onChange={(event) => handleUploadoutjob(index, event)}
+                          multiple={false}
+                        />
+                      </Button>
+                    </Grid>
+                    <Grid size={2}>
                       <Button
+                        fullWidth
                         onClick={() => handleRemoveoutjobs(index)}
                         color="error"
-                        variant='outlined'
-                        sx={{ ml: 2 }}
+                        variant="outlined"
                       >
                         حذف
                       </Button>
