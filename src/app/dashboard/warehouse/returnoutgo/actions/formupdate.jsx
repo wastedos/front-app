@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import EditIcon from '@mui/icons-material/Edit';
-import { Box, TextField } from '@mui/material';
+import { Box, IconButton, TextField } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import axios from 'axios';
 
@@ -48,7 +48,7 @@ export default function FormUpdate({ itemId }) {
     try {
       // إرسال البيانات إلى السيرفر لتحديث العنصر
       const response = await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/warehouse/update-byid/${itemId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/warehouse/update-returnIncome/${itemId}`,
         {
           quantity: formData.quantity,
           price: formData.price,
@@ -68,9 +68,9 @@ export default function FormUpdate({ itemId }) {
 
   return (
     <React.Fragment>
-      <Button variant="contained" onClick={handleClickOpen} startIcon={<EditIcon />} sx={{ textTransform: 'none', width:'100%'}}>
-      تعديل
-      </Button>
+      <IconButton onClick={handleClickOpen} sx={{ mx:1}}>
+        <EditIcon/>
+      </IconButton>
       <Dialog
         open={open}
         onClose={handleClose}

@@ -17,7 +17,7 @@ export default function FormIncome() {
     total: 0,
     billnumber: "",
     buyer: "",
-    buyerphone: 0,
+    buyerphone: "",
   });
 
   const handleClickOpen = () => {
@@ -57,7 +57,7 @@ export default function FormIncome() {
         price:"",
         billnumber:"",
         buyer:"",
-        buyerphone  : 0,
+        buyerphone:"",
       })
       const result = await response.json();
       console.log("Item saved:", result);
@@ -98,6 +98,18 @@ export default function FormIncome() {
                 </Grid>
                 <Grid size={6}>
                   <TextField
+                    name="billnumber"
+                    label="رقم الفاتورة"
+                    type="text"
+                    margin="dense"
+                    fullWidth
+                    variant="outlined"
+                    value={formData.billnumber}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid size={6}>
+                  <TextField
                     name="quantity"
                     label="العدد"
                     type="number"
@@ -117,18 +129,6 @@ export default function FormIncome() {
                     fullWidth
                     variant="outlined"
                     value={formData.price}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid size={6}>
-                  <TextField
-                    name="billnumber"
-                    label="رقم الفاتورة"
-                    type="number"
-                    margin="dense"
-                    fullWidth
-                    variant="outlined"
-                    value={formData.billnumber}
                     onChange={handleChange}
                   />
                 </Grid>

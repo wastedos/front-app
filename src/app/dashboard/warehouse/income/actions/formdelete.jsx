@@ -11,6 +11,8 @@ import axios from 'axios';
 
 export default function FormDelete({ itemId }) {
   const [open, setOpen] = React.useState(false);
+  const [message, setMessage] = React.useState(false); // ✅ تعريف setMessage
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -19,24 +21,27 @@ export default function FormDelete({ itemId }) {
     setOpen(false);
   };
 
-  // function for delete item by id
+  // حذف العنصر باستخدام ID
   const deleteItem = async (e) => {
     e.preventDefault();
 
     try {
       const response = await axios.delete(
         `${process.env.NEXT_PUBLIC_API_URL}/warehouse/delete-income/${itemId}`,
-        { withCredentials: true } // مهم جداً
+        { withCredentials: true }
       );
       console.log("Item deleted successfully:", response.data);
-      
-      // Show success message in Snackbar
+
+      // ✅ إظهار رسالة النجاح
       setMessage(true);
 
-      // Hide Snackbar after 6 seconds
+      // ✅ إغلاق الديالوج بعد الحذف مباشرة
+      setOpen(false);
+
+      // ✅ إخفاء الرسالة بعد 6 ثوانٍ
       setTimeout(() => {
         setMessage(false);
-      }, 6000);
+      }, 3000);
     } catch (error) {
       console.error("Error deleting item:", error.message);
     }
@@ -45,7 +50,7 @@ export default function FormDelete({ itemId }) {
   return (
     <React.Fragment>
       <IconButton onClick={handleClickOpen} color="error">
-        <DeleteIcon/>
+        <DeleteIcon />
       </IconButton>
       <Dialog
         open={open}
@@ -59,11 +64,11 @@ export default function FormDelete({ itemId }) {
         <DialogContent>
           <Box>
             <form onSubmit={deleteItem}>
-              <Grid container spacing={2} sx={{ width:{xs:'auto', md:'30rem'}, }}>
+              <Grid container spacing={2} sx={{ width: { xs: 'auto', md: '30rem' } }}>
                 <Grid size={12}>
                   <TextField
                     name="delete"
-                    label="سبب الحزف"
+                    label="سبب الحذف"
                     type="text"
                     margin="dense"
                     fullWidth
@@ -74,15 +79,13 @@ export default function FormDelete({ itemId }) {
               </Grid>
               <DialogActions>
                 <Button onClick={handleClose} sx={{ textTransform: 'none' }}>
-                  اغلاق
+                  إغلاق
                 </Button>
                 <Button
-                    onClick={handleClose}
-                    type="submit"
-                    autoFocus
-                    variant="contained"
-                    sx={{ textTransform: 'none' }}
-                    color="error"
+                  type="submit"
+                  variant="contained"
+                  sx={{ textTransform: 'none' }}
+                  color="error"
                 >
                   حذف
                 </Button>
@@ -91,6 +94,17 @@ export default function FormDelete({ itemId }) {
           </Box>
         </DialogContent>
       </Dialog>
+
+      {/* ✅ Snackbar لعرض رسالة النجاح */}
+      <Snackbar
+        open={message}
+        autoHideDuration={6000}
+        onClose={() => setMessage(false)}
+      >
+        <Alert onClose={() => setMessage(false)} severity="success">
+          تم حذف العنصر بنجاح!
+        </Alert>
+      </Snackbar>
     </React.Fragment>
   );
 }

@@ -18,7 +18,8 @@ export default function FormUpdate({ itemId }) {
   const theme = useTheme();
 
   const [open, setOpen] = React.useState(false);
-  const [dealers, setDealers] = React.useState([]); // قائمة التجار
+  const [dealersNewpart, setDealersNewpart] = React.useState([]);
+  const [dealersOutjob, setDealersOutjob] = React.useState([]);
   const [formData, setFormData] = React.useState({
     clientName: "",
     clientPhone: "",
@@ -30,12 +31,13 @@ export default function FormUpdate({ itemId }) {
     discount:"",
     payment:"",
   });
-
   const [parts, setParts] = React.useState([]);
   const [newparts, setNewParts] = React.useState([]);
   const [jobs, setJobs] = React.useState([]);
   const [outjob, setOutJobs] = React.useState([]);
   const [other, setOther] = React.useState([]);
+  const [payed, setPayed] = React.useState([])
+  
   
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -152,13 +154,35 @@ export default function FormUpdate({ itemId }) {
     setOther([...other, { otherName: "", otherPrice: "" }]);
   };
 
+  // ********************* Handle Payed *********************
+  const handlePayedChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatePayed = [...payed];
+    updatePayed[index][name] = value; 
+    setPayed(updatePayed);
+  };
 
-  //to get dealer name from DB
+  const handleRemovePayed = (index) => {
+    const updatePayed = payed.filter((_, i) => i !== index);
+    setPayed(updatePayed);
+  };
+
+  const handleAddPayed = () => {
+    setPayed([...payed, { payment: "", payedPrice: "" }]);
+  };
+
+
+  // Fetch dealers from the database
   React.useEffect(() => {
     const fetchDealers = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/dealer/read-dealer`);
-        setDealers(response.data);
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/dealer/read-dealer`);
+      
+        // تصفية التجار الذين يقدمون خدمة "قطع جديدة"
+        const Newpart = response.data.filter(dealer => dealer.service === "قطع استيراد");
+        const Outgo = response.data.filter(dealer => dealer.service === "اعمال خارجية");
+        setDealersNewpart(Newpart);
+        setDealersOutjob(Outgo);
       } catch (error) {
         console.error("Error fetching dealers:", error.message);
       }
@@ -189,6 +213,7 @@ export default function FormUpdate({ itemId }) {
     formDataToSend.append("parts", JSON.stringify(parts));
     formDataToSend.append("outjob", JSON.stringify(outjob));
     formDataToSend.append("other", JSON.stringify(other));
+    formDataToSend.append("payed", JSON.stringify(payed));
     formDataToSend.append("newparts", JSON.stringify(newparts));
   
     // Add newparts images
@@ -241,15 +266,16 @@ export default function FormUpdate({ itemId }) {
             carColor: data.carColor || "",
             carKm: data.carKm || "",
             chassis: data.chassis || "",
+            payment: data.payment ||"",
             invoice: data.invoice || "",
             discount: data.discount || "",
-            payment: data.payment || "",
           });
           setParts(data.parts || []);
           setNewParts(data.newparts || []);
           setJobs(data.jobs || []);
           setOutJobs(data.outjob || []);
           setOther(data.other || []);
+          setPayed(data.payed || []);
         })
         .catch(error => console.error('Error fetching job order:', error));
     }
@@ -376,7 +402,7 @@ export default function FormUpdate({ itemId }) {
                 </Grid>
                 <Grid size={3}>
                   <Button onClick={handleAddOther} variant="outlined" color='success' sx={{ width:'100%' }}>
-                    نسريات
+                  نثريات 
                   </Button>
                 </Grid>
                 <Grid size={12}>
@@ -526,7 +552,7 @@ export default function FormUpdate({ itemId }) {
                         value={newparts.dealerName}
                         onChange={(e) => handleNewPartChange(index, e)}
                       >
-                        {dealers.map((d) => (
+                        {dealersNewpart.map((d) => (
                           <MenuItem key={d._id} value={d.dealerName}>
                             {d.dealerName}
                           </MenuItem>
@@ -619,7 +645,7 @@ export default function FormUpdate({ itemId }) {
                         value={outjob.dealerName}
                         onChange={(e) => handleOutjobChange(index, e)}
                       >
-                        {dealers.map((dealer) => (
+                        {dealersOutjob.map((dealer) => (
                           <MenuItem key={dealer.dealerName} value={dealer.dealerName}>
                             {dealer.dealerName}
                           </MenuItem>
@@ -728,26 +754,7 @@ export default function FormUpdate({ itemId }) {
                     </Grid>
                   </React.Fragment>
                 ))}
-
-                <Grid size={4}>
-                <FormControl fullWidth margin="dense">
-                  <InputLabel id="payment-label">طريقة الدفع</InputLabel>
-                    <Select
-                      labelId="payment-label"
-                      id="payment"
-                      name="payment"
-                      label="طريقة الدفع"
-                      value={formData.payment} // Update value
-                      onChange={handleChange} // Update formData
-                    >
-                      <MenuItem value="cash">كاش</MenuItem>
-                      <MenuItem value="instapay">انستاباي</MenuItem>
-                      <MenuItem value="vodafone">فودافون كاش</MenuItem>
-                      <MenuItem value="fawry">فاوري</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={4}>
+                <Grid size={6}>
                   <TextField
                     name="invoice"
                     label="مصنعية"
@@ -759,7 +766,7 @@ export default function FormUpdate({ itemId }) {
                     onChange={handleChange}
                   />
                 </Grid>
-                <Grid size={4}>
+                <Grid size={6}>
                   <TextField
                     name="discount"
                     label="الخصم"
@@ -772,7 +779,75 @@ export default function FormUpdate({ itemId }) {
                   />
                 </Grid>
               </Grid>
-
+              <Grid size={12}>
+                <FormControl fullWidth margin="dense" size='small'>
+                  <InputLabel id="payment-label">طريقة الدفع</InputLabel>
+                  <Select
+                    labelId="payment-label"
+                    id="payment"
+                    name="payment"
+                    label="طريقة الدفع"
+                    value={formData.payment} // Update value
+                    onChange={handleChange} // Update formData
+                  >
+                    <MenuItem value="cash">Cash</MenuItem>
+                    <MenuItem value="instapay">Instapay</MenuItem>
+                    <MenuItem value="vodafone">Vodafone Cash</MenuItem>
+                    <MenuItem value="fawry">Fawry</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid size={12}>
+                <Button onClick={handleAddPayed} variant="outlined" sx={{ width:'100%', mt:2 }}>
+                   المدفوعات 
+                </Button>
+              </Grid>
+              {payed.map((pay, index) => (
+                <React.Fragment key={index}>
+                  <Grid container spacing={2} sx={{ p:1, my:1, backgroundColor: theme.palette.colors.box, borderRadius:'5px'}}>
+                    <Grid size={6}>
+                      <FormControl fullWidth margin="dense" size='small'>
+                        <InputLabel id="payment-label">طريقة الدفع</InputLabel>
+                        <Select
+                          labelId="payment-label"
+                          id="payment"
+                          name="payment"
+                          label="طريقة الدفع"
+                          value={pay.payment} // Update value
+                          onChange={(e) => handlePayedChange(index, e)} // Update formData
+                        >
+                          <MenuItem value="cash">Cash</MenuItem>
+                          <MenuItem value="instapay">Instapay</MenuItem>
+                          <MenuItem value="vodafone">Vodafone Cash</MenuItem>
+                          <MenuItem value="fawry">Fawry</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid size={6} sx={{ display: 'flex', alignItems: 'center' }}>
+                      <TextField
+                        required
+                        name="payedPrice"
+                        label="المبلغ"
+                        type="number"
+                        margin="dense"
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        value={pay.payedPrice}
+                        onChange={(e) => handlePayedChange(index, e)}
+                      />
+                      <Button
+                        onClick={() => handleRemovePayed(index)}
+                        color="error"
+                        variant='outlined'
+                        sx={{ ml: 2, mt:0.5 }}
+                      >
+                        حذف
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </React.Fragment>
+              ))}
               <DialogActions sx={{ mt: 3 }}>
                 <Button onClick={handleClose} sx={{ textTransform: "none" }} color="error">
                   اغلاق

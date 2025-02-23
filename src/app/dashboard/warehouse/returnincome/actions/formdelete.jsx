@@ -5,12 +5,13 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Box, Snackbar, Alert, TextField } from '@mui/material';
+import { Box, Snackbar, Alert, TextField, IconButton } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import axios from 'axios';
 
 export default function FormDelete({ itemId }) {
   const [open, setOpen] = React.useState(false);
+  const [message, setMessage] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -25,7 +26,7 @@ export default function FormDelete({ itemId }) {
 
     try {
       const response = await axios.delete(
-        `${process.env.NEXT_PUBLIC_API_URL}/warehouse/delete-byid/${itemId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/warehouse/delete-returnIncome/${itemId}`,
         { withCredentials: true } // مهم جداً
       );
       console.log("Item deleted successfully:", response.data);
@@ -44,9 +45,9 @@ export default function FormDelete({ itemId }) {
 
   return (
     <React.Fragment>
-      <Button variant="contained" onClick={handleClickOpen} startIcon={<DeleteIcon />} color="error" sx={{ textTransform: 'none' }}>
-        حذف
-      </Button>
+      <IconButton onClick={handleClickOpen} color="error" sx={{ mx:1 }}>
+        <DeleteIcon/>
+      </IconButton>
       <Dialog
         open={open}
         onClose={handleClose}
@@ -91,6 +92,17 @@ export default function FormDelete({ itemId }) {
           </Box>
         </DialogContent>
       </Dialog>
+
+      {/* ✅ Snackbar لعرض رسالة النجاح */}
+      <Snackbar
+        open={message}
+        autoHideDuration={6000}
+        onClose={() => setMessage(false)}
+      >
+        <Alert onClose={() => setMessage(false)} severity="success">
+          تم حذف العنصر بنجاح!
+        </Alert>
+      </Snackbar>
     </React.Fragment>
   );
 }

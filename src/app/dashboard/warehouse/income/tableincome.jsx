@@ -11,14 +11,14 @@ export default function TableIncome() {
   
   const columns = [
     { id: 'date', name: 'تاريخ التسجيل' },
+    { id: 'billnumber', name: 'رقم العملية' },
     { id: 'code', name: 'الكود' },
     { id: 'category', name: 'النوع' },
     { id: 'brand', name: 'الماركة' },
     { id: 'quantity', name: 'العدد' },
     { id: 'price', name: 'السعر' },
     { id: 'total', name: 'الاجمالي' },
-    { id: 'seller', name: 'البائع' },
-    { id: 'sellerphone', name: 'رقم البائع' },
+    { id: 'dealerName', name: 'البائع' },
   ];
 
   const [rows, setRows] = React.useState([]);

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { IconButton, } from '@mui/material';
+import { Box, IconButton, } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FormUpdate from './formupdate';
 import FormDelete from './formdelete';
@@ -41,12 +41,10 @@ export default function Returnbtn({ itemId }) {
         }}
       >
         {/* خيار تعديل العنصر */}
-        <MenuItem >
-          <FormUpdate itemId={itemId}/>
-        </MenuItem>
-        <MenuItem>
+        <Box sx={{ display:'flex', flexDirection:'column'}}>
+          {/*<FormUpdate itemId={itemId}/>*/}
           <FormDelete itemId={itemId}/>
-        </MenuItem>
+        </Box>
       </Menu>
     </div>
   );

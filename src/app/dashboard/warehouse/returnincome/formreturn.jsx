@@ -13,6 +13,7 @@ export default function FormReturn() {
   const [formData, setFormData] = React.useState({
     code: "",
     quantity: "",
+    billnumber:"",
   });
 
   const handleClickOpen = () => {
@@ -47,6 +48,7 @@ export default function FormReturn() {
       setFormData({
         code: "",
         quantity: "",
+        billnumber: "",
       })
       const result = await response.json();
       console.log("Item saved:", result);
@@ -87,6 +89,18 @@ export default function FormReturn() {
                   />
                 </Grid>
                 <Grid size={6}>
+                  <TextField
+                    name="billnumber"
+                    label="رقم الفاتورة"
+                    type="number"
+                    margin="dense"
+                    fullWidth
+                    variant="outlined"
+                    value={formData.billnumber}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid size={12}>
                   <TextField
                     name="quantity"
                     label="العدد"

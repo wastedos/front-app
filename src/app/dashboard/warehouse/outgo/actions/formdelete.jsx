@@ -11,6 +11,8 @@ import axios from 'axios';
 
 export default function FormDelete({ itemId }) {
   const [open, setOpen] = React.useState(false);
+  const [message, setMessage] = React.useState(false);
+  
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -91,6 +93,17 @@ export default function FormDelete({ itemId }) {
           </Box>
         </DialogContent>
       </Dialog>
+
+      {/* ✅ Snackbar لعرض رسالة النجاح */}
+      <Snackbar
+        open={message}
+        autoHideDuration={6000}
+        onClose={() => setMessage(false)}
+      >
+        <Alert onClose={() => setMessage(false)} severity="success">
+          تم حذف العنصر بنجاح!
+        </Alert>
+      </Snackbar>
     </React.Fragment>
   );
 }

@@ -5,14 +5,14 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import EditIcon from '@mui/icons-material/Edit';
-import { Box, Snackbar, Alert, TextField, IconButton, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Box, Snackbar, Alert, TextField, IconButton,} from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import axios from 'axios';
 
-export default function DealerFormEdit({ dealerId }) {
+export default function ServiceFormEdit({ dealerId, serviceId }) {
   const [open, setOpen] = React.useState(false);
   const [message, setMessage] = React.useState({ open: false, text: '', severity: 'success' });
-  const [formData, setFormData] = React.useState({ dealerName: '', dealerPhone: '', service: '',});
+  const [formData, setFormData] = React.useState({ type: '', count: '', servicePriceBuy: '', servicePriceSell:'', serviceImage: undefined });
   
   //Handle form input changes
   const handleInputChange = (e) => {
@@ -22,6 +22,8 @@ export default function DealerFormEdit({ dealerId }) {
         [name]: value,
       }));
   };
+
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -38,9 +40,9 @@ export default function DealerFormEdit({ dealerId }) {
     try {
         // إرسال الطلب إلى API التحديث باستخدام الـ itemId وبيانات الـ formData
         const response = await axios.put(
-          `${process.env.NEXT_PUBLIC_API_URL}/dealer/edit-dealer/${dealerId}`,
-          formData, // البيانات التي ستُحدث (typeSafe و payed)
-          { withCredentials: true }
+            `${process.env.NEXT_PUBLIC_API_URL}/dealer/edit-service/${dealerId}/${serviceId}`,
+            formData, // البيانات التي ستُحدث (typeSafe و payed)
+            { withCredentials: true }
         );
 
         console.log("Item updated successfully:", response.data);
@@ -55,7 +57,7 @@ export default function DealerFormEdit({ dealerId }) {
       console.error("حدث خطأ أثناء تحديث الدفع:", error.message);
       setMessage({ open: true, text: "حدث خطأ أثناء التحديث", severity: "error" });
     }
-};
+  };
 
 
   return (
@@ -70,7 +72,7 @@ export default function DealerFormEdit({ dealerId }) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" align="center">
-          تعديل التاجر
+          تعديل الخدمة
         </DialogTitle>
         <DialogContent>
           <Box>
@@ -78,44 +80,51 @@ export default function DealerFormEdit({ dealerId }) {
               <Grid container spacing={2}>
                 <Grid size={6}>
                   <TextField
-                    name="dealerName"
-                    label="اسم التاجر"
+                    name="type"
+                    label="نوع"
                     type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"
-                    value={formData.dealerName}
+                    value={formData.type}
                     onChange={handleInputChange}
                   />
                 </Grid>
                 <Grid size={6}>
                   <TextField
-                    name="dealerPhone"
-                    label="رقم التاجر"
-                    type="text"
+                    name="count"
+                    label="عدد"
+                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"
-                    value={formData.dealerPhone}
+                    value={formData.count}
                     onChange={handleInputChange}
                   />
                 </Grid>
-                <Grid size={12}>
-                  <FormControl fullWidth margin="dense">
-                    <InputLabel id="service">نوع الخدمة</InputLabel>
-                    <Select
-                      labelId="service"
-                      id="service"
-                      name="service"
-                      label="نوع الخدمة"
-                      value={formData.service}
-                      onChange={handleInputChange}
-                    >
-                      <MenuItem value="قطع جديدة">قطع جديدة</MenuItem>
-                      <MenuItem value="قطع استيراد">قطع استيراد</MenuItem>
-                      <MenuItem value="اعمال خارجية">اعمال خارجية</MenuItem>
-                    </Select>
-                  </FormControl>
+                <Grid size={6}>
+                  <TextField
+                    name="servicePriceBuy"
+                    label="سعر الشراء"
+                    type="number"
+                    margin="dense"
+                    fullWidth
+                    variant="outlined"
+                    value={formData.servicePriceBuy}
+                    onChange={handleInputChange}
+                  />
+                </Grid>
+                <Grid size={6}>
+                  <TextField
+                    name="servicePriceSell"
+                    label="سعر البيع"
+                    type="number"
+                    margin="dense"
+                    fullWidth
+                    variant="outlined"
+                    value={formData.servicePriceSell}
+                    onChange={handleInputChange}
+                  />
                 </Grid>
               </Grid>
               <DialogActions>

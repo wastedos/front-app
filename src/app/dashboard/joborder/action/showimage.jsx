@@ -4,8 +4,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import CloseIcon from '@mui/icons-material/Close';
+import ImageIcon from '@mui/icons-material/Image';
 import { Box, Snackbar, Alert, TextField, IconButton, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import axios from 'axios';
@@ -21,8 +21,8 @@ export default function Showimage({ image }) {
 
   return (
     <React.Fragment>
-      <IconButton onClick={handleClickOpen} color="success" sx={{mx:1}}>
-        <VisibilityIcon/>
+      <IconButton onClick={handleClickOpen}  sx={{mx:1}}>
+        <ImageIcon/>
       </IconButton>
       <Dialog
         open={open}

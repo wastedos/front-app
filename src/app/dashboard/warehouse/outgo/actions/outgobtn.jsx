@@ -42,7 +42,7 @@ export default function Outgobtn({ itemId }) {
       >
         {/* خيار تعديل العنصر */}
         <Box sx={{ display:'flex', flexDirection:'column'}}>
-          <FormUpdate itemId={itemId}/>
+          {/*<FormUpdate itemId={itemId}/>*/}
           <FormDelete itemId={itemId}/>
         </Box>
       </Menu>

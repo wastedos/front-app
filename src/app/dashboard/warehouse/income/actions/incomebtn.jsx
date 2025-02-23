@@ -41,7 +41,7 @@ export default function Incomebtn({ itemId }) {
         }}
       >
         <Box sx={{display:"flex", flexDirection:'column',}}>
-          <FormUpdate itemId={itemId}/>
+          {/*<FormUpdate itemId={itemId}/>*/}
           <FormDelete itemId={itemId}/>
         </Box>
 

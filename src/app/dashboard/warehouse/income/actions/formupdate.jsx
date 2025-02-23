@@ -5,8 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import EditIcon from '@mui/icons-material/Edit';
-import { Box, IconButton, TextField } from '@mui/material';
-import Grid from '@mui/material/Grid2';
+import { Box, IconButton, TextField, Snackbar, Alert } from '@mui/material';
 import axios from 'axios';
 
 export default function FormUpdate({ itemId }) {
@@ -16,6 +15,7 @@ export default function FormUpdate({ itemId }) {
     price: '',
     total: 0,
   });
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -25,13 +25,16 @@ export default function FormUpdate({ itemId }) {
     setOpen(false);
   };
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     setFormData((prevData) => {
       const updatedData = { ...prevData, [name]: value };
 
-      // حساب total إذا تم تعديل quantity أو price
+      // حساب total عند تغيير quantity أو price
       if (name === 'quantity' || name === 'price') {
         const quantity = parseFloat(updatedData.quantity) || 0;
         const price = parseFloat(updatedData.price) || 0;
@@ -46,8 +49,7 @@ export default function FormUpdate({ itemId }) {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      // إرسال البيانات إلى السيرفر لتحديث العنصر
-      const response = await axios.put(
+      await axios.put(
         `${process.env.NEXT_PUBLIC_API_URL}/warehouse/update-income/${itemId}`,
         {
           quantity: formData.quantity,
@@ -59,8 +61,8 @@ export default function FormUpdate({ itemId }) {
         }
       );
 
-      console.log('Item updated successfully:', response.data);
-      setOpen(false); // غلق النافذة بعد التحديث
+      setSnackbarOpen(true); // عرض Snackbar عند نجاح التحديث
+      setOpen(false); // إغلاق النافذة
     } catch (error) {
       console.error('Error updating item:', error.response?.data || error.message);
     }
@@ -68,7 +70,7 @@ export default function FormUpdate({ itemId }) {
 
   return (
     <React.Fragment>
-      <IconButton onClick={handleClickOpen} color='success'>
+      <IconButton onClick={handleClickOpen}>
         <EditIcon />
       </IconButton>
       <Dialog
@@ -83,47 +85,41 @@ export default function FormUpdate({ itemId }) {
         <DialogContent>
           <Box>
             <form onSubmit={handleUpdate}>
-              <Grid container spacing={2}>
-                <Grid size={6}>
-                  <TextField
-                    name="quantity"
-                    label="العدد"
-                    type="number"
-                    margin="dense"
-                    fullWidth
-                    variant="outlined"
-                    value={formData.quantity}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid size={6}>
-                  <TextField
-                    name="price"
-                    label="السعر"
-                    type="number"
-                    margin="dense"
-                    fullWidth
-                    variant="outlined"
-                    value={formData.price}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid size={12}>
-                  <TextField
-                    name="total"
-                    label="الاجمالي"
-                    type="number"
-                    margin="dense"
-                    fullWidth
-                    variant="outlined"
-                    value={formData.total}
-                    disabled // الحقل غير قابل للتعديل
-                  />
-                </Grid>
-              </Grid>
+              <TextField
+                name="quantity"
+                label="العدد"
+                type="number"
+                margin="dense"
+                fullWidth
+                variant="outlined"
+                value={formData.quantity}
+                onChange={handleChange}
+                required
+              />
+              <TextField
+                name="price"
+                label="السعر"
+                type="number"
+                margin="dense"
+                fullWidth
+                variant="outlined"
+                value={formData.price}
+                onChange={handleChange}
+                required
+              />
+              <TextField
+                name="total"
+                label="الإجمالي"
+                type="number"
+                margin="dense"
+                fullWidth
+                variant="outlined"
+                value={formData.total}
+                disabled
+              />
               <DialogActions>
                 <Button onClick={handleClose} sx={{ textTransform: 'none' }} color="error">
-                  اغلاق
+                  إغلاق
                 </Button>
                 <Button
                   type="submit"
@@ -138,6 +134,18 @@ export default function FormUpdate({ itemId }) {
           </Box>
         </DialogContent>
       </Dialog>
+
+      {/* Snackbar */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      >
+        <Alert onClose={handleSnackbarClose} severity="success" variant="filled">
+          تم التحديث بنجاح!
+        </Alert>
+      </Snackbar>
     </React.Fragment>
   );
 }

@@ -13,6 +13,7 @@ export default function FormReturn() {
   const [formData, setFormData] = React.useState({
     code: "",
     quantity: "",
+    billnumber:"",
     reason: "",
   });
 
@@ -50,6 +51,7 @@ export default function FormReturn() {
       setFormData({    
         code: "",
         quantity: "",
+        billnumber:"",
         reason: "",
       })
       const result = await response.json();
@@ -92,6 +94,18 @@ export default function FormReturn() {
                 </Grid>
                 <Grid size={6}>
                   <TextField
+                    name="billnumber"
+                    label="رقم الفاتورة"
+                    type="text"
+                    margin="dense"
+                    fullWidth
+                    variant="outlined"
+                    value={formData.billnumber}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid size={6}>
+                  <TextField
                     name="quantity"
                     label="العدد"
                     type="number"
@@ -102,7 +116,7 @@ export default function FormReturn() {
                     onChange={handleChange}
                   />
                 </Grid>
-                <Grid size={12}>
+                <Grid size={6}>
                   <TextField
                     name="reason"
                     label="السبب"

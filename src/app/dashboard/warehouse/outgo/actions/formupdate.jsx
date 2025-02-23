@@ -68,7 +68,7 @@ export default function FormUpdate({ itemId }) {
 
   return (
     <React.Fragment>
-      <IconButton  onClick={handleClickOpen}  color="success" sx={{ mx:1 }}>
+      <IconButton  onClick={handleClickOpen}  sx={{ mx:1 }}>
         <EditIcon/>
       </IconButton>
       <Dialog

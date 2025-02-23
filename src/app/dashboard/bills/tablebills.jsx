@@ -16,7 +16,6 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Billbtn from "./action/billbtn";
-import Showimage from "./action/showimage";
 
 export default function TableBills() {
   const theme = useTheme();
@@ -142,7 +141,6 @@ export default function TableBills() {
                           <TableCell align="center">العدد</TableCell>
                           <TableCell align="center">سعر الشراء</TableCell>
                           <TableCell align="center">سعر البيع</TableCell>
-                          <TableCell align="center">الصور</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -153,7 +151,6 @@ export default function TableBills() {
                             <TableCell align="center">{newPart.quantity}</TableCell>
                             <TableCell align="center">{newPart.pricebuy}</TableCell>
                             <TableCell align="center">{newPart.pricesell}</TableCell>
-                            <TableCell align="center"> <Showimage image={`http://localhost:5000/${newPart.imageName}`} /> </TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -167,7 +164,6 @@ export default function TableBills() {
                           <TableCell align="center">المكان</TableCell>
                           <TableCell align="center">سعر الشراء</TableCell>
                           <TableCell align="center">سعر البيع</TableCell>
-                          <TableCell align="center">الصور</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -177,7 +173,6 @@ export default function TableBills() {
                             <TableCell align="center">{outjob.dealerName}</TableCell>
                             <TableCell align="center">{outjob.jobPriceBuy}</TableCell>
                             <TableCell align="center">{outjob.jobPriceSell}</TableCell>
-                            <TableCell align="center"> <Showimage image={`http://localhost:5000/${outjob.imageName}`} /> </TableCell>                         
                           </TableRow>
                         ))}
                       </TableBody>
@@ -201,7 +196,28 @@ export default function TableBills() {
                       </TableBody>
                     </Table>
                   </TableCell>
-                  <TableCell align="center">{order.payment}</TableCell>
+                  <TableCell>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>نوع الخزنة</TableCell>
+                          <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>المبلغ</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {order.payed.map((pay, payIndex) => (
+                          <TableRow key={payIndex}>
+                            <TableCell align="center">{pay.payment}</TableCell>
+                            <TableCell align="center">{pay.payedPrice}</TableCell>
+                          </TableRow>
+                        ))}
+                          <TableRow>
+                            <TableCell align="center">{order.payment}</TableCell>
+                            <TableCell align="center">{order.theRest}</TableCell>
+                          </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableCell>
                   <TableCell align="center">{order.invoice}</TableCell>
                   <TableCell align="center">{order.discount}</TableCell>
                   <TableCell align="center">{order.total}</TableCell>

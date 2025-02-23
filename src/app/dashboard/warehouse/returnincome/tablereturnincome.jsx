@@ -18,8 +18,7 @@ export default function TableReturnIcome() {
     { id: 'quantity', name: 'العدد' },
     { id: 'price', name: 'السعر' },
     { id: 'total', name: 'الاجمالي' },
-    { id: 'seller', name: 'البائع' },
-    { id: 'sellerphone', name: 'رقم البائع' },
+    { id: 'dealerName', name: 'البائع' },
   ];
 
   const [rows, setRows] = React.useState([]);

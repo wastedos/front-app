@@ -52,10 +52,12 @@ export default function TableJobOrder() {
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>قطع استيراد</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>اعمال خارجية</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>نثريات</TableCell>
+                <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>المدفوعات</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>طريقة الدفع</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>مصنعية الورشة</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الخصم</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الاجمالي</TableCell>
+                <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الباقي</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>التفعلات</TableCell>
               </TableRow>
             </TableHead>
@@ -170,10 +172,29 @@ export default function TableJobOrder() {
                         </TableBody>
                       </Table>
                     </TableCell>
+                    <TableCell>
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>نوع الخزنة</TableCell>
+                            <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>المبلغ</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {order.payed.map((pay, payIndex) => (
+                            <TableRow key={payIndex}>
+                              <TableCell align="center">{pay.payment}</TableCell>
+                              <TableCell align="center">{pay.payedPrice}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableCell>
                     <TableCell align="center">{order.payment}</TableCell>
                     <TableCell align="center">{order.invoice}</TableCell>
                     <TableCell align="center">{order.discount}</TableCell>
                     <TableCell align="center">{order.total}</TableCell>
+                    <TableCell align="center">{order.theRest}</TableCell>
                     <TableCell align="center"><JobOrderbtn itemId={order._id}/></TableCell>
                   </TableRow>
                 </React.Fragment>

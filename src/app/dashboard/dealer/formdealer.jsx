@@ -142,6 +142,7 @@ export default function FormDealer() {
                       value={formData.service}
                       onChange={handleInputChange}
                     >
+                      <MenuItem value="قطع جديدة">قطع جديدة</MenuItem>
                       <MenuItem value="قطع استيراد">قطع استيراد</MenuItem>
                       <MenuItem value="اعمال خارجية">اعمال خارجية</MenuItem>
                     </Select>
