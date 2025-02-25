@@ -13,6 +13,7 @@ export default function TableReturnOutgo() {
     { id: 'date', name: 'تاريخ التسجيل' },
     { id: 'code', name: 'الكود' },
     { id: 'billnumber', name: 'رقم الفاتورة' },
+    { id: 'carModel', name: 'نوع السيارة' },
     { id: 'category', name: 'النوع' },
     { id: 'brand', name: 'الماركة' },
     { id: 'quantity', name: 'العدد' },

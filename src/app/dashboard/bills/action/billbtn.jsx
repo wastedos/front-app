@@ -42,7 +42,7 @@ export default function Billbtn({ itemId }) {
       >
         <Box sx={{display:"flex", flexDirection:'column',}}>
           <Print itemId={itemId}/>
-          <FormDelete itemId={itemId}/>
+          {/*<FormDelete itemId={itemId}/>*/}
         </Box>
 
       </Menu>

@@ -46,7 +46,7 @@ export default function BanelThree() {
   }, []);
 
   return (
-    <Grid size={{ xs: 12, lg: 6, xl: 4 }}>
+    <Grid size={{ xs: 12, xl: 4 }}>
       <Box
         sx={{
           height: '30rem',

@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { Box, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Alert, Box, FormControl, InputLabel, MenuItem, Select, Snackbar, TextField, Typography } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import { styled } from '@mui/material/styles';
 import { useTheme } from '@mui/material/styles';
@@ -15,6 +15,11 @@ import axios from 'axios';
 
 export default function FormJobOrder() {
   const theme = useTheme();
+
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = React.useState('success');
 
   const [open, setOpen] = React.useState(false);
   const [dealersNewpart, setDealersNewpart] = React.useState([]);
@@ -195,9 +200,10 @@ export default function FormJobOrder() {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     const formDataToSend = new FormData();
-  
     // Add client data
     formDataToSend.append("clientName", formData.clientName);
     formDataToSend.append("clientPhone", formData.clientPhone);
@@ -258,13 +264,28 @@ export default function FormJobOrder() {
         setOther([]);
         setPayed([])
         handleClose();
+
+        setSnackbarMessage('تم حفظ العنصر بنجاح!');
+        setSnackbarSeverity('success');
+        setSnackbarOpen(true);
+
       } else {
         console.error("❌ Failed to add job order");
       }
     } catch (error) {
       console.error("❌ Error:", error);
+      setSnackbarMessage(error.message);
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
 
   // Hidden input for file uploads
   const VisuallyHiddenInput = styled('input')({
@@ -307,7 +328,6 @@ export default function FormJobOrder() {
                 </Grid>
                 <Grid size={6}>
                   <TextField
-                    required
                     name="clientPhone"
                     label="رقم العميل"
                     type="number"
@@ -345,6 +365,18 @@ export default function FormJobOrder() {
                 </Grid>
                 <Grid size={6}>
                   <TextField
+                    name="carKm"
+                    label="عدد الكيلو مترات"
+                    type="number"
+                    margin="dense"
+                    fullWidth
+                    variant="outlined"
+                    value={formData.carKm}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid size={6}>
+                  <TextField
                     name="chassis"
                     label="رقم الشاسية"
                     type="text"
@@ -352,18 +384,6 @@ export default function FormJobOrder() {
                     fullWidth
                     variant="outlined"
                     value={formData.chassis}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid size={6}>
-                  <TextField
-                    name="carKm"
-                    label="كيلو متر"
-                    type="number"
-                    margin="dense"
-                    fullWidth
-                    variant="outlined"
-                    value={formData.carKm}
                     onChange={handleChange}
                   />
                 </Grid>
@@ -471,7 +491,6 @@ export default function FormJobOrder() {
                     </Grid>
                     <Grid size={12} sx={{ display: 'flex', alignItems: 'center' }}>
                       <TextField
-                        required
                         name="category"
                         label="نوع القطعة"
                         type="text"
@@ -838,14 +857,24 @@ export default function FormJobOrder() {
                 <Button onClick={handleClose} sx={{ textTransform: "none" }} color="error">
                   اغلاق
                 </Button>
-                <Button type="submit" autoFocus variant="contained" sx={{ textTransform: "none" }}>
-                  تسجيل
+                <Button type="submit" autoFocus variant="contained" disabled={isSubmitting} sx={{ textTransform: "none" }}>
+                  {isSubmitting ? 'جاري التسجيل...' : 'تسجيل'}
                 </Button>
               </DialogActions>
             </form>
           </Box>
         </DialogContent>
       </Dialog>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </React.Fragment>
   );
 }

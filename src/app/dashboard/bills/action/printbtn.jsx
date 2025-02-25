@@ -158,12 +158,12 @@ export default function Print({ itemId }) {
                 <tr>
                   <td>مصنعية الورشة</td>
                   <td colspan="4">
-                    ${itemData.invoice}
+                    ${itemData.invoice || '-'}
                   </td>
                 </tr>
                 <tr>
                   <td>الخصم</td>
-                  <td colspan="4">${itemData.discount}</td>
+                  <td colspan="4">${itemData.discount || '-'}</td>
                 </tr>
                 <tr class="total-row">
                   <td>الإجمالي</td>

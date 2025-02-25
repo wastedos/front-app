@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
-import { Box, TextField, FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material';
+import { Box, TextField, FormControl, InputLabel, Select, MenuItem, Typography, Snackbar, Alert } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import axios from 'axios';
 
@@ -17,7 +17,8 @@ export default function Deposit() {
     amountDeposit: '',
     reasonDeposit: '',
   });
-  const [message, setMessage] = React.useState(false);  // State for success message
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);  // حالة Snackbar
+  const [isSubmitting, setIsSubmitting] = React.useState(false);  // حالة الإرسال
 
   // Handle opening the dialog
   const handleClickOpen = () => {
@@ -41,28 +42,36 @@ export default function Deposit() {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+    setIsSubmitting(true); // تعيين حالة الإرسال إلى true
+
     const { typeSafe, amountDeposit, reasonDeposit } = formData;
-  
+
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/transactions/deposit`, {
-        typeSafe: typeSafe,
-        amountDeposit: amountDeposit, // المبلغ الذي تم إيداعه
-        reasonDeposit: reasonDeposit, // السبب (اختياري)
+        typeSafe,
+        amountDeposit, // المبلغ الذي تم إيداعه
+        reasonDeposit, // السبب (اختياري)
       });
-  
+
       console.log('Transaction successful', response.data);
-      // يمكن هنا تحديث واجهة المستخدم لعرض العملية الجديدة
-      setMessage(true);  // عرض رسالة النجاح
-      setTimeout(() => setMessage(false), 6000);  // إخفاء الرسالة بعد 6 ثوانٍ
+      setSnackbarOpen(true);  // فتح Snackbar
+      setFormData({ typeSafe: '', amountDeposit: '', reasonDeposit: '' }); // إعادة تعيين البيانات
     } catch (error) {
       console.error("Error in deposit:", error.message);
+    } finally {
+      setIsSubmitting(false); // تعيين حالة الإرسال إلى false
+      handleClose(); // إغلاق الـ Dialog بعد العملية
     }
+  };
+
+  // Handle Snackbar close
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   return (
     <React.Fragment>
-      <Button onClick={handleClickOpen} endIcon={<AddIcon />} variant='outlined' color="success" sx={{ my: 1, width: {xs:'100%', sm:'32%'} }}>
+      <Button onClick={handleClickOpen} endIcon={<AddIcon />} variant='outlined' color="success" sx={{ my: 1, width: { xs: '100%', sm: '32%' } }}>
         ايداع اموال
       </Button>
       <Dialog
@@ -77,7 +86,6 @@ export default function Deposit() {
         <DialogContent>
           <Box>
             <form onSubmit={handleSubmit}>
-              {/* استخدام Grid بشكل صحيح هنا */}
               <Grid container spacing={2}>
                 <Grid size={6}>
                   <FormControl fullWidth margin="dense">
@@ -132,13 +140,13 @@ export default function Deposit() {
                   اغلاق
                 </Button>
                 <Button
-                  onClick={handleClose}
                   type="submit"
                   autoFocus
                   variant="contained"
                   sx={{ textTransform: 'none' }}
+                  disabled={isSubmitting} // تعطيل الزر أثناء الإرسال
                 >
-                  تاكيد
+                  {isSubmitting ? 'جاري الإيداع...' : 'تاكيد'}
                 </Button>
               </DialogActions>
             </form>
@@ -146,12 +154,12 @@ export default function Deposit() {
         </DialogContent>
       </Dialog>
 
-      {/* عرض رسالة نجاح عند الإيداع */}
-      {message && (
-        <Box sx={{ position: 'fixed', bottom: 20, right: 20, backgroundColor: 'green', padding: 2, borderRadius: 2 }}>
-          <Typography color="white">تم الإيداع بنجاح!</Typography>
-        </Box>
-      )}
+      {/* Snackbar لعرض رسالة النجاح */}
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+          تم الإيداع بنجاح!
+        </Alert>
+      </Snackbar>
     </React.Fragment>
   );
 }

@@ -116,6 +116,12 @@ export default function TableService({ itemId }) {
                     التاريخ
                   </TableCell>
                   <TableCell align="center" sx={{ fontWeight: "600", fontSize: "1rem" }}>
+                    رقم الفاتورة
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontWeight: "600", fontSize: "1rem" }}>
+                    الكود
+                  </TableCell>
+                  <TableCell align="center" sx={{ fontWeight: "600", fontSize: "1rem" }}>
                     نوع
                   </TableCell>
                   <TableCell align="center" sx={{ fontWeight: "600", fontSize: "1rem" }}>
@@ -126,9 +132,6 @@ export default function TableService({ itemId }) {
                   </TableCell>
                   <TableCell align="center" sx={{ fontWeight: "600", fontSize: "1rem" }}>
                     سعر البيع
-                  </TableCell>
-                  <TableCell align="center" sx={{ fontWeight: "600", fontSize: "1rem" }}>
-                    رقم الفاتورة
                   </TableCell>
                   <TableCell align="center" sx={{ fontWeight: "600", fontSize: "1rem" }}>
                     الصور
@@ -142,12 +145,13 @@ export default function TableService({ itemId }) {
                 {filteredServices.map((service, index) => (
                   <TableRow key={index}>
                     <TableCell align="center">{service.date}</TableCell>
+                    <TableCell align="center">{service.billNumber}</TableCell>
+                    <TableCell align="center">{service.code || "-"}</TableCell>
                     <TableCell align="center">{service.type}</TableCell>
                     <TableCell align="center">{service.count}</TableCell>
                     <TableCell align="center">{service.servicePriceBuy}</TableCell>
                     <TableCell align="center">{service.servicePriceSell}</TableCell>
-                    <TableCell align="center">{service.billNumber}</TableCell>
-                    <TableCell align="center"> <Showimage image={`http://localhost:5000/${service.imageName}`} /> </TableCell>
+                    <TableCell align="center"> <Showimage image={`http://localhost:5000/${service.imageName}`}/> </TableCell>
                     <TableCell align="center"><Servicebtn dealerId={itemId} serviceId={service._id}/></TableCell>
                   </TableRow>
                 ))}

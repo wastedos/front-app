@@ -13,6 +13,7 @@ export default function DealerFormPayed({ dealerId }) {
   const [open, setOpen] = React.useState(false);
   const [formData, setFormData] = React.useState({ typeSafe: '', payed: '' });
   const [message, setMessage] = React.useState({ open: false, text: '', severity: 'success' });
+  const [isSubmitting, setIsSubmitting] = React.useState(false); // ✅ التحكم في حالة الطلب
 
   // Handle form input changes
   const handleInputChange = (e) => {
@@ -33,6 +34,8 @@ export default function DealerFormPayed({ dealerId }) {
   // إرسال بيانات الدفع
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) return;
+    setIsSubmitting(true);
 
     try {
       const response = await axios.put(
@@ -52,7 +55,11 @@ export default function DealerFormPayed({ dealerId }) {
     } catch (error) {
       console.error("حدث خطأ أثناء تحديث الدفع:", error.message);
       setMessage({ open: true, text: "حدث خطأ أثناء الدفع", severity: "error" });
+    } finally {
+      setIsSubmitting(false);  
+      handleClose(); 
     }
+
   };
 
   return (
@@ -102,7 +109,9 @@ export default function DealerFormPayed({ dealerId }) {
 
               <DialogActions>
                 <Button onClick={handleClose} sx={{ textTransform: 'none' }}>اغلاق</Button>
-                <Button type="submit" variant="contained" sx={{ textTransform: 'none' }}>تاكيد</Button>
+                <Button type="submit" variant="contained" sx={{ textTransform: 'none' }} disabled={isSubmitting}>
+                  {isSubmitting ? 'جاري دفع ...' : 'تاكيد'}
+                </Button>
               </DialogActions>
             </form>
           </Box>

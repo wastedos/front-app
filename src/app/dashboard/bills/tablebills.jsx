@@ -46,8 +46,7 @@ export default function TableBills() {
     };
 
     fetchOrders();
-  }, []); // يتم استدعاء useEffect مرة واحدة عند التحميل
-
+  }, []);
   return (
     <Grid container spacing={2}>
       <Box sx={{ width: "100%", backgroundColor: theme.palette.colors.box, borderRadius:'15px', overflow:'hidden', p:1 }}>

@@ -10,6 +10,7 @@ export default function TableWarehouse() {
   
   const columns = [
     { id: 'code', name: 'الكود' },
+    { id: 'carModel', name: 'نوع السيارة' },
     { id: 'category', name: 'النوع' },
     { id: 'brand', name: 'الماركة' },
     { id: 'income', name: 'الوارد' },

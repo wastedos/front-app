@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, TextField, Typography, Snackbar, Alert } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
 export default function FormIncome() {
@@ -14,11 +14,15 @@ export default function FormIncome() {
     code: "",
     quantity: "",
     price: "",
-    total: 0,
     billnumber: "",
     buyer: "",
     buyerphone: "",
   });
+
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = React.useState('success');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,14 +34,15 @@ export default function FormIncome() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => {
-      const updatedData = { ...prevData, [name]: value };
-      return updatedData;
-    });
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
   };
-  //Send Data to Database
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse/add-outgo`, {
         method: "POST",
@@ -47,29 +52,44 @@ export default function FormIncome() {
         body: JSON.stringify(formData),
       });
       if (!response.ok) {
-        throw new Error("Failed to save item");
+        throw new Error("فشل حفظ العنصر");
       }
       setFormData({
         code: "",
-        category: "",
-        brand:"",
-        quantity:"",
-        price:"",
-        billnumber:"",
-        buyer:"",
-        buyerphone:"",
-      })
+        quantity: "",
+        price: "",
+        billnumber: "",
+        buyer: "",
+        buyerphone: "",
+      });
       const result = await response.json();
-      console.log("Item saved:", result);
+      console.log("تم حفظ العنصر:", result);
+      setSnackbarMessage('تم حفظ العنصر بنجاح!');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
       handleClose();
     } catch (error) {
       console.error(error.message);
+      setSnackbarMessage(error.message);
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
+    } finally {
+      setIsSubmitting(false);
     }
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   return (
     <React.Fragment>
-      <Button variant="contained" onClick={handleClickOpen} startIcon={<RemoveIcon />} sx={{ textTransform: "none", mx:1 }}>
+      <Button
+        variant="contained"
+        onClick={handleClickOpen}
+        startIcon={<RemoveIcon />}
+        sx={{ textTransform: "none", mx: 1 }}
+      >
         الصادر
       </Button>
       <Dialog
@@ -79,7 +99,7 @@ export default function FormIncome() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" align="center">
-          <Typography sx={{ fontSize:'2rem', fontWeight:'600'}}>الصادر</Typography>
+          <Typography sx={{ fontSize: '2rem', fontWeight: '600' }}>الصادر</Typography>
         </DialogTitle>
         <DialogContent>
           <Box>
@@ -166,14 +186,24 @@ export default function FormIncome() {
                   autoFocus
                   variant="contained"
                   sx={{ textTransform: "none" }}
+                  disabled={isSubmitting}
                 >
-                  تسجيل
+                  {isSubmitting ? 'جاري التسجيل...' : 'تسجيل'}
                 </Button>
               </DialogActions>
             </form>
           </Box>
         </DialogContent>
       </Dialog>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </React.Fragment>
   );
 }

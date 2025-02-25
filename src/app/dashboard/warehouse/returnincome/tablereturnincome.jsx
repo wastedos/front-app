@@ -13,6 +13,7 @@ export default function TableReturnIcome() {
     { id: 'date', name: 'تاريخ التسجيل' },
     { id: 'code', name: 'الكود' },
     { id: 'billnumber', name: 'رقم الفاتورة' },
+    { id: 'carModel', name: 'نوع السيارة' },
     { id: 'category', name: 'النوع' },
     { id: 'brand', name: 'الماركة' },
     { id: 'quantity', name: 'العدد' },
@@ -41,7 +42,7 @@ export default function TableReturnIcome() {
     };
 
     fetchItems();
-  },);
+  }, []);
 
   // Filtered rows based on search
   const filteredRows = rows.filter((row) => 

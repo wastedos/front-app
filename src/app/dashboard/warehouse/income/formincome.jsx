@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
-import { Box, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
+import { Box, FormControl, InputLabel, MenuItem, Select, TextField, Typography, Snackbar, Alert } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 
 export default function FormIncome() {
@@ -13,25 +13,34 @@ export default function FormIncome() {
   const [dealers, setDealers] = React.useState([]);
   const [formData, setFormData] = React.useState({
     code: "",
+    billnumber: "",
+    carModel: "",
     category: "",
     brand: "",
     quantity: "",
     price: "",
     dealerName: "",
   });
+  
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [openSnackbar, setOpenSnackbar] = React.useState(false); // حالة جديدة لـ Snackbar
+  const [errorMessage, setErrorMessage] = React.useState(""); // حالة جديدة لتخزين رسالة الخطأ
+
   const handleClickOpen = () => {
     setOpen(true);
+    setErrorMessage(""); // إعادة تعيين رسالة الخطأ عند فتح الحوار
   };
+
   const handleClose = () => {
     setOpen(false);
+    setErrorMessage(""); // إعادة تعيين رسالة الخطأ عند إغلاق الحوار
   };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     setFormData((prevData) => {
       const updatedData = { ...prevData, [name]: value };
-
-
       return updatedData;
     });
   };
@@ -44,21 +53,22 @@ export default function FormIncome() {
           method: "GET",
         });
         const data = await response.json();
-        // تصفية التجار الذين يقدمون خدمة "قطع جديدة"
         const dealers = data.filter(dealer => dealer.service === "قطع جديدة");
         setDealers(dealers);
       } catch (error) {
         console.error("Error fetching dealers:", error.message);
       }
     };
-  
+
     fetchDealers();
   }, []);
-  
 
-  //Send Data to Database
+  // Send Data to Database
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true); // تعطل الزر
+    setErrorMessage(""); // إعادة تعيين رسالة الخطأ
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse/add-income`, {
         method: "POST",
@@ -67,28 +77,41 @@ export default function FormIncome() {
         },
         body: JSON.stringify(formData),
       });
+
       if (!response.ok) {
-        throw new Error("Failed to save item");
+        throw new Error("فشل في حفظ العنصر");
       }
+
       setFormData({
         code: "",
+        billnumber: "",
+        carModel: "",
         category: "",
         brand: "",
         quantity: "",
         price: "",
         dealerName: "",
-      })
+      });
+
       const result = await response.json();
       console.log("Item saved:", result);
       handleClose();
     } catch (error) {
       console.error(error.message);
+      setErrorMessage(error.message); // تعيين رسالة الخطأ
+      setOpenSnackbar(true); // فتح Snackbar
+    } finally {
+      setIsSubmitting(false); // إعادة تفعيل الزر
     }
+  };
+
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false); // إغلاق Snackbar
   };
 
   return (
     <React.Fragment>
-      <Button variant="contained" onClick={handleClickOpen} startIcon={<AddIcon />} sx={{ textTransform: "none", mx:1 }}>
+      <Button variant="contained" onClick={handleClickOpen} startIcon={<AddIcon />} sx={{ textTransform: "none", mx: 1 }}>
         الوارد
       </Button>
       <Dialog
@@ -98,13 +121,13 @@ export default function FormIncome() {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title" align="center">
-          <Typography sx={{ fontSize:'2rem', fontWeight:'600'}}>الوارد</Typography>
+          <Typography sx={{ fontSize: '2rem', fontWeight: '600' }}>الوارد</Typography>
         </DialogTitle>
         <DialogContent>
           <Box>
             <form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
-                <Grid size={12}>
+                <Grid size={6}>
                   <TextField
                     size='small'
                     name="code"
@@ -114,6 +137,31 @@ export default function FormIncome() {
                     fullWidth
                     variant="outlined"
                     value={formData.code}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid size={6}>
+                  <TextField
+                    size='small'
+                    name="billnumber"
+                    label="رقم العملية"
+                    margin="dense"
+                    type="text"
+                    fullWidth
+                    variant="outlined"
+                    value={formData.billnumber}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid size={12}>
+                  <TextField
+                    name="carModel"
+                    label="نوع السيارة"
+                    margin="dense"
+                    type="text"
+                    fullWidth
+                    variant="outlined"
+                    value={formData.carModel}
                     onChange={handleChange}
                   />
                 </Grid>
@@ -191,14 +239,25 @@ export default function FormIncome() {
                   autoFocus
                   variant="contained"
                   sx={{ textTransform: "none" }}
+                  disabled={isSubmitting}
                 >
-                  تسجيل
+                  {isSubmitting ? 'لحظات ...' : 'تسجيل'}
                 </Button>
               </DialogActions>
             </form>
           </Box>
         </DialogContent>
       </Dialog>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }} // تغيير موضع Snackbar
+      >
+        <Alert onClose={handleSnackbarClose} severity="error" sx={{ width: '100%' }}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </React.Fragment>
   );
 }

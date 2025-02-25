@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import RemoveIcon from '@mui/icons-material/Remove';
-import { Box, TextField, FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material';
+import { Box, TextField, FormControl, InputLabel, Select, MenuItem, Snackbar, Alert, } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import axios from 'axios';
 
@@ -16,23 +16,21 @@ export default function Withdraw() {
     typeSafe: '',
     amountWithdraw: '',
     typeWithdraw: '',
-    payee:'',
+    payee: '',
     reasonWithdraw: '',
   });
-  const [message, setMessage] = React.useState(false);
-  const [err, setErr] = React.useState(false);
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  // Handle opening the dialog
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  // Handle closing the dialog
   const handleClose = () => {
     setOpen(false);
   };
 
-  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -41,60 +39,55 @@ export default function Withdraw() {
     }));
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const { typeSafe, amountWithdraw, typeWithdraw, payee, reasonWithdraw } = formData;
 
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/transactions/withdraw`, {
-        typeSafe, // نوع المحفظة
-        amountWithdraw: parseFloat(amountWithdraw), // المبلغ الذي تم سحبه
-        typeWithdraw, // نوع السحب
+        typeSafe,
+        amountWithdraw: parseFloat(amountWithdraw),
+        typeWithdraw,
         payee,
-        reasonWithdraw, // السبب
+        reasonWithdraw,
       });
 
-      console.log('Transaction successful', response.data);
-      // عرض رسالة النجاح
-      setMessage(true);
-      setTimeout(() => setMessage(false), 6000); // إخفاء الرسالة بعد 6 ثوانٍ
+      setSnackbarMessage('تم السحب بنجاح!');
+      setFormData({ typeSafe: '', amountWithdraw: '', typeWithdraw: '', payee: '', reasonWithdraw: '' });
     } catch (error) {
-      setErr(true)
-      setTimeout(() => setErr(false), 6000); // إخفاء الرسالة بعد 6 ثوانٍ
-      console.error("Error in withdraw:", error.message);
+      console.error("Error in withdraw:", error);
+      setSnackbarMessage('رصيد غير كافي أو حدث خطأ!');
+    } finally {
+      setSnackbarOpen(true);
+      setIsSubmitting(false);
+      handleClose();
     }
   };
 
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   return (
-    <React.Fragment>
+    <>
       <Button onClick={handleClickOpen} endIcon={<RemoveIcon />} variant='outlined' color="error" sx={{ my: 1, width: { xs: '100%', sm: '32%' } }}>
         سحب اموال
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title" align="center">
-          سحب اموال
-        </DialogTitle>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle align="center">سحب اموال</DialogTitle>
         <DialogContent>
           <Box>
             <form onSubmit={handleSubmit}>
-              {/* استخدام Grid بشكل صحيح هنا */}
               <Grid container spacing={2}>
                 <Grid size={6}>
                   <FormControl fullWidth margin="dense">
-                    <InputLabel id="type-safe">من</InputLabel>
+                    <InputLabel id="type-safe-label">من</InputLabel>
                     <Select
                       required
-                      labelId="type-safe"
-                      id="type-safe"
+                      labelId="type-safe-label"
                       name="typeSafe"
-                      label="من"
                       value={formData.typeSafe}
                       onChange={handleInputChange}
                     >
@@ -117,18 +110,17 @@ export default function Withdraw() {
                     variant="outlined"
                     value={formData.amountWithdraw}
                     onChange={handleInputChange}
+                    inputProps={{ min: "0", step: "any" }} // Prevent negative values
                   />
                 </Grid>
 
                 <Grid size={12}>
                   <FormControl fullWidth margin="dense">
-                    <InputLabel id="type-withdraw">نوع السحب</InputLabel>
+                    <InputLabel id="type-withdraw-label">نوع السحب</InputLabel>
                     <Select
                       required
-                      labelId="type-withdraw"
-                      id="type-withdraw"
+                      labelId="type-withdraw-label"
                       name="typeWithdraw"
-                      label="نوع السحب"
                       value={formData.typeWithdraw}
                       onChange={handleInputChange}
                     >
@@ -169,17 +161,9 @@ export default function Withdraw() {
               </Grid>
 
               <DialogActions>
-                <Button onClick={handleClose} sx={{ textTransform: 'none' }}>
-                  اغلاق
-                </Button>
-                <Button
-                  onClick={handleClose}
-                  type="submit"
-                  autoFocus
-                  variant="contained"
-                  sx={{ textTransform: 'none' }}
-                >
-                  تأكيد
+                <Button onClick={handleClose}>اغلاق</Button>
+                <Button type="submit" variant="contained" disabled={isSubmitting}>
+                  {isSubmitting ? 'جاري السحب...' : 'تأكيد'}
                 </Button>
               </DialogActions>
             </form>
@@ -187,17 +171,11 @@ export default function Withdraw() {
         </DialogContent>
       </Dialog>
 
-      {/* عرض رسالة نجاح عند السحب */}
-      {message && (
-        <Box sx={{ position: 'fixed', bottom: 20, right: 20, backgroundColor: 'green', padding: 2, borderRadius: 2 }}>
-          <Typography color="white">تم السحب بنجاح!</Typography>
-        </Box>
-      )}
-      {err && (
-        <Box sx={{ position: 'fixed', bottom: 20, right: 20, backgroundColor: 'red', padding: 2, borderRadius: 2 }}>
-          <Typography color="white">رصيد غير كافي</Typography>
-        </Box>
-      )}
-    </React.Fragment>
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity={snackbarMessage.includes('نجاح') ? "success" : "error"} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+    </>
   );
 }

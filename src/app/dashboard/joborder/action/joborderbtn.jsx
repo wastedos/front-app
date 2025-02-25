@@ -8,6 +8,8 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 
 export default function JobOrderbtn({ itemId }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [isSubmitting, setIsSubmitting] = React.useState(false); // ✅ التحكم في حالة الطلب
+
   const open = Boolean(anchorEl);
 
   // فتح القائمة المنسدلة
@@ -22,6 +24,9 @@ export default function JobOrderbtn({ itemId }) {
 
   // إرسال طلب الحذف واستدعاء مسار الفواتير
   const handleArchiveAndDelete = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joborders/bills-byid/${itemId}`, {
         method: 'DELETE',
@@ -39,14 +44,15 @@ export default function JobOrderbtn({ itemId }) {
       }
 
       const result = await response.json();
-      console.log('Job order archived and deleted successfully:', result);
+      console.log('✅ Job order archived and deleted successfully:', result);
 
       // يمكن إضافة أي منطق إضافي هنا (مثل تحديث واجهة المستخدم)
       alert('تم أرشفة الفاتورة بنجاح!');
     } catch (error) {
-      console.error('Error archiving and deleting job order:', error);
+      console.error('❌ Error archiving and deleting job order:', error);
       alert(`حدث خطأ في معالجة الطلب: ${error.message}`);
     } finally {
+      setIsSubmitting(false); // ✅ إعادة التفعيل بعد انتهاء العملية
       handleClose(); // إغلاق القائمة
     }
   };
@@ -71,14 +77,13 @@ export default function JobOrderbtn({ itemId }) {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <Box sx={{display:"flex", flexDirection:'column',}}>
-          <IconButton sx={{mx:1}}  onClick={handleArchiveAndDelete}>
+        <Box sx={{ display: "flex", flexDirection: 'column' }}>
+          <IconButton sx={{ mx: 1 }} onClick={handleArchiveAndDelete} disabled={isSubmitting}>
             <ReceiptIcon />
           </IconButton>
-          <FormUpdate itemId={itemId}/>
-          <FormDelete itemId={itemId}/>
+          <FormUpdate itemId={itemId} />
+          <FormDelete itemId={itemId} />
         </Box>
-
       </Menu>
     </div>
   );

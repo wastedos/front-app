@@ -27,7 +27,7 @@ export default function TableJobOrder() {
     };
 
     fetchOrders();
-  }, []); // يتم استدعاء useEffect مرة واحدة عند التحميل
+  },); // يتم استدعاء useEffect مرة واحدة عند التحميل
 
   return (
     <Grid container spacing={2}>

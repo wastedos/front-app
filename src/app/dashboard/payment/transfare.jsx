@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
-import { Box, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Box, TextField, FormControl, InputLabel, Select, MenuItem, Snackbar, Alert } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import axios from 'axios';
 
@@ -18,8 +18,11 @@ export default function Transfer() {
     price: '',
     reason: '',
   });
-  const [message, setMessage] = React.useState(false);  // State for success message
-  const [error, setError] = React.useState('');  // State for error message
+
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [snackbarMessage, setSnackbarMessage] = React.useState('');
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
 
   // Handle opening the dialog
   const handleClickOpen = () => {
@@ -43,37 +46,45 @@ export default function Transfer() {
   // Handle form submission (Transfer money)
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const { paymentFrom, paymentTo, price, reason } = formData;
 
     // Validate input
     if (!paymentFrom || !paymentTo || !price) {
-      setError('الرجاء تعبئة جميع الحقول المطلوبة.');
+      setSnackbarMessage('الرجاء تعبئة جميع الحقول المطلوبة.');
+      setSnackbarOpen(true);
+      setIsSubmitting(false);
       return;
     }
-
     if (isNaN(price) || parseFloat(price) <= 0) {
-      setError('يرجى إدخال مبلغ صحيح.');
+      setSnackbarMessage('يرجى إدخال مبلغ صحيح.');
+      setSnackbarOpen(true);
+      setIsSubmitting(false);
       return;
     }
-
-    setError(''); // Clear any previous error message
 
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/transactions/transfer`, {
-        fromSafe: paymentFrom, // المحفظة التي سيتم التحويل منها
-        toSafe: paymentTo, // المحفظة التي سيتم التحويل إليها
-        amountTransfer: parseFloat(price), // المبلغ الذي سيتم تحويله
-        reasonTransfer: reason, // السبب (اختياري)
+        fromSafe: paymentFrom,
+        toSafe: paymentTo,
+        amountTransfer: parseFloat(price),
+        reasonTransfer: reason,
       });
 
-      console.log('Transfer successful', response.data);
-      setMessage(true);  // Display success message
-      setTimeout(() => setMessage(false), 6000);  // Hide the message after 6 seconds
+      setFormData({ paymentFrom: '', paymentTo: '', price: '', reason: '' });
+      setSnackbarMessage('تم التحويل بنجاح!');
+      handleClose(); // أغلق الحوار بعد النجاح
     } catch (error) {
-      console.error("Error in transfer:", error.message);
-      setError('حدث خطأ أثناء عملية التحويل. الرجاء المحاولة مرة أخرى.');
+      setSnackbarMessage('رصيد غير كافي أو حدث خطأ!');
+    } finally {
+      setSnackbarOpen(true);
+      setIsSubmitting(false);
     }
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   return (
@@ -162,27 +173,20 @@ export default function Transfer() {
                   />
                 </Grid>
               </Grid>
-
-              {/* Display error message if exists */}
-              {error && (
-                <Box sx={{ color: 'red', marginTop: 2 }}>
-                  <p>{error}</p>
-                </Box>
-              )}
-
               <DialogActions>
                 <Button onClick={handleClose} sx={{ textTransform: 'none' }}>
                   اغلاق
                 </Button>
                 <Button
-                  onClick={handleClose}
                   type="submit"
                   autoFocus
                   variant="contained"
                   sx={{ textTransform: 'none' }}
+                  disabled={isSubmitting}
                 >
-                  تأكيد
+                  {isSubmitting ? 'جاري التحويل...' : 'تأكيد'}
                 </Button>
+
               </DialogActions>
             </form>
           </Box>
@@ -190,11 +194,11 @@ export default function Transfer() {
       </Dialog>
 
       {/* Display success message if transaction is successful */}
-      {message && (
-        <Box sx={{ position: 'fixed', bottom: 20, right: 20, backgroundColor: 'green', padding: 2, borderRadius: 2 }}>
-          <p style={{ color: 'white' }}>تم التحويل بنجاح!</p>
-        </Box>
-      )}
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity={snackbarMessage.includes('نجاح') ? "success" : "error"} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </React.Fragment>
   );
 }

@@ -6,7 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
-import { Box, TextField, FormControl, InputLabel, Select, MenuItem, Typography, useTheme } from '@mui/material';
+import { Box, TextField, FormControl, InputLabel, Select, MenuItem, Typography, useTheme, Snackbar, Alert } from '@mui/material';
 import Grid from '@mui/material/Grid2';
 import axios from 'axios';
 
@@ -38,8 +38,8 @@ export default function FormDealer() {
     setTypeService([...typeService, { type:"", count:"", servicePriceBuy:"", servicePriceSell:"" }]);
   };
 
-
-  const [message, setMessage] = React.useState(false);  // State for success message
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [message, setMessage] = React.useState({});  // State for success message
 
   // Handle opening the dialog
   const handleClickOpen = () => {
@@ -62,7 +62,8 @@ export default function FormDealer() {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+    setIsSubmitting(true);
+
     const { dealerName, dealerPhone, service } = formData;
   
     try {
@@ -78,13 +79,19 @@ export default function FormDealer() {
       // إعادة تعيين الحقول
       setFormData({ dealerName: '', dealerPhone: '', service: '' });
       setTypeService([]);
-      // يمكن هنا تحديث واجهة المستخدم لعرض العملية الجديدة
+      handleClose();
 
-      setMessage(true);  // عرض رسالة النجاح
-      setTimeout(() => setMessage(false), 6000);  // إخفاء الرسالة بعد 6 ثوانٍ
+      setMessage({ open: true, text: 'تم إضافة التاجر بنجاح!', severity: 'success' });  // عرض رسالة النجاح
     } catch (error) {
-      console.error("Error in deposit:", error.message);
+      console.error("خطأ في التسجيل:", error.message);
+      setMessage({ open: true, text: 'حدث خطأ أثناء إضافة التاجر.', severity: 'error' });
+    } finally {
+      setIsSubmitting(false);
     }
+  };
+
+  const handleSnackbarClose = () => {
+    setMessage({ ...message, open: false });
   };
 
   return (
@@ -145,6 +152,7 @@ export default function FormDealer() {
                       <MenuItem value="قطع جديدة">قطع جديدة</MenuItem>
                       <MenuItem value="قطع استيراد">قطع استيراد</MenuItem>
                       <MenuItem value="اعمال خارجية">اعمال خارجية</MenuItem>
+                      <MenuItem value="اخري">اخري</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -232,13 +240,13 @@ export default function FormDealer() {
                   اغلاق
                 </Button>
                 <Button
-                  onClick={handleClose}
                   type="submit"
                   autoFocus
                   variant="contained"
                   sx={{ textTransform: 'none' }}
+                  disabled={isSubmitting}
                 >
-                  تاكيد
+                  {isSubmitting ? 'جاري التسجيل...' : 'تسجيل'}
                 </Button>
               </DialogActions>
             </form>
@@ -246,12 +254,12 @@ export default function FormDealer() {
         </DialogContent>
       </Dialog>
 
-      {/* عرض رسالة نجاح عند الإيداع */}
-      {message && (
-        <Box sx={{ position: 'fixed', bottom: 20, right: 20, backgroundColor: 'green', padding: 2, borderRadius: 2 }}>
-          <Typography color="white">تم اضافة التاجر بنجاح!</Typography>
-        </Box>
-      )}
+      {/* Snackbar لعرض الرسالة */}
+      <Snackbar open={message.open} autoHideDuration={6000} onClose={handleSnackbarClose}>
+        <Alert onClose={handleSnackbarClose} severity={message.severity} sx={{ width: '100%' }}>
+          {message.text}
+        </Alert>
+      </Snackbar>
     </React.Fragment>
   );
 }

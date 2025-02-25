@@ -29,14 +29,6 @@ export default function FormDelete({ itemId }) {
         { withCredentials: true } // مهم جداً
       );
       console.log("Item deleted successfully:", response.data);
-      
-      // Show success message in Snackbar
-      setMessage(true);
-
-      // Hide Snackbar after 6 seconds
-      setTimeout(() => {
-        setMessage(false);
-      }, 6000);
     } catch (error) {
       console.error("Error deleting item:", error.message);
     }

@@ -323,7 +323,6 @@ export default function FormUpdate({ itemId }) {
                 </Grid>
                 <Grid size={6}>
                   <TextField
-                    required
                     name="clientPhone"
                     label="رقم العميل"
                     type="number"

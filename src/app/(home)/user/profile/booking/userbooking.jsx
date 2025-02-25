@@ -55,7 +55,7 @@ const UserBookings = () => {
       <Typography variant="h4" align="center" gutterBottom fontWeight={600}>
         سجل الحجوزات
       </Typography>
-        <Box sx={{display:'flex', justifyContent:'space-evenly'}}>
+        <Box sx={{display:{xs:'block', md:'flex'}, justifyContent:'space-evenly'}}>
           {bookings.map((booking) => (
             <Box
               key={booking._id}
