@@ -151,7 +151,7 @@ export default function TableService({ itemId }) {
                     <TableCell align="center">{service.count}</TableCell>
                     <TableCell align="center">{service.servicePriceBuy}</TableCell>
                     <TableCell align="center">{service.servicePriceSell}</TableCell>
-                    <TableCell align="center"> <Showimage image={`http://localhost:5000/${service.imageName}`}/> </TableCell>
+                    <TableCell align="center"> <Showimage image={`https://go-gac.com/api/images/${service.imageName}`}/> </TableCell>
                     <TableCell align="center"><Servicebtn dealerId={itemId} serviceId={service._id}/></TableCell>
                   </TableRow>
                 ))}

@@ -63,6 +63,45 @@ export default function FormIncome() {
     fetchDealers();
   }, []);
 
+  const handleCodeChange = async (e) => {
+    const { value } = e.target;
+    setFormData((prev) => ({ ...prev, code: value }));
+  
+    if (value) {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse/read-product/${value}`);
+  
+        if (!response.ok) {
+          throw new Error("لم يتم العثور على المنتج، يمكنك إضافته يدويًا.");
+        }
+  
+        const foundItem = await response.json();
+  
+        setFormData((prev) => ({
+          ...prev,
+          carModel: foundItem.carModel || "",
+          category: foundItem.category || "",
+          brand: foundItem.brand || "",
+        }));
+      } catch (error) {
+        console.error("Error fetching item details:", error.message);
+        setErrorMessage(error.message);
+        setOpenSnackbar(true);
+  
+        // السماح بإدخال البيانات يدويًا في حالة عدم العثور على المنتج
+        setFormData((prev) => ({
+          ...prev,
+          carModel: "",
+          category: "",
+          brand: "",
+        }));
+      }
+    }
+  };
+  
+  
+  
+
   // Send Data to Database
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -108,6 +147,7 @@ export default function FormIncome() {
   const handleSnackbarClose = () => {
     setOpenSnackbar(false); // إغلاق Snackbar
   };
+  
 
   return (
     <React.Fragment>
@@ -137,7 +177,7 @@ export default function FormIncome() {
                     fullWidth
                     variant="outlined"
                     value={formData.code}
-                    onChange={handleChange}
+                    onChange={handleCodeChange}
                   />
                 </Grid>
                 <Grid size={6}>

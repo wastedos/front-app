@@ -124,7 +124,7 @@ export default function TableJobOrder() {
                               <TableCell align="center">{newPart.quantity}</TableCell>
                               <TableCell align="center">{newPart.pricebuy}</TableCell>
                               <TableCell align="center">{newPart.pricesell}</TableCell>
-                              <TableCell align="center"> <Showimage image={`http://localhost:5000/${newPart.imageName}`} /> </TableCell>
+                              <TableCell align="center"> <Showimage image={`https://go-gac.com/api/images/${newPart.imageName}`} /> </TableCell>
                             </TableRow>
                           ))}
                         </TableBody>
@@ -148,7 +148,7 @@ export default function TableJobOrder() {
                               <TableCell align="center">{outjob.jobName}</TableCell>
                               <TableCell align="center">{outjob.jobPriceBuy}</TableCell>
                               <TableCell align="center">{outjob.jobPriceSell}</TableCell>
-                              <TableCell align="center"> <Showimage image={`http://localhost:5000/${outjob.imageName}`} /> </TableCell>
+                              <TableCell align="center"> <Showimage image={`https://go-gac.com/api/images/${outjob.imageName}`} /> </TableCell>
                             </TableRow>
                           ))}
                         </TableBody>
