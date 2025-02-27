@@ -47,14 +47,15 @@ export default function TableJobOrder() {
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>موديل السيارة</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>لون السيارة</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>كيلو مترات</TableCell>
+                <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>رقم الشاسية</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>اعمال الورشة</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>قطع الجديدة</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>قطع استيراد</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>اعمال خارجية</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>نثريات</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>المدفوعات</TableCell>
-                <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>طريقة الدفع</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>مصنعية الورشة</TableCell>
+                <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>طريقة الدفع</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الخصم</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الاجمالي</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الباقي</TableCell>
@@ -71,6 +72,7 @@ export default function TableJobOrder() {
                     <TableCell align="center">{order.carModel}</TableCell>
                     <TableCell align="center">{order.carColor}</TableCell>
                     <TableCell align="center">{order.carKm}</TableCell>
+                    <TableCell align="center">{order.chassis}</TableCell>
                     <TableCell>
                       <Table>
                       <TableBody>
@@ -190,8 +192,25 @@ export default function TableJobOrder() {
                         </TableBody>
                       </Table>
                     </TableCell>
+                    <TableCell>
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>نوع</TableCell>
+                            <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>المصنعية</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {order.invoice.map((inv, invIndex) => (
+                            <TableRow key={invIndex}>
+                              <TableCell align="center">{inv.invoiceType}</TableCell>
+                              <TableCell align="center">{inv.invoicePrice}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableCell>
                     <TableCell align="center">{order.payment}</TableCell>
-                    <TableCell align="center">{order.invoice}</TableCell>
                     <TableCell align="center">{order.discount}</TableCell>
                     <TableCell align="center">{order.total}</TableCell>
                     <TableCell align="center">{order.theRest}</TableCell>

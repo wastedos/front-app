@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { Box, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from "@mui/material";
+import { Box, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { useTheme } from '@mui/material/styles';
 
@@ -23,6 +23,7 @@ export default function TableWarehouse() {
   ];
 
   const [rows, setRows] = React.useState([]);
+  const [totalSum, setTotalSum] = React.useState(0);
   const [searchTerm, setSearchTerm] = React.useState("");
 
   // Fetch all items from the backend
@@ -31,7 +32,8 @@ export default function TableWarehouse() {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse/read-product`);
         const data = await response.json();
-        setRows(data);
+        setRows(data.product);
+        setTotalSum(data.totalSum);
       } catch (error) {
         console.error("Error fetching items:", error);
       }
@@ -50,14 +52,16 @@ export default function TableWarehouse() {
   return (
     <Grid size={12}>
       <Box sx={{ overflow: 'hidden', backgroundColor: theme.palette.colors.box }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2 }}>
+        <Box sx={{ display: {xs:'block', md:'flex'}, alignItems: 'center', justifyContent: 'space-between', p: 2 }}>
           <TextField
+            sx={{width: {xs:"100%", md:'auto'}}}
             label="بحث"
             variant="outlined"
             size="small"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <Typography variant='h6' fontWeight={900} sx={{mx:1, fontWeight:900 ,mt:{xs:2, md:0}, color:'#707070'}}>اجمالي المخزن : {totalSum || 0}$</Typography>
         </Box>
         <Paper sx={{ width: "100%"}}>
           <TableContainer sx={{ maxHeight: 800, backgroundColor: theme.palette.colors.box }}>

@@ -77,6 +77,7 @@ export default function TableBills() {
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>موديل السيارة</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>لون السيارة</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>كيلو مترات</TableCell>
+                <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>رقم الشاسية</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>اعمال الورشة</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>قطع الجديدة</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>قطع استيراد</TableCell>
@@ -98,6 +99,7 @@ export default function TableBills() {
                   <TableCell align="center">{order.carModel}</TableCell>
                   <TableCell align="center">{order.carColor}</TableCell>
                   <TableCell align="center">{order.carKm}</TableCell>
+                  <TableCell align="center">{order.chassis}</TableCell>
                   <TableCell>
                     <Table>
                     <TableBody>
@@ -217,7 +219,24 @@ export default function TableBills() {
                       </TableBody>
                     </Table>
                   </TableCell>
-                  <TableCell align="center">{order.invoice}</TableCell>
+                  <TableCell>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>نوع</TableCell>
+                          <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>المصنعية</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {order.invoice.map((inv, invIndex) => (
+                          <TableRow key={invIndex}>
+                            <TableCell align="center">{inv.invoiceType}</TableCell>
+                            <TableCell align="center">{inv.invoicePrice}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableCell>
                   <TableCell align="center">{order.discount}</TableCell>
                   <TableCell align="center">{order.total}</TableCell>
                   <TableCell align="center">

@@ -114,6 +114,7 @@ export default function DealerFormEdit({ dealerId }) {
                       <MenuItem value="قطع جديدة">قطع جديدة</MenuItem>
                       <MenuItem value="قطع استيراد">قطع استيراد</MenuItem>
                       <MenuItem value="اعمال خارجية">اعمال خارجية</MenuItem>
+                      <MenuItem value="اخري">اخري</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>

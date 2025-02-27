@@ -27,7 +27,6 @@ export default function FormUpdate({ itemId }) {
     carColor: "",
     carKm: "",
     chassis: "",
-    invoice:"",
     discount:"",
     payment:"",
   });
@@ -36,7 +35,8 @@ export default function FormUpdate({ itemId }) {
   const [jobs, setJobs] = React.useState([]);
   const [outjob, setOutJobs] = React.useState([]);
   const [other, setOther] = React.useState([]);
-  const [payed, setPayed] = React.useState([])
+  const [payed, setPayed] = React.useState([]);
+  const [invoice, setInvoice] = React.useState([]);
   
   
   const handleClickOpen = () => setOpen(true);
@@ -171,6 +171,23 @@ export default function FormUpdate({ itemId }) {
     setPayed([...payed, { payment: "", payedPrice: "" }]);
   };
 
+  // ********************* Handle Invoice *********************
+  const handleInvoiceChange = (index, e) => {
+    const { name, value } = e.target;
+    const updateInvoice = [...invoice];
+    updateInvoice[index][name] = value; 
+    setInvoice(updateInvoice);
+  };
+  
+  const handleRemoveInvoice = (index) => {
+    const updateInvoice = invoice.filter((_, i) => i !== index);
+    setInvoice(updateInvoice);
+  };
+  
+  const handleAddInvoice = () => {
+    setInvoice([...invoice, { invoiceType: "", invoicePrice: "" }]);
+  };
+
 
   // Fetch dealers from the database
   React.useEffect(() => {
@@ -204,7 +221,6 @@ export default function FormUpdate({ itemId }) {
     formDataToSend.append("carColor", formData.carColor);
     formDataToSend.append("carKm", formData.carKm);
     formDataToSend.append("chassis", formData.chassis);
-    formDataToSend.append("invoice", formData.invoice || "");
     formDataToSend.append("discount", formData.discount || "");
     formDataToSend.append("payment", formData.payment || "");
   
@@ -214,6 +230,7 @@ export default function FormUpdate({ itemId }) {
     formDataToSend.append("outjob", JSON.stringify(outjob));
     formDataToSend.append("other", JSON.stringify(other));
     formDataToSend.append("payed", JSON.stringify(payed));
+    formDataToSend.append("invoice", JSON.stringify(invoice));
     formDataToSend.append("newparts", JSON.stringify(newparts));
   
     // Add newparts images
@@ -236,15 +253,45 @@ export default function FormUpdate({ itemId }) {
         body: formDataToSend,
       });
 
-      if (response.ok) {
-        console.log('Job order updated successfully');
-
-        handleClose();
-      } else {
-        console.error('Failed to update job order');
-      }
     } catch (error) {
       console.error('Error:', error);
+    }
+  };
+
+  const handleCodeChange = async (index, e) => {
+    const { value } = e.target;
+  
+    setParts((prev) =>
+      prev.map((part, i) =>
+        i === index ? { ...part, code: value } : part
+      )
+    );
+  
+    if (value) {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/warehouse/read-product/${value}`
+        );
+  
+        if (!response.ok) {
+          throw new Error("لم يتم العثور على المنتج، يمكنك إضافته يدويًا.");
+        }
+  
+        const foundItem = await response.json();
+  
+        setParts((prev) =>
+          prev.map((part, i) =>
+            i === index ? { ...part, category: foundItem.category || "" } : part
+          )
+        );
+      } catch (error) {
+        // السماح بإدخال البيانات يدويًا في حالة عدم العثور على المنتج
+        setParts((prev) =>
+          prev.map((part, i) =>
+            i === index ? { ...part, category: "" } : part
+          )
+        );
+      }
     }
   };
 
@@ -276,6 +323,7 @@ export default function FormUpdate({ itemId }) {
           setOutJobs(data.outjob || []);
           setOther(data.other || []);
           setPayed(data.payed || []);
+          setInvoice(data.invoice || []);
         })
         .catch(error => console.error('Error fetching job order:', error));
     }
@@ -453,7 +501,7 @@ export default function FormUpdate({ itemId }) {
                         variant="outlined"
                         size="small"
                         value={part.code || ""}
-                        onChange={(e) => handlePartChange(index, e)}
+                        onChange={(e) => handleCodeChange(index, e)}
                       />
                     </Grid>
                     <Grid size={4}>
@@ -755,18 +803,7 @@ export default function FormUpdate({ itemId }) {
                 ))}
                 <Grid size={6}>
                   <TextField
-                    name="invoice"
-                    label="مصنعية"
-                    type="number"
-                    margin="dense"
-                    fullWidth
-                    variant="outlined"
-                    value={formData.invoice}
-                    onChange={handleChange}
-                  />
-                </Grid>
-                <Grid size={6}>
-                  <TextField
+                    size='small'
                     name="discount"
                     label="الخصم"
                     type="number"
@@ -777,25 +814,72 @@ export default function FormUpdate({ itemId }) {
                     onChange={handleChange}
                   />
                 </Grid>
+                <Grid size={6}>
+                  <FormControl fullWidth margin="dense" size='small'>
+                    <InputLabel id="payment-label">طريقة الدفع</InputLabel>
+                    <Select
+                      labelId="payment-label"
+                      id="payment"
+                      name="payment"
+                      label="طريقة الدفع"
+                      value={formData.payment} // Update value
+                      onChange={handleChange} // Update formData
+                    >
+                      <MenuItem value="cash">Cash</MenuItem>
+                      <MenuItem value="instapay">Instapay</MenuItem>
+                      <MenuItem value="vodafone">Vodafone Cash</MenuItem>
+                      <MenuItem value="fawry">Fawry</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
               </Grid>
               <Grid size={12}>
-                <FormControl fullWidth margin="dense" size='small'>
-                  <InputLabel id="payment-label">طريقة الدفع</InputLabel>
-                  <Select
-                    labelId="payment-label"
-                    id="payment"
-                    name="payment"
-                    label="طريقة الدفع"
-                    value={formData.payment} // Update value
-                    onChange={handleChange} // Update formData
-                  >
-                    <MenuItem value="cash">Cash</MenuItem>
-                    <MenuItem value="instapay">Instapay</MenuItem>
-                    <MenuItem value="vodafone">Vodafone Cash</MenuItem>
-                    <MenuItem value="fawry">Fawry</MenuItem>
-                  </Select>
-                </FormControl>
+                <Button onClick={handleAddInvoice} variant="outlined" color="warning" sx={{ width:'100%', mt:2 }}>
+                   المصنعيات 
+                </Button>
               </Grid>
+              {invoice.map((inv, index) => (
+                <React.Fragment key={index}>
+                  <Grid container spacing={2} sx={{ p:1, my:1, backgroundColor: theme.palette.colors.box, borderRadius:'5px'}}>
+                    <Grid size={6}>
+                    <TextField
+                        required
+                        name="invoiceType"
+                        label="نوع المصنيعة"
+                        type="text"
+                        margin="dense"
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        value={inv.invoiceType}
+                        onChange={(e) => handleInvoiceChange(index, e)}
+                      />
+                    </Grid>
+                    <Grid size={6} sx={{ display: 'flex', alignItems: 'center' }}>
+                      <TextField
+                        required
+                        name="invoicePrice"
+                        label="المبلغ"
+                        type="number"
+                        margin="dense"
+                        fullWidth
+                        variant="outlined"
+                        size="small"
+                        value={inv.invoicePrice}
+                        onChange={(e) => handleInvoiceChange(index, e)}
+                      />
+                      <Button
+                        onClick={() => handleRemoveInvoice(index)}
+                        color="error"
+                        variant='outlined'
+                        sx={{ ml: 2, mt:0.5 }}
+                      >
+                        حذف
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </React.Fragment>
+              ))}
               <Grid size={12}>
                 <Button onClick={handleAddPayed} variant="outlined" sx={{ width:'100%', mt:2 }}>
                    المدفوعات 
