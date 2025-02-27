@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Box, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { useTheme } from '@mui/material/styles';
+import FormUpdate from './formupdate';
 
 
 export default function TableWarehouse() {
@@ -73,6 +74,9 @@ export default function TableWarehouse() {
                       {column.name}
                     </TableCell>
                   ))}
+                    <TableCell  align="center"  sx={{backgroundColor: '#5f6a6a', color: 'white', fontWeight:'700'}}>
+                      تعديلات 
+                    </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -83,6 +87,9 @@ export default function TableWarehouse() {
                         {row[column.id]}
                       </TableCell>
                     ))}
+                      <TableCell align="center">
+                        <FormUpdate itemId={row._id}/>
+                      </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
