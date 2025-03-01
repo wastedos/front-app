@@ -235,6 +235,7 @@ export default function FormIncome() {
                 </Grid>
                 <Grid size={12}>
                   <TextField
+                    required
                     size='small'
                     name="billnumber"
                     label="رقم العملية"
@@ -260,6 +261,7 @@ export default function FormIncome() {
                 </Grid>
                 <Grid size={6}>
                   <TextField
+                    required
                     name="category"
                     label="النوع"
                     margin="dense"
@@ -271,6 +273,7 @@ export default function FormIncome() {
                 </Grid>
                 <Grid size={6}>
                   <TextField
+                    required
                     name="brand"
                     label="الماركة"
                     margin="dense"
@@ -282,6 +285,7 @@ export default function FormIncome() {
                 </Grid>
                 <Grid size={6}>
                   <TextField
+                    required
                     name="quantity"
                     label="العدد"
                     type="number"
@@ -294,6 +298,7 @@ export default function FormIncome() {
                 </Grid>
                 <Grid size={6}>
                   <TextField
+                    required
                     name="price"
                     label="السعر"
                     type="number"
@@ -308,6 +313,7 @@ export default function FormIncome() {
                   <FormControl fullWidth margin="dense">
                     <InputLabel id="dealer-label">اسم التاجر</InputLabel>
                     <Select
+                      required
                       labelId="dealer-label"
                       name="dealerName"
                       label="اسم التاجر"
