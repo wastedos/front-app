@@ -42,13 +42,24 @@ export default function FormUpdate({ itemId }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value, // تحديث الحقل المعين فقط
-      password: value, // تحديث password بنفس القيمة
-      pwd: value, // تحديث pwd بنفس القيمة
-    }));
-  };;
+
+    setFormData((prevData) => {
+      // إذا كان الحقل هو كلمة المرور، نقوم بتحديث password و pwd بنفس القيمة
+      if (name === 'password') {
+        return {
+          ...prevData,
+          password: value,
+          pwd: value, // تحديث pwd بنفس القيمة
+        };
+      }
+
+      // تحديث الحقل المعين فقط
+      return {
+        ...prevData,
+        [name]: value,
+      };
+    });
+  };
 
   const handleClickOpen = () => {
     setOpen(true);

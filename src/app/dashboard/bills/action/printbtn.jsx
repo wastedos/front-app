@@ -153,14 +153,25 @@ export default function Print({ itemId }) {
                 </tr>
                 <tr>
                   <td>طريقة الدفع</td>
-                  <td colspan="4">${itemData.payment}</td>
+                  <td colspan="4">
+                    ${itemData.payed
+                      .map(
+                        (pay) => `${pay.payment} - ${pay.payedPrice}<br>`
+                      )
+                      .join("") || "-"}
+                  </td>
                 </tr>
                 <tr>
                   <td>مصنعية الورشة</td>
                   <td colspan="4">
-                    ${itemData.invoice || '-'}
+                    ${itemData.invoice
+                      .map(
+                        (inv) => `${inv.invoiceType} - ${inv.invoicePrice}<br>`
+                      )
+                      .join("") || "-"}
                   </td>
                 </tr>
+
                 <tr>
                   <td>الخصم</td>
                   <td colspan="4">${itemData.discount || '-'}</td>
