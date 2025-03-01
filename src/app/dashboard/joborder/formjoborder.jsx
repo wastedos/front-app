@@ -314,7 +314,8 @@ export default function FormJobOrder() {
         setJobs([]);
         setOutJobs([]);
         setOther([]);
-        setPayed([])
+        setPayed([]);
+        setInvoice([]);
         handleClose();
 
         setSnackbarMessage('تم حفظ العنصر بنجاح!');

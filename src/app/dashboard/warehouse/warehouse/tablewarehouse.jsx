@@ -11,6 +11,7 @@ export default function TableWarehouse() {
   
   const columns = [
     { id: 'code', name: 'الكود' },
+    { id: 'codeCategory', name: 'كود القطعة' },
     { id: 'carModel', name: 'نوع السيارة' },
     { id: 'category', name: 'النوع' },
     { id: 'brand', name: 'الماركة' },
@@ -44,7 +45,7 @@ export default function TableWarehouse() {
   }, []);
 
   // Filtered rows based on search
-  const filteredRows = rows.filter((row) => 
+  const filteredRows = rows?.filter((row) => 
     columns.some((column) => 
       row[column.id]?.toString().toLowerCase().includes(searchTerm.toLowerCase())
     )

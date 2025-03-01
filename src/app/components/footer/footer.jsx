@@ -197,7 +197,7 @@ export default function Footer() {
         <Grid container spacing={2} align="center">
           <Grid size={{xs:12, md:6}}>
             <Typography variant="body2">
-              &copy; {new Date().getFullYear()} تم التطوير بي واسطة محمد اشرف
+              &copy; {new Date().getFullYear()} Developed by Mohamed Ashraf
             </Typography>
           </Grid>
           <Grid size={{xs:12, md:6}}>

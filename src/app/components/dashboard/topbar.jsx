@@ -2,9 +2,7 @@
 import * as React from 'react';
 import { AppBar, Box, IconButton, Stack, Toolbar, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
-import Searchbar from '../header/component/searchbar';
 import AvatarMenu from '../header/component/avatarmenu';
-import Searchbtn from '../header/component/searchbtn';
 import Themebtn from '../header/component/themebtn';
 import Notificationbtn from './notificationbtn';
 
@@ -28,12 +26,10 @@ export default function Topbar({ handleDrawerToggle }) {
           >
             <MenuIcon />
           </IconButton>
-          <Searchbar/>
 
           <Box sx={{flexGrow:1,}}/>
 
           <Stack direction={'row'}>
-            <Searchbtn/>
             <Themebtn/>
             <Notificationbtn/>
             <AvatarMenu/>

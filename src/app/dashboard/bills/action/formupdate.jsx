@@ -11,8 +11,8 @@ import axios from 'axios';
 export default function FormUpdate({ itemId }) {
   const [open, setOpen] = React.useState(false);
   const [formData, setFormData] = React.useState({
-    code: '',
-    codeCategory: '',
+    carKm: '',
+    chassis: '',
   });
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 
@@ -42,9 +42,8 @@ export default function FormUpdate({ itemId }) {
     e.preventDefault();
     try {
       await axios.put(
-        `${process.env.NEXT_PUBLIC_API_URL}/warehouse/update-product/${itemId}`,
-        formData
-        ,
+        `${process.env.NEXT_PUBLIC_API_URL}/bills/update-byid/${itemId}`,
+        formData,
         {
           withCredentials: true, // لتضمين الكوكيز في الطلب
         }
@@ -59,7 +58,7 @@ export default function FormUpdate({ itemId }) {
 
   return (
     <React.Fragment>
-      <IconButton onClick={handleClickOpen}>
+      <IconButton onClick={handleClickOpen} sx={{mx:1}}>
         <EditIcon />
       </IconButton>
       <Dialog
@@ -75,21 +74,21 @@ export default function FormUpdate({ itemId }) {
           <Box>
             <form onSubmit={handleUpdate}>
               <TextField
-                name="code"
-                label="الكود"
+                name="carKm"
+                label="عدد الكيلو مترت"
                 margin="dense"
                 fullWidth
                 variant="outlined"
-                value={formData.code}
+                value={formData.carKm}
                 onChange={handleChange}
               />
               <TextField
-                name="codeCategory"
-                label="كود القطعة"
+                name="chassis"
+                label="رقم الشاسية"
                 margin="dense"
                 fullWidth
                 variant="outlined"
-                value={formData.codeCategory}
+                value={formData.chassis}
                 onChange={handleChange}
               />
               <DialogActions>

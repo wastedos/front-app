@@ -13,6 +13,7 @@ export default function FormIncome() {
   const [dealers, setDealers] = React.useState([]);
   const [formData, setFormData] = React.useState({
     code: "",
+    codeCategory:"",
     billnumber: "",
     carModel: "",
     category: "",
@@ -65,7 +66,7 @@ export default function FormIncome() {
 
   const handleCodeChange = async (e) => {
     const { value } = e.target;
-    setFormData((prev) => ({ ...prev, code: value }));
+    setFormData((prev) => ({ ...prev, code: value}));
   
     if (value) {
       try {
@@ -79,6 +80,7 @@ export default function FormIncome() {
   
         setFormData((prev) => ({
           ...prev,
+          codeCategory: foundItem.codeCategory || "",
           carModel: foundItem.carModel || "",
           category: foundItem.category || "",
           brand: foundItem.brand || "",
@@ -91,6 +93,7 @@ export default function FormIncome() {
         // السماح بإدخال البيانات يدويًا في حالة عدم العثور على المنتج
         setFormData((prev) => ({
           ...prev,
+          codeCategory:"",
           carModel: "",
           category: "",
           brand: "",
@@ -99,9 +102,45 @@ export default function FormIncome() {
     }
   };
   
+  const handleCodeCategoryChange = async (e) => {
+    const { value } = e.target;
+    setFormData((prev) => ({ ...prev, codeCategory: value }));
   
+    if (value) {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse/read-product-by-codeCategory/${value}`);
   
-
+        if (!response.ok) {
+          throw new Error("لم يتم العثور على المنتج باستخدام كود القطعة.");
+        }
+  
+        const foundItem = await response.json();
+  
+        // يمكنك تحديث باقي الحقول إذا كانت متوفرة من الرد
+        setFormData((prev) => ({
+          ...prev,
+          code: foundItem.code || prev.code, // إذا أردت تحديث حقل الكود أيضًا
+          carModel: foundItem.carModel || "",
+          category: foundItem.category || "",
+          brand: foundItem.brand || "",
+        }));
+      } catch (error) {
+        console.error("Error fetching product by codeCategory:", error.message);
+        setErrorMessage(error.message);
+        setOpenSnackbar(true);
+        
+        // السماح بإدخال البيانات يدويًا في حالة عدم العثور على المنتج
+        setFormData((prev) => ({
+          ...prev,
+          code:"",
+          carModel: "",
+          category: "",
+          brand: "",
+        }));
+      }
+    }
+  };
+  
   // Send Data to Database
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -123,6 +162,7 @@ export default function FormIncome() {
 
       setFormData({
         code: "",
+        codeCategory:"",
         billnumber: "",
         carModel: "",
         category: "",
@@ -181,6 +221,18 @@ export default function FormIncome() {
                   />
                 </Grid>
                 <Grid size={6}>
+                  <TextField
+                    size='small'
+                    name="codeCategory"
+                    label="كود القطعة"
+                    margin="dense"
+                    fullWidth
+                    variant="outlined"
+                    value={formData.codeCategory}
+                    onChange={handleCodeCategoryChange}
+                  />
+                </Grid>
+                <Grid size={12}>
                   <TextField
                     size='small'
                     name="billnumber"

@@ -13,6 +13,7 @@ export default function TableIncome() {
     { id: 'date', name: 'تاريخ التسجيل' },
     { id: 'billnumber', name: 'رقم العملية' },
     { id: 'code', name: 'الكود' },
+    { id: 'codeCategory', name: 'كود القطعة' },
     { id: 'carModel', name: 'نوع السيارة' },
     { id: 'category', name: 'النوع' },
     { id: 'brand', name: 'الماركة' },

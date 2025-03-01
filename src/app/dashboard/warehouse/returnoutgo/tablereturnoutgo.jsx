@@ -11,8 +11,9 @@ export default function TableReturnOutgo() {
   
   const columns = [
     { id: 'date', name: 'تاريخ التسجيل' },
+    { id: 'billnumber' || '-', name: 'رقم الفاتورة' },
     { id: 'code', name: 'الكود' },
-    { id: 'billnumber', name: 'رقم الفاتورة' },
+    { id: 'codeCategory', name: 'كود القطعة' },
     { id: 'carModel', name: 'نوع السيارة' },
     { id: 'category', name: 'النوع' },
     { id: 'brand', name: 'الماركة' },

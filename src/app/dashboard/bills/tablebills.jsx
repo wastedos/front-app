@@ -20,10 +20,11 @@ import Billbtn from "./action/billbtn";
 export default function TableBills() {
   const theme = useTheme();
   const [orders, setOrders] = useState([]); // حالة لتخزين البيانات
+  const [bills, setBills] = useState([]); // حالة لتخزين البيانات
   const [searchTerm, setSearchTerm] = useState(""); // حالة البحث
 
   // Filtered rows based on search
-  const filteredRows = orders.filter((order) =>
+  const filteredRows = orders?.filter((order) =>
     Object.values(order).some((value) =>
       value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
     )
@@ -36,7 +37,8 @@ export default function TableBills() {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bills/read-bills`);
         if (response.ok) {
           const data = await response.json();
-          setOrders(data);
+          setOrders(data.bills);
+          setBills(data.result)
         } else {
           console.error("Failed to fetch job orders");
         }
@@ -49,6 +51,20 @@ export default function TableBills() {
   }, []);
   return (
     <Grid container spacing={2}>
+      <Box align='center' sx={{display:{xs:'block', md:'flex'}, justifyContent:'space-between', width:'100%'}}>
+        <Box sx={{backgroundColor: theme.palette.colors.box, height:'6rem', width:{xs:"100%", md:"32%"}, borderRadius:'15px', my:2, p:2}}> 
+          <Typography variant="h5" fontWeight={600}>اجمالي الفواتير</Typography>
+          <Typography variant="h5" fontWeight={600}>{bills.totalBills || 0}</Typography>
+        </Box>
+        <Box sx={{backgroundColor: theme.palette.colors.box, height:'6rem', width:{xs:"100%", md:"32%"}, borderRadius:'15px', my:2, p:2}}> 
+          <Typography variant="h5" fontWeight={600}>اجمالي تم الدفع</Typography>
+          <Typography variant="h5" fontWeight={600}>{bills.totalPay || 0}</Typography>
+        </Box>
+        <Box sx={{backgroundColor: theme.palette.colors.box, height:'6rem', width:{xs:"100%", md:"32%"}, borderRadius:'15px', my:2, p:2}}> 
+          <Typography variant="h5" fontWeight={600}>اجمالي الباقي</Typography>
+          <Typography variant="h5" fontWeight={600}>{bills.totaltheRest || 0}</Typography>
+        </Box>
+      </Box>
       <Box sx={{ width: "100%", backgroundColor: theme.palette.colors.box, borderRadius:'15px', overflow:'hidden', p:1 }}>
         <Box
           sx={{
@@ -65,6 +81,7 @@ export default function TableBills() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+         
         </Box>
 
         <TableContainer component={Paper} sx={{ mt: 3 }}>
@@ -87,6 +104,8 @@ export default function TableBills() {
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>مصنعية الورشة</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الخصم</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الاجمالي</TableCell>
+                <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>تم سداد</TableCell>
+                <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الباقي</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>التفعلات</TableCell>
               </TableRow>
             </TableHead>
@@ -212,10 +231,6 @@ export default function TableBills() {
                             <TableCell align="center">{pay.payedPrice}</TableCell>
                           </TableRow>
                         ))}
-                          <TableRow>
-                            <TableCell align="center">{order.payment}</TableCell>
-                            <TableCell align="center">{order.theRest}</TableCell>
-                          </TableRow>
                       </TableBody>
                     </Table>
                   </TableCell>
@@ -239,6 +254,8 @@ export default function TableBills() {
                   </TableCell>
                   <TableCell align="center">{order.discount}</TableCell>
                   <TableCell align="center">{order.total}</TableCell>
+                  <TableCell align="center">{order.pay}</TableCell>
+                  <TableCell align="center">{order.theRest}</TableCell>
                   <TableCell align="center">
                     <Billbtn itemId={order._id} />
                   </TableCell>

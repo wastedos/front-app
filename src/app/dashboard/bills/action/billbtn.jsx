@@ -5,6 +5,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import FormDelete from './formdelete';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import Print from './printbtn';
+import FormUpdate from './formupdate';
+import FormPayed from './formpayed';
 
 export default function Billbtn({ itemId }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -42,6 +44,8 @@ export default function Billbtn({ itemId }) {
       >
         <Box sx={{display:"flex", flexDirection:'column',}}>
           <Print itemId={itemId}/>
+          <FormUpdate itemId={itemId}/>
+          <FormPayed itemId={itemId}/>
           {/*<FormDelete itemId={itemId}/>*/}
         </Box>
 

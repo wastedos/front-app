@@ -17,6 +17,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import FiberManualRecordOutlinedIcon from '@mui/icons-material/FiberManualRecordOutlined';
 import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import HomeIcon from '@mui/icons-material/Home';
 
 //State
 import { useRouter } from 'next/navigation';
@@ -62,6 +63,7 @@ export default function Sidebar({ mobileOpen, onDrawerToggle, onTransitionEnd })
   //Array
   const Array1 = [
     {"title":"صفحة الورشة", "icon":<DashboardIcon/>, "path":"/dashboard"},
+    //{"title":"الصفحة الرئسية", "icon":<HomeIcon/>, "path":"/dashboard/home"},
     {"title":"السجل", "icon":<HistoryIcon/>, "path":"/dashboard/history"},
   ];
 

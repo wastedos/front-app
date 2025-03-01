@@ -58,6 +58,7 @@ export default function TableJobOrder() {
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>طريقة الدفع</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الخصم</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الاجمالي</TableCell>
+                <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>تم سداد</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الباقي</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>التفعلات</TableCell>
               </TableRow>
@@ -213,6 +214,7 @@ export default function TableJobOrder() {
                     <TableCell align="center">{order.payment}</TableCell>
                     <TableCell align="center">{order.discount}</TableCell>
                     <TableCell align="center">{order.total}</TableCell>
+                    <TableCell align="center">{order.pay}</TableCell>
                     <TableCell align="center">{order.theRest}</TableCell>
                     <TableCell align="center"><JobOrderbtn itemId={order._id}/></TableCell>
                   </TableRow>
