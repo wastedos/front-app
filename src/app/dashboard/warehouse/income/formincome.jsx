@@ -209,6 +209,7 @@ export default function FormIncome() {
               <Grid container spacing={2}>
                 <Grid size={6}>
                   <TextField
+                    required
                     size='small'
                     name="code"
                     label="الكود"

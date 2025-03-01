@@ -107,6 +107,7 @@ export default function FormIncome() {
               <Grid container spacing={2}>
                 <Grid size={6}>
                   <TextField
+                    required
                     name="code"
                     label="الكود"
                     margin="dense"
@@ -118,6 +119,7 @@ export default function FormIncome() {
                 </Grid>
                 <Grid size={6}>
                   <TextField
+                    required
                     name="billnumber"
                     label="رقم الفاتورة"
                     type="text"

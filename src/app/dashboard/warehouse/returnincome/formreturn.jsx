@@ -96,6 +96,7 @@ export default function FormReturn() {
               <Grid container spacing={2}>
                 <Grid size={6}>
                   <TextField
+                    required
                     name="code"
                     label="الكود"
                     type="number"
@@ -108,6 +109,7 @@ export default function FormReturn() {
                 </Grid>
                 <Grid size={6}>
                   <TextField
+                    required
                     name="billnumber"
                     label="رقم الفاتورة"
                     type="text"
