@@ -118,7 +118,6 @@ export default function FormDealer() {
                     required
                     name="dealerName"
                     label="اسم التاجر"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -130,7 +129,6 @@ export default function FormDealer() {
                   <TextField
                     name="dealerPhone"
                     label="رقم التاجر"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -169,7 +167,6 @@ export default function FormDealer() {
                         required
                         name="type"
                         label="النوع"
-                        type="text"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -183,7 +180,6 @@ export default function FormDealer() {
                         required
                         name="count"
                         label="عدد"
-                        type="number"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -196,7 +192,6 @@ export default function FormDealer() {
                       <TextField
                         name="servicePriceBuy"
                         label="سعر الشراء"
-                        type="number"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -209,7 +204,6 @@ export default function FormDealer() {
                       <TextField
                         name="servicePriceSell"
                         label="سعر البيع"
-                        type="number"
                         margin="dense"
                         fullWidth
                         variant="outlined"

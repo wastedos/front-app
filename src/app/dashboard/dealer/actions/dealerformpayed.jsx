@@ -96,7 +96,6 @@ export default function DealerFormPayed({ dealerId }) {
                   <TextField
                     name="payed"
                     label="المبلغ"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"

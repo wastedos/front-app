@@ -43,6 +43,7 @@ export default function FormIncome() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/warehouse/add-outgo`, {
         method: "POST",
@@ -134,7 +135,6 @@ export default function FormIncome() {
                   <TextField
                     name="quantity"
                     label="العدد"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -146,7 +146,6 @@ export default function FormIncome() {
                   <TextField
                     name="price"
                     label="السعر"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -158,7 +157,6 @@ export default function FormIncome() {
                   <TextField
                     name="buyer"
                     label="المشتري"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -170,7 +168,6 @@ export default function FormIncome() {
                   <TextField
                     name="buyerphone"
                     label="رقم المشتري"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"

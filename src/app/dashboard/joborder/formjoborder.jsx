@@ -371,7 +371,6 @@ export default function FormJobOrder() {
                     required
                     name="clientName"
                     label="اسم العميل"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -383,7 +382,6 @@ export default function FormJobOrder() {
                   <TextField
                     name="clientPhone"
                     label="رقم العميل"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -396,7 +394,6 @@ export default function FormJobOrder() {
                     required
                     name="carModel"
                     label="موديل السيارة"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -408,7 +405,6 @@ export default function FormJobOrder() {
                   <TextField
                     name="carColor"
                     label="لون السيارة"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -420,7 +416,6 @@ export default function FormJobOrder() {
                   <TextField
                     name="carKm"
                     label="عدد الكيلو مترات"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -432,7 +427,6 @@ export default function FormJobOrder() {
                   <TextField
                     name="chassis"
                     label="رقم الشاسية"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -473,7 +467,6 @@ export default function FormJobOrder() {
                         <TextField
                           name="jobName"
                           label="الخدمة"
-                          type="text"
                           margin="dense"
                           fullWidth
                           variant="outlined"
@@ -505,7 +498,6 @@ export default function FormJobOrder() {
                         required
                         name="code"
                         label="الكود"
-                        type="number"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -519,7 +511,6 @@ export default function FormJobOrder() {
                         required
                         name="quantity"
                         label="العدد"
-                        type="number"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -533,7 +524,6 @@ export default function FormJobOrder() {
                         required
                         name="pricesell"
                         label="السعر"
-                        type="number"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -546,7 +536,6 @@ export default function FormJobOrder() {
                       <TextField
                         name="category"
                         label="نوع القطعة"
-                        type="text"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -576,7 +565,6 @@ export default function FormJobOrder() {
                         required
                         name="category"
                         label="نوع القطعة"
-                        type="text"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -590,7 +578,6 @@ export default function FormJobOrder() {
                         required
                         name="quantity"
                         label="العدد"
-                        type="text"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -621,7 +608,6 @@ export default function FormJobOrder() {
                       <TextField
                         name="pricebuy"
                         label="سعر الشراء"
-                        type="number"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -634,7 +620,6 @@ export default function FormJobOrder() {
                       <TextField
                         name="pricesell"
                         label="سعر البيع"
-                        type="text"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -683,7 +668,6 @@ export default function FormJobOrder() {
                         required
                         name="jobName"
                         label="نوع الشغلانة"
-                        type="text"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -714,7 +698,6 @@ export default function FormJobOrder() {
                       <TextField
                         name="jobPriceBuy"
                         label="سعر الشراء"
-                        type="number"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -727,7 +710,6 @@ export default function FormJobOrder() {
                       <TextField
                         name="jobPriceSell"
                         label="سعر البيع"
-                        type="number"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -777,7 +759,6 @@ export default function FormJobOrder() {
                         required
                         name="otherName"
                         label="نثريات"
-                        type="text"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -791,7 +772,6 @@ export default function FormJobOrder() {
                         required
                         name="otherPrice"
                         label="سعر"
-                        type="number"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -816,7 +796,6 @@ export default function FormJobOrder() {
                     size='small'
                     name="discount"
                     label="الخصم"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -856,7 +835,6 @@ export default function FormJobOrder() {
                         required
                         name="invoiceType"
                         label="نوع المصنيعة"
-                        type="text"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -870,7 +848,6 @@ export default function FormJobOrder() {
                         required
                         name="invoicePrice"
                         label="المبلغ"
-                        type="number"
                         margin="dense"
                         fullWidth
                         variant="outlined"
@@ -921,7 +898,6 @@ export default function FormJobOrder() {
                         required
                         name="payedPrice"
                         label="المبلغ"
-                        type="number"
                         margin="dense"
                         fullWidth
                         variant="outlined"

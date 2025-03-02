@@ -214,7 +214,6 @@ export default function FormIncome() {
                     name="code"
                     label="الكود"
                     margin="dense"
-                    type="number"
                     fullWidth
                     variant="outlined"
                     value={formData.code}
@@ -240,7 +239,6 @@ export default function FormIncome() {
                     name="billnumber"
                     label="رقم العملية"
                     margin="dense"
-                    type="text"
                     fullWidth
                     variant="outlined"
                     value={formData.billnumber}
@@ -252,7 +250,6 @@ export default function FormIncome() {
                     name="carModel"
                     label="نوع السيارة"
                     margin="dense"
-                    type="text"
                     fullWidth
                     variant="outlined"
                     value={formData.carModel}
@@ -288,7 +285,6 @@ export default function FormIncome() {
                     required
                     name="quantity"
                     label="العدد"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -301,7 +297,6 @@ export default function FormIncome() {
                     required
                     name="price"
                     label="السعر"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"

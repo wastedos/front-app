@@ -151,7 +151,6 @@ export default function Transfer() {
                     required
                     name="price"
                     label="المبلغ"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -164,7 +163,6 @@ export default function Transfer() {
                   <TextField
                     name="reason"
                     label="السبب"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"

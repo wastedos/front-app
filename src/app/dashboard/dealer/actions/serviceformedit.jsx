@@ -122,7 +122,6 @@ export default function ServiceFormEdit({ dealerId, serviceId }) {
                   <TextField
                     name="type"
                     label="نوع"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -134,7 +133,6 @@ export default function ServiceFormEdit({ dealerId, serviceId }) {
                   <TextField
                     name="count"
                     label="عدد"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -146,7 +144,6 @@ export default function ServiceFormEdit({ dealerId, serviceId }) {
                   <TextField
                     name="servicePriceBuy"
                     label="سعر الشراء"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -158,7 +155,6 @@ export default function ServiceFormEdit({ dealerId, serviceId }) {
                   <TextField
                     name="servicePriceSell"
                     label="سعر البيع"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"

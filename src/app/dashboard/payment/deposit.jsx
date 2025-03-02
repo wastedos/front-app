@@ -112,7 +112,6 @@ export default function Deposit() {
                     required
                     name="amountDeposit"
                     label="المبلغ"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -125,7 +124,6 @@ export default function Deposit() {
                   <TextField
                     name="reasonDeposit"
                     label="السبب"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"

@@ -104,7 +104,6 @@ export default function Withdraw() {
                     required
                     name="amountWithdraw"
                     label="المبلغ"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -138,7 +137,6 @@ export default function Withdraw() {
                   <TextField
                     name="payee"
                     label="المستفيد"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -150,7 +148,6 @@ export default function Withdraw() {
                   <TextField
                     name="reasonWithdraw"
                     label="السبب"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"

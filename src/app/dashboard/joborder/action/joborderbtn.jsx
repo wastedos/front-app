@@ -8,7 +8,8 @@ import ReceiptIcon from '@mui/icons-material/Receipt';
 
 export default function JobOrderbtn({ itemId }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [isSubmitting, setIsSubmitting] = React.useState(false); // ✅ التحكم في حالة الطلب
+  const [isSubmitting, setIsSubmitting] = React.useState(false); // حالة الطلب
+  const [processingRequests, setProcessingRequests] = React.useState(new Set()); // تتبع الطلبات المعالجة
 
   const open = Boolean(anchorEl);
 
@@ -24,9 +25,17 @@ export default function JobOrderbtn({ itemId }) {
 
   // إرسال طلب الحذف واستدعاء مسار الفواتير
   const handleArchiveAndDelete = async () => {
-    if (isSubmitting) return;
+    // التحقق إذا كانت العملية قيد المعالجة مسبقًا
+    if (processingRequests.has(itemId)) {
+      alert('تم معالجة هذا الطلب مسبقًا');
+      return;
+    }
+
+    // إضافة هذا الـ itemId إلى مجموعة المعالجات
+    setProcessingRequests((prevRequests) => new Set(prevRequests).add(itemId));
+
     setIsSubmitting(true);
-    
+
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/joborders/bills-byid/${itemId}`, {
         method: 'DELETE',
@@ -53,6 +62,11 @@ export default function JobOrderbtn({ itemId }) {
       alert(`حدث خطأ في معالجة الطلب: ${error.message}`);
     } finally {
       setIsSubmitting(false); // ✅ إعادة التفعيل بعد انتهاء العملية
+      setProcessingRequests((prevRequests) => {
+        const updatedRequests = new Set(prevRequests);
+        updatedRequests.delete(itemId); // إزالة الطلب من مجموعة المعالجة
+        return updatedRequests;
+      });
       handleClose(); // إغلاق القائمة
     }
   };

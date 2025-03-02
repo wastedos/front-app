@@ -80,7 +80,6 @@ export default function DealerFormEdit({ dealerId }) {
                   <TextField
                     name="dealerName"
                     label="اسم التاجر"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -92,7 +91,6 @@ export default function DealerFormEdit({ dealerId }) {
                   <TextField
                     name="dealerPhone"
                     label="رقم التاجر"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"

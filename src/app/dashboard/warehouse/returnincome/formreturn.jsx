@@ -99,7 +99,6 @@ export default function FormReturn() {
                     required
                     name="code"
                     label="الكود"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -112,7 +111,6 @@ export default function FormReturn() {
                     required
                     name="billnumber"
                     label="رقم الفاتورة"
-                    type="text"
                     margin="dense"
                     fullWidth
                     variant="outlined"
@@ -124,7 +122,6 @@ export default function FormReturn() {
                   <TextField
                     name="quantity"
                     label="العدد"
-                    type="number"
                     margin="dense"
                     fullWidth
                     variant="outlined"
