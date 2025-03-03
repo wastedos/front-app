@@ -85,7 +85,7 @@ export default function FormLogin(){
                         تسجيل الدخول
                     </Typography>
                     <Typography variant="body1" sx={{ color: 'inheart', mt:2 }}>
-                        ادخل رقم العاتف و كلمة المرور
+                        ادخل رقم الهاتف و كلمة المرور
                     </Typography>
                     <Box sx={{display:{xs:'none', md:'block'}}}>
                         <Otheroptionsign/>

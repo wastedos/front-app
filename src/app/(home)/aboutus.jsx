@@ -13,7 +13,7 @@ export default function Aboutus(){
             <Box sx={{width:{xs:'100%', md:'50%',}, maxHeight:{lg:'25rem', xl:'30rem'}, }}>
                 <Box
                 component="img"
-                src="/image/home/maps.avif"
+                src="/image/home/ramadan-poster.webp"
                 sx={{
                     objectFit: 'cover',
                     width: '100%',

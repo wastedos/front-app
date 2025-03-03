@@ -52,8 +52,8 @@ export default function UserVisited() {
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>اعمال خارجية</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>قطع الغيار</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>نثريات</TableCell>
-                <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>طريقة الدفع</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>مصنعية الورشة</TableCell>
+                <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>المدفوعات</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الخصم</TableCell>
                 <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>الاجمالي</TableCell>
               </TableRow>
@@ -114,7 +114,6 @@ export default function UserVisited() {
                       </TableBody>
                     </Table>
                   </TableCell>
-
                   <TableCell align="center">
                     <Table>
                       <TableHead>
@@ -133,8 +132,42 @@ export default function UserVisited() {
                       </TableBody>
                     </Table>
                   </TableCell>
-                  <TableCell align="center">{order.payment}</TableCell>
-                  <TableCell align="center">{order.invoice}</TableCell>
+                  <TableCell align="center">
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell align="center">نوع</TableCell>
+                          <TableCell align="center">المبلغ</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {order.invoice.map((inv, partIndex) => (
+                          <TableRow key={partIndex}>
+                            <TableCell align="center">{inv.invoiceType}</TableCell>
+                            <TableCell align="center">{inv.invoicePrice}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableCell>
+                  <TableCell>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>نوع الخزنة</TableCell>
+                          <TableCell align="center" sx={{fontWeight:"600", fontSize:"1rem"}}>المبلغ</TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        {order.payed.map((pay, payIndex) => (
+                          <TableRow key={payIndex}>
+                            <TableCell align="center">{pay.payment}</TableCell>
+                            <TableCell align="center">{pay.payedPrice}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TableCell>
                   <TableCell align="center">{order.discount}</TableCell>
                   <TableCell align="center">{order.total}</TableCell>
                 </TableRow>

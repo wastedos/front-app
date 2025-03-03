@@ -252,7 +252,7 @@ export default function FormUpdate({ itemId }) {
         method: 'PUT',
         body: formDataToSend,
       });
-
+      handleClose()
     } catch (error) {
       console.error('Error:', error);
     }

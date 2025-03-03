@@ -10,7 +10,7 @@ export default function Otheroptionsign() {
       <Divider sx={{m:"50px 0px"}}>خيارت اخري</Divider>
       <Box sx={{my:'20px',display:'flex', justifyContent:'space-evenly'}}>
         <Button sx={{textTransform:'none', width:'100%', p:'12px 0'}}>
-          <GoogleIcon sx={{color:'gray', mr:'5px'}}/>تابع بي حساب جوجل
+          <GoogleIcon sx={{color:'gray', mr:'5px'}}/>تابع بحساب جوجل
         </Button>
       </Box>
     </Grid>
