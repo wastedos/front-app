@@ -20,8 +20,8 @@ export default function TableWarehouse() {
     { id: 'returnin', name: 'مرتجع الوارد' },
     { id: 'returnout', name: 'مرتجع الصادر' },
     { id: 'quantity', name: 'العدد المتبقي' },
-    { id: 'priceSell', name: 'السعر البيع' },
-    { id: 'price', name: 'السعر' },
+    { id: 'priceSell', name: 'سعر البيع' },
+    //{ id: 'price', name: 'السعر' },
     { id: 'total', name: 'الاجمالي' },
   ];
 

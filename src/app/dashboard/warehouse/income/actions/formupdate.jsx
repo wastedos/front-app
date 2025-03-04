@@ -11,9 +11,9 @@ import axios from 'axios';
 export default function FormUpdate({ itemId }) {
   const [open, setOpen] = React.useState(false);
   const [formData, setFormData] = React.useState({
-    quantity: '',
-    price: '',
-    total: 0,
+    carModel:'',
+    category:'',
+    brand:'',
   });
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 
@@ -51,16 +51,15 @@ export default function FormUpdate({ itemId }) {
     try {
       await axios.put(
         `${process.env.NEXT_PUBLIC_API_URL}/warehouse/update-income/${itemId}`,
-        {
-          quantity: formData.quantity,
-          price: formData.price,
-          total: formData.total,
-        },
-        {
-          withCredentials: true, // لتضمين الكوكيز في الطلب
-        }
+        formData, // إزالة الأقواس {} حول formData
+        { withCredentials: true }
       );
-
+      setFormData({
+        carModel: '',
+        category: '',
+        brand: '',
+      });
+      
       setSnackbarOpen(true); // عرض Snackbar عند نجاح التحديث
       setOpen(false); // إغلاق النافذة
     } catch (error) {
@@ -86,36 +85,31 @@ export default function FormUpdate({ itemId }) {
           <Box>
             <form onSubmit={handleUpdate}>
               <TextField
-                name="quantity"
-                label="العدد"
-                type="number"
+                name="carModel"
+                label="نوع السيارة"
                 margin="dense"
                 fullWidth
                 variant="outlined"
-                value={formData.quantity}
+                value={formData.carModel}
                 onChange={handleChange}
-                required
               />
               <TextField
-                name="price"
-                label="السعر"
-                type="number"
+                name="category"
+                label="النوع"
                 margin="dense"
                 fullWidth
                 variant="outlined"
-                value={formData.price}
+                value={formData.category}
                 onChange={handleChange}
-                required
               />
               <TextField
-                name="total"
-                label="الإجمالي"
-                type="number"
+                name="brand"
+                label="الماركة"
                 margin="dense"
                 fullWidth
                 variant="outlined"
-                value={formData.total}
-                disabled
+                value={formData.brand}
+                onChange={handleChange}
               />
               <DialogActions>
                 <Button onClick={handleClose} sx={{ textTransform: 'none' }} color="error">
