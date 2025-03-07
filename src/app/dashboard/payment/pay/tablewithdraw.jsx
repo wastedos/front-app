@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { Box, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from "@mui/material";
+import { Box, TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { useTheme } from '@mui/material/styles';
 
@@ -39,12 +39,16 @@ export default function TableWithdraw() {
     fetchItems();
   }, []);
 
-  // Filtered rows based on search
-  const filteredRows = rows.filter((row) => 
-    columns.some((column) => 
-      row[column.id]?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  // Filter rows based on search input with multiple words
+  const filteredRows = rows.filter((row) => {
+    const searchWords = searchTerm.toLowerCase().split(" "); // تقسيم النص المدخل إلى كلمات
+    return searchWords.every((word) => 
+      columns.some((column) => row[column.id]?.toString().toLowerCase().includes(word))
+    );
+  });
+
+  const totalAmountWithdraw = filteredRows.reduce((sum, row) => sum + (parseFloat(row.amountWithdraw) || 0), 0);
+
 
   return (
     <Grid size={12}>
@@ -57,7 +61,7 @@ export default function TableWithdraw() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-
+          <Typography variant="h6" sx={{fontWeight:'600'}}>الاجمالي : {totalAmountWithdraw.toLocaleString()}</Typography>
         </Box>
         <Paper sx={{ width: "100%"}}>
           <TableContainer sx={{ maxHeight: 800, backgroundColor: theme.palette.colors.box }}>

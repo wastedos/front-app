@@ -86,6 +86,7 @@ export default function Withdraw() {
                     <InputLabel id="type-safe-label">من</InputLabel>
                     <Select
                       required
+                      label="من"
                       labelId="type-safe-label"
                       name="typeSafe"
                       value={formData.typeSafe}
@@ -118,6 +119,7 @@ export default function Withdraw() {
                     <InputLabel id="type-withdraw-label">نوع السحب</InputLabel>
                     <Select
                       required
+                      label="نوع السحب"
                       labelId="type-withdraw-label"
                       name="typeWithdraw"
                       value={formData.typeWithdraw}
@@ -125,6 +127,7 @@ export default function Withdraw() {
                     >
                       <MenuItem value="مصروف تأسيس">مصروف تأسيس</MenuItem>
                       <MenuItem value="مصروف تشغيل">مصروف تشغيل</MenuItem>
+                      <MenuItem value="سحب شركاء">سحب شركاء</MenuItem>
                       <MenuItem value="اعمال خارجية">أعمال خارجية</MenuItem>
                       <MenuItem value="قطع استيراد">قطع استيراد</MenuItem>
                       <MenuItem value="نثريات مستردة">نثريات مستردة</MenuItem>

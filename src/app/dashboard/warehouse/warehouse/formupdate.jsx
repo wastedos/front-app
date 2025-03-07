@@ -13,6 +13,9 @@ export default function FormUpdate({ itemId }) {
   const [formData, setFormData] = React.useState({
     code: '',
     codeCategory: '',
+    carModel: '',
+    category: '',
+    brand: '',
   });
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
 
@@ -49,7 +52,7 @@ export default function FormUpdate({ itemId }) {
           withCredentials: true, // لتضمين الكوكيز في الطلب
         }
       );
-
+      setFormData({})
       setSnackbarOpen(true); // عرض Snackbar عند نجاح التحديث
       setOpen(false); // إغلاق النافذة
     } catch (error) {
@@ -90,6 +93,33 @@ export default function FormUpdate({ itemId }) {
                 fullWidth
                 variant="outlined"
                 value={formData.codeCategory}
+                onChange={handleChange}
+              />
+              <TextField
+                name="carModel"
+                label="نوع السيارة"
+                margin="dense"
+                fullWidth
+                variant="outlined"
+                value={formData.carModel}
+                onChange={handleChange}
+              />
+              <TextField
+                name="category"
+                label="النوع"
+                margin="dense"
+                fullWidth
+                variant="outlined"
+                value={formData.category}
+                onChange={handleChange}
+              />
+              <TextField
+                name="brand"
+                label="الماركة"
+                margin="dense"
+                fullWidth
+                variant="outlined"
+                value={formData.brand}
                 onChange={handleChange}
               />
               <DialogActions>

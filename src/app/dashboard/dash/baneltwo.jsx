@@ -135,7 +135,7 @@ const BanelTwo = () => {
                 onChange={handleMonthChange}
                 label="شهر"
               >
-                <MenuItem value=""><em>كل الأشهر</em></MenuItem>
+                <MenuItem value=""><em>الكل</em></MenuItem>
                 <MenuItem value="01">يناير</MenuItem>
                 <MenuItem value="02">فبراير</MenuItem>
                 <MenuItem value="03">مارس</MenuItem>
@@ -161,10 +161,13 @@ const BanelTwo = () => {
                 onChange={handleYearChange}
                 label="سنة"
               >
+                <MenuItem value=""><em>الكل</em></MenuItem>
                 <MenuItem value="2025">2025</MenuItem>
                 <MenuItem value="2026">2026</MenuItem>
                 <MenuItem value="2027">2027</MenuItem>
                 <MenuItem value="2028">2028</MenuItem>
+                <MenuItem value="2029">2029</MenuItem>
+                <MenuItem value="2030">2030</MenuItem>
               </Select>
             </FormControl>
           </Box>
